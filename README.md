@@ -10,7 +10,11 @@ in s9y.
 todo
 ----
 
-- add export commands to the export menu (using default `ox-html` export)
 - restrict export to the contents of the `<body>` tag
 - export code blocks in GeSHi syntax
 - remove all CSS classes from the generated HTML tags
+
+done
+----
+
+- add export commands to the export menu (using default `ox-html` export)
