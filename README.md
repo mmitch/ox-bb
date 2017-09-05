@@ -10,11 +10,12 @@ in s9y.
 todo
 ----
 
-- export code blocks in GeSHi syntax
+- map Org languages to GeSHi languages
 - remove all CSS classes from the generated HTML tags
 
 done
 ----
 
+- export code blocks in GeSHi format
 - add export commands to the export menu (using default `ox-html` export)
 - restrict export to the contents of the `<body>` tag
