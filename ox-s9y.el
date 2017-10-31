@@ -61,11 +61,18 @@
        ((?H "As HTML buffer" org-s9y-export-as-html)
 	(?h "As HTML file" org-s9y-export-to-html))))
 
+(defun org-s9y--put-in-tag (tag contents &optional parameters)
+  "Puts the HTML tag TAG around the CONTENTS string.  Optional
+PARAMETERS for the tag can be given as a string."
+  (if (org-string-nw-p parameters)
+      (format "<%s %s>%s</%s>" tag parameters contents tag)
+    (format "<%s>%s</%s>" tag contents tag)))
+
 (defun org-s9y-bold (bold contents info)
   "Transcode a BOLD element from Org to Serendipity.
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
-  (format "<strong>%s</strong>" contents))
+  (org-s9y--put-in-tag "strong" contents))
 
 (defun org-s9y-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
@@ -84,15 +91,16 @@ a communication channel."
 	(level (org-export-get-relative-level headline info)))
     (concat
      (if (<= level 2)
-	 (format "<!--  %s  -->\n" title)
-       (format "<h%d>%s</h%d>\n" level title level))
+	 (format "<!--  %s  -->" title)
+       (org-s9y--put-in-tag (format "h%d" level) title))
+     "\n"
      contents)))
 
 (defun org-s9y-italic (italic contents info)
   "Transcode a ITALIC element from Org to Serendipity.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
-  (format "<em>%s</em>" contents))
+  (org-s9y--put-in-tag "em" contents))
 
 (defun org-s9y-item (item contents info)
   "Transcode a ITEM element from Org to Serendipity.
@@ -100,9 +108,11 @@ CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((plain-list (org-export-get-parent item))
 	 (type (org-element-property :type plain-list)))
-    (pcase type
+    (concat
+     (pcase type
 					; (`descriptive - tag comes from where?
-      (other (format "<li>%s</li>\n" (org-trim contents))))))
+       (other (org-s9y--put-in-tag "li" (org-trim contents))))
+     "\n")))
 
 (defun org-s9y-link (link contents info)
   "Transcode a LINK element from Org to Serendipity.
@@ -112,8 +122,8 @@ CONTENTS is the contents of the link, as a string.  INFO is
 	(path (org-element-property :path link)))
     (cond
      ((string= type "todo")
-      (format "<abbr title=\"Artikel folgt\">%s</abbr>" contents))
-     (t (format "<a href=\"%s:%s\">%s</a>" type path contents)))))
+      (org-s9y--put-in-tag "abbr" contents "title=\"Artikel folgt\""))
+     (t (org-s9y--put-in-tag "a" contents (format "href=\"%s:%s\"" type path))))))
 
 (defun org-s9y-paragraph (paragraph contents info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
@@ -126,10 +136,12 @@ CONTENTS is the contents of the paragraph, as a string.  INFO is
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type plain-list)))
-    (pcase type
-      (`unordered (format "<ul>%s</ul>\n" (org-trim contents)))
+    (concat
+     (pcase type
+       (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
 					; `ordered `descriptive
-      (other (error "PLAIN-LIST type %s not yet supported" other)))))
+       (other (error "PLAIN-LIST type %s not yet supported" other)))
+     "\n")))
 
 (defun org-s9y-plain-text (text info)
   "Transcode a TEXT string from Org to Serendipity.
@@ -140,7 +152,7 @@ INFO is a plist used as a communication channel."
   "Transcode a SECTION element from Org to Serendipity.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
-  (format "<p>%s</p>" (org-trim contents)))
+  (org-s9y--put-in-tag "p" (org-trim contents)))
 
 (defun org-s9y-template (contents info)
   "Return complete document string after Serendipity conversion.
