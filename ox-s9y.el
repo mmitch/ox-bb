@@ -11,7 +11,7 @@
   '((bold . org-s9y-bold)
     (center-block . org-s9y-undefined)
     (clock . org-s9y-undefined)
-    (code . org-s9y-undefined)
+    (code . org-s9y-code)
     (drawer . org-s9y-undefined)
     (dynamic-block . org-s9y-undefined)
     (entity . org-s9y-undefined)
@@ -73,6 +73,11 @@ PARAMETERS for the tag can be given as a string."
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
   (org-s9y--put-in-tag "strong" contents))
+
+(defun org-s9y-code (code contents info)
+  "Transcode a CODE element from Org to Serendipity.
+CONTENTS nil.  INFO is a plist used as a communication channel."
+  (org-s9y--put-in-tag "code" (org-element-property :value code)))
 
 (defun org-s9y-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
