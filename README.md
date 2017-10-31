@@ -16,5 +16,5 @@ done
 ----
 
 - export code blocks in GeSHi format
-- add export commands to the export menu (using default `ox-html` export)
+- add export commands to the export menu
 - restrict export to the contents of the `<body>` tag
