@@ -1,19 +1,61 @@
 ;;; ox-s9y.el --- Serendipity HTML Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
+;; TODO:
+;; - export directly to X clipboard: export to buffer; select all; copy to clipboard; close buffer
+
+;; see http://orgmode.org/worg/dev/org-element-api.html
+
 (require 'ox)
 
 (org-export-define-backend 's9y
   '((bold . org-s9y-bold)
+    (center-block . org-s9y-undefined)
+    (clock . org-s9y-undefined)
+    (code . org-s9y-undefined)
+    (drawer . org-s9y-undefined)
+    (dynamic-block . org-s9y-undefined)
+    (entity . org-s9y-undefined)
+    (example-block . org-s9y-undefined)
+    (export-block . org-s9y-undefined)
+    (export-snippet . org-s9y-undefined)
+    (fixed-width . org-s9y-undefined)
+    (footnote-definition . org-s9y-undefined)
+    (footnote-reference . org-s9y-undefined)
     (headline . org-s9y-headline)
+    (horizontal-rule . org-s9y-undefined)
+    (inline-src-block . org-s9y-undefined)
+    (inlinetask . org-s9y-undefined)
     (italic . org-s9y-italic)
     (item . org-s9y-item)
+    (keyword . org-s9y-undefined)
+    (latex-environment . org-s9y-undefined)
+    (latex-fragment . org-s9y-undefined)
+    (line-break . org-s9y-undefined)
     (link . org-s9y-link)
+    (node-property . org-s9y-undefined)
     (paragraph . org-s9y-paragraph)
     (plain-list . org-s9y-plain-list)
     (plain-text . org-s9y-plain-text)
+    (planning . org-s9y-undefined)
+    (property-drawer . org-s9y-undefined)
+    (quote-block . org-s9y-undefined)
+    (radio-target . org-s9y-undefined)
     (section . org-s9y-section)
+    (special-block . org-s9y-undefined)
     (src-block . org-s9y-geshi-block)
-    (template . org-s9y-template))
+    (statistics-cookie . org-s9y-undefined)
+    (strike-through . org-s9y-undefined)
+    (subscript . org-s9y-undefined)
+    (superscript . org-s9y-undefined)
+    (table . org-s9y-undefined)
+    (table-cell . org-s9y-undefined)
+    (table-row . org-s9y-undefined)
+    (target . org-s9y-undefined)
+    (template . org-s9y-template)
+    (timestamp . org-s9y-undefined)
+    (underline . org-s9y-undefined)
+    (verbatim . org-s9y-undefined)
+    (verse-block . org-s9y-undefined))
   :menu-entry
   '(?S "Export to Serendipity"
        ((?H "As HTML buffer" org-s9y-export-as-html)
@@ -56,7 +98,11 @@ CONTENTS is the italic text, as a string.  INFO is
   "Transcode a ITEM element from Org to Serendipity.
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
-  (format "<li>%s</li>\n" (org-trim contents)))
+  (let* ((plain-list (org-export-get-parent item))
+	 (type (org-element-property :type plain-list)))
+    (pcase type
+					; (`descriptive - tag comes from where?
+      (other (format "<li>%s</li>\n" (org-trim contents))))))
 
 (defun org-s9y-link (link contents info)
   "Transcode a LINK element from Org to Serendipity.
@@ -79,7 +125,11 @@ CONTENTS is the contents of the paragraph, as a string.  INFO is
   "Transcode a PLAIN-LIST element from Org to Serendipity.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
-  (format "<ul>%s</ul>\n" (org-trim contents)))
+  (let ((type (org-element-property :type plain-list)))
+    (pcase type
+      (`unordered (format "<ul>%s</ul>\n" (org-trim contents)))
+					; `ordered `descriptive
+      (other (error "PLAIN-LIST type %s not yet supported" other)))))
 
 (defun org-s9y-plain-text (text info)
   "Transcode a TEXT string from Org to Serendipity.
@@ -98,6 +148,8 @@ CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   contents)
 
+(defun org-s9y-undefined (element &optional _contents _info)
+  (error "element type `%s' not implemented yet" (car element)))
 
 ;;;###autoload
 (defun org-s9y-export-as-html
