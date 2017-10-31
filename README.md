@@ -11,7 +11,6 @@ todo
 ----
 
 - map Org languages to GeSHi languages
-- remove all CSS classes from the generated HTML tags
 
 done
 ----
