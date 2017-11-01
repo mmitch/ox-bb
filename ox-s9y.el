@@ -112,11 +112,19 @@ CONTENTS is the italic text, as a string.  INFO is
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((plain-list (org-export-get-parent item))
+	 (term (let ((tag (org-element-property :tag item)))
+		 (and tag (org-export-data tag info))))
 	 (type (org-element-property :type plain-list)))
     (concat
      (pcase type
-					; (`descriptive - tag comes from where?
-       (other (org-s9y--put-in-tag "li" (org-trim contents))))
+       (`descriptive
+	(concat
+	 (org-s9y--put-in-tag "dt" (org-trim term))
+	 "\n"
+	 (org-s9y--put-in-tag "dd" (org-trim contents))
+	 ))
+       (other
+	(org-s9y--put-in-tag "li" (org-trim contents))))
      "\n")))
 
 (defun org-s9y-link (link contents info)
@@ -143,8 +151,9 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
   (let ((type (org-element-property :type plain-list)))
     (concat
      (pcase type
-       (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
-					; `ordered `descriptive
+       (`descriptive (org-s9y--put-in-tag "ul" (org-trim contents)))
+       (`unordered (org-s9y--put-in-tag "dl" (org-trim contents)))
+					; `descriptive
        (other (error "PLAIN-LIST type %s not yet supported" other)))
      "\n")))
 
