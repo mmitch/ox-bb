@@ -74,9 +74,9 @@ CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
   (org-s9y--put-in-tag "strong" contents))
 
-(defun org-s9y-code (code contents info)
+(defun org-s9y-code (code _contents info)
   "Transcode a CODE element from Org to Serendipity.
-CONTENTS nil.  INFO is a plist used as a communication channel."
+CONTENTS is nil.  INFO is a plist used as a communication channel."
   (org-s9y--put-in-tag "code" (org-element-property :value code)))
 
 (defun org-s9y-geshi-block (code-block _contents info)
