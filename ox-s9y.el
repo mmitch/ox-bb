@@ -151,8 +151,8 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
   (let ((type (org-element-property :type plain-list)))
     (concat
      (pcase type
-       (`descriptive (org-s9y--put-in-tag "ul" (org-trim contents)))
-       (`unordered (org-s9y--put-in-tag "dl" (org-trim contents)))
+       (`descriptive (org-s9y--put-in-tag "dl" (org-trim contents)))
+       (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
 					; `descriptive
        (other (error "PLAIN-LIST type %s not yet supported" other)))
      "\n")))
