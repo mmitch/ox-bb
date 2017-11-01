@@ -30,7 +30,7 @@
     (keyword . org-s9y-undefined)
     (latex-environment . org-s9y-undefined)
     (latex-fragment . org-s9y-undefined)
-    (line-break . org-s9y-undefined)
+    (line-break . org-s9y-line-break)
     (link . org-s9y-link)
     (node-property . org-s9y-undefined)
     (paragraph . org-s9y-paragraph)
@@ -126,6 +126,12 @@ CONTENTS is the contents of the item, as a string.  INFO is
        (other
 	(org-s9y--put-in-tag "li" (org-trim contents))))
      "\n")))
+
+(defun org-s9y-line-break (_line-break _contents info)
+  "Transcode a LINE-BREAK object from Org to Serendipity.
+CONTENTS is nil.  INFO is a plist holding contextual
+information."
+  "<br>\n")
 
 (defun org-s9y-link (link contents info)
   "Transcode a LINK element from Org to Serendipity.
