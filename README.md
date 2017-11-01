@@ -10,7 +10,10 @@ in s9y.
 todo
 ----
 
+- fix handling of paragraphs (see ox-html)
 - map Org languages to GeSHi languages
+- export directly to X clipboard (export to buffer, select all, copy to
+  clipboard, close buffer)
 
 done
 ----

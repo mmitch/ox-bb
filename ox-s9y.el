@@ -1,8 +1,5 @@
 ;;; ox-s9y.el --- Serendipity HTML Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; TODO:
-;; - export directly to X clipboard: export to buffer; select all; copy to clipboard; close buffer
-
 ;; see http://orgmode.org/worg/dev/org-element-api.html
 
 (require 'ox)
