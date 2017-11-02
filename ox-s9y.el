@@ -145,7 +145,11 @@ CONTENTS is the contents of the link, as a string.  INFO is
   "Transcode a PARAGRAPH element from Org to Serendipity.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
-  (org-trim contents))
+  (let* ((parent (org-export-get-parent paragraph))
+	 (parent-type (org-element-type parent)))
+    (if (eq parent-type 'section)
+	(org-s9y--put-in-tag "p" (org-trim contents))
+      (org-trim contents))))
 
 (defun org-s9y-plain-list (plain-list contents info)
   "Transcode a PLAIN-LIST element from Org to Serendipity.
@@ -169,7 +173,7 @@ INFO is a plist used as a communication channel."
   "Transcode a SECTION element from Org to Serendipity.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
-  (org-s9y--put-in-tag "p" (org-trim contents)))
+  (org-trim contents))
 
 (defun org-s9y-template (contents info)
   "Return complete document string after Serendipity conversion.

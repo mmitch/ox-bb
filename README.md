@@ -10,7 +10,8 @@ in s9y.
 todo
 ----
 
-- fix handling of paragraphs (see ox-html)
+- fix handling of multiple paragraphs inside of list-items (see ox-html)
+  - add copyright and proper license (GPL-3) before copying from ox-html
 - map Org languages to GeSHi languages
 - export directly to X clipboard (export to buffer, select all, copy to
   clipboard, close buffer)
