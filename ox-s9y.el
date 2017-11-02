@@ -65,13 +65,13 @@ PARAMETERS for the tag can be given as a string."
       (format "<%s %s>%s</%s>" tag parameters contents tag)
     (format "<%s>%s</%s>" tag contents tag)))
 
-(defun org-s9y-bold (bold contents info)
+(defun org-s9y-bold (_bold contents _info)
   "Transcode a BOLD element from Org to Serendipity.
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
   (org-s9y--put-in-tag "strong" contents))
 
-(defun org-s9y-code (code _contents info)
+(defun org-s9y-code (code _contents _info)
   "Transcode a CODE element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
   (org-s9y--put-in-tag "code" (org-element-property :value code)))
@@ -98,7 +98,7 @@ a communication channel."
      "\n"
      contents)))
 
-(defun org-s9y-italic (italic contents info)
+(defun org-s9y-italic (_italic contents _info)
   "Transcode a ITALIC element from Org to Serendipity.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
@@ -120,17 +120,17 @@ CONTENTS is the contents of the item, as a string.  INFO is
 	 "\n"
 	 (org-s9y--put-in-tag "dd" (org-trim contents))
 	 ))
-       (other
+       (_
 	(org-s9y--put-in-tag "li" (org-trim contents))))
      "\n")))
 
-(defun org-s9y-line-break (_line-break _contents info)
+(defun org-s9y-line-break (_line-break _contents _info)
   "Transcode a LINE-BREAK object from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   "<br>\n")
 
-(defun org-s9y-link (link contents info)
+(defun org-s9y-link (link contents _info)
   "Transcode a LINK element from Org to Serendipity.
 CONTENTS is the contents of the link, as a string.  INFO is
   a plist used as a communication channel."
@@ -141,7 +141,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (org-s9y--put-in-tag "abbr" contents "title=\"Artikel folgt\""))
      (t (org-s9y--put-in-tag "a" contents (format "href=\"%s:%s\"" type path))))))
 
-(defun org-s9y-paragraph (paragraph contents info)
+(defun org-s9y-paragraph (paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
@@ -151,7 +151,7 @@ CONTENTS is the contents of the paragraph, as a string.  INFO is
 	(org-s9y--put-in-tag "p" (org-trim contents))
       (org-trim contents))))
 
-(defun org-s9y-plain-list (plain-list contents info)
+(defun org-s9y-plain-list (plain-list contents _info)
   "Transcode a PLAIN-LIST element from Org to Serendipity.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
@@ -164,7 +164,7 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
        (other (error "PLAIN-LIST type %s not yet supported" other)))
      "\n")))
 
-(defun org-s9y-plain-text (text info)
+(defun org-s9y-plain-text (text _info)
   "Transcode a TEXT string from Org to Serendipity.
 INFO is a plist used as a communication channel."
   text)
@@ -175,7 +175,7 @@ CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
   (org-trim contents))
 
-(defun org-s9y-template (contents info)
+(defun org-s9y-template (contents _info)
   "Return complete document string after Serendipity conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
@@ -246,10 +246,10 @@ file-local settings.
 
 Return output file's name."
   (interactive)
-  (let ((extension (concat "." (or (plist-get ext-plist :html-extension)
+  (let* ((extension (concat "." (or (plist-get ext-plist :html-extension)
 				   org-html-extension
 				   "html")))
-	(file (org-export-output-file-name extension subtreep))
-	(org-export-coding-system org-html-coding-system))
+	 (file (org-export-output-file-name extension subtreep))
+	 (org-export-coding-system org-html-coding-system))
     (org-export-to-file 's9y file
       async subtreep visible-only body-only ext-plist)))
