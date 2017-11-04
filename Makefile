@@ -20,14 +20,23 @@
 
 SOURCES=$(wildcard *.el)
 TARGETS=$(addsuffix c,$(SOURCES))
+TESTS=$(basename $(wildcard testing/test-*.el))
+
+TESTDEPS=$(addprefix -l ,ert $(SOURCES))
 
 %.elc: %.el
 	emacs -Q --batch -f batch-byte-compile $<
 
-all:	compile
+testing/test-%: %.elc testing/test-%.el
+	emacs -Q --batch -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
+
+all:	compile test
 
 compile: $(TARGETS)
 
+test: compile $(TESTS)
+
 clean:
 	rm -f *.elc
-	rm -f *~
+	rm -f *~ testing/*~
+
