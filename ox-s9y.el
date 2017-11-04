@@ -273,3 +273,5 @@ Return output file's name."
 	 (org-export-coding-system org-html-coding-system))
     (org-export-to-file 's9y file
       async subtreep visible-only body-only ext-plist)))
+
+(provide 'ox-s9y)
