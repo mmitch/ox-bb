@@ -159,7 +159,10 @@ CONTENTS is the contents of the link, as a string.  INFO is
     (cond
      ((string= type "todo")
       (org-s9y--put-in-tag "abbr" contents "title=\"Artikel folgt\""))
-     (t (org-s9y--put-in-tag "a" contents (format "href=\"%s:%s\"" type path))))))
+     ((member type '("http" "https"))
+      (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
+	(org-s9y--put-in-tag "a" contents (format "href=\"%s\"" target))))
+     (t (error "LINK type %s not yet supported" type)))))
 
 (defun org-s9y-paragraph (paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
