@@ -162,7 +162,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
      ((member type '("http" "https"))
       (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
 	(org-s9y--put-in-tag "a" contents (format "href=\"%s\"" target))))
-     (t (error "LINK type %s not yet supported" type)))))
+     (t (error "LINK type `%s' not yet supported" type)))))
 
 (defun org-s9y-paragraph (paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
@@ -184,7 +184,7 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
        (`descriptive (org-s9y--put-in-tag "dl" (org-trim contents)))
        (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
 					; `descriptive
-       (other (error "PLAIN-LIST type %s not yet supported" other)))
+       (other (error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 
 (defun org-s9y-plain-text (text _info)
