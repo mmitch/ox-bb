@@ -37,6 +37,12 @@ result as a string."
 ;;;;; tests for backend methods
 ;;;;;
 
+;;; org-s9y-bold
+
+(ert-deftest org-s9y/bold ()
+  (should (equal (org-s9y-export-temp-text "foo *BAR* baz")
+		 "<p>foo <strong>BAR</strong> baz</p>\n")))
+
 ;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
