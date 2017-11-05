@@ -49,6 +49,27 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo ~BAR~ baz")
 		 "<p>foo <code>BAR</code> baz</p>\n")))
 
+;;; org-s9y-headline
+
+(ert-deftest org-s9y/headline/lv1-as-comment ()
+  (should (equal (org-s9y-export-temp-text "* TOPIC")
+		 "<!--  TOPIC  -->\n")))
+(ert-deftest org-s9y/headline/lv2-as-comment ()
+  (should (equal (org-s9y-export-temp-text "* dummy\n** TOPIC")
+		 "<!--  dummy  -->\n<!--  TOPIC  -->\n")))
+
+(ert-deftest org-s9y/headline/lv3-as-h3 ()
+  (should (equal (org-s9y-export-temp-text "* dummy\n** dummy\n*** TOPIC")
+		 "<!--  dummy  -->\n<!--  dummy  -->\n<h3>TOPIC</h3>\n")))
+
+(ert-deftest org-s9y/headline/lv4-as-h4 ()
+  (should (equal (org-s9y-export-temp-text "* dummy\n** dummy\n*** dummy\n**** TOPIC")
+		 "<!--  dummy  -->\n<!--  dummy  -->\n<h3>dummy</h3>\n<h4>TOPIC</h4>\n")))
+
+(ert-deftest org-s9y/headline/lv5-as-h5 ()
+  (should (equal (org-s9y-export-temp-text "* dummy\n** dummy\n*** dummy\n**** dummy\n***** TOPIC")
+		 "<!--  dummy  -->\n<!--  dummy  -->\n<h3>dummy</h3>\n<h4>dummy</h4>\n<h5>TOPIC</h5>\n")))
+
 ;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
