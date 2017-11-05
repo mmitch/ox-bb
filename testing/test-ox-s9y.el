@@ -43,6 +43,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo *BAR* baz")
 		 "<p>foo <strong>BAR</strong> baz</p>\n")))
 
+;;; org-s9y-code
+
+(ert-deftest org-s9y/bold ()
+  (should (equal (org-s9y-export-temp-text "foo ~BAR~ baz")
+		 "<p>foo <code>BAR</code> baz</p>\n")))
+
 ;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
