@@ -76,6 +76,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo /BAR/ baz")
 		 "<p>foo <em>BAR</em> baz</p>\n")))
 
+;;; org-s9y-line-break
+
+(ert-deftest org-s9y/line-break ()
+  (should (equal (org-s9y-export-temp-text "foo\\\\\nbar")
+		 "<p>foo<br>\nbar</p>\n")))
+
 ;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
