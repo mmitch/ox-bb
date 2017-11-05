@@ -142,6 +142,12 @@ result as a string."
 
 ;;; org-s9y--put-in-tag
 
-(ert-deftest org-s9y/put-in-tag ()
+(ert-deftest org-s9y/put-in-tag/no-attribute ()
   (should (equal (org-s9y--put-in-tag "p" "foo") "<p>foo</p>")))
+
+(ert-deftest org-s9y/put-in-tag/single-attribute ()
+  (should (equal (org-s9y--put-in-tag "a" "foo" '(("href" "file.htm"))) "<a href=\"file.htm\">foo</a>")))
+
+(ert-deftest org-s9y/put-in-tag/multiple-attributes ()
+  (should (equal (org-s9y--put-in-tag "div" "foo" '(("class" "bar") ("style" "margin: 0;"))) "<div class=\"bar\" style=\"margin: 0;\">foo</div>")))
 

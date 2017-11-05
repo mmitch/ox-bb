@@ -78,12 +78,19 @@
        ((?H "As HTML buffer" org-s9y-export-as-html)
 	(?h "As HTML file" org-s9y-export-to-html))))
 
-(defun org-s9y--put-in-tag (tag contents &optional parameters)
+(defun org-s9y--put-in-tag (tag contents &optional attributes)
   "Puts the HTML tag TAG around the CONTENTS string.  Optional
-PARAMETERS for the tag can be given as a string."
-  (if (org-string-nw-p parameters)
-      (format "<%s %s>%s</%s>" tag parameters contents tag)
-    (format "<%s>%s</%s>" tag contents tag)))
+ATTRIBUTES for the tag can be given as an alist of key/value
+pairs (both strings)."
+  (let ((attribute-string (if attributes
+			      (mapconcat (function (lambda (attribute)
+						     (let ((key (car attribute))
+							   (value (cadr attribute)))
+						       (format " %s=\"%s\"" key value))))
+					 attributes
+					 "")
+			    "")))
+    (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
 
 (defun org-s9y-bold (_bold contents _info)
   "Transcode a BOLD element from Org to Serendipity.
@@ -161,7 +168,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (org-s9y--put-in-tag "abbr" contents "title=\"Artikel folgt\""))
      ((member type '("http" "https"))
       (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
-	(org-s9y--put-in-tag "a" contents (format "href=\"%s\"" target))))
+	(org-s9y--put-in-tag "a" contents (list (list "href" target)))))
      (t (error "LINK type `%s' not yet supported" type)))))
 
 (defun org-s9y-paragraph (paragraph contents _info)
