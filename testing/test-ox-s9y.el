@@ -70,6 +70,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "* dummy\n** dummy\n*** dummy\n**** dummy\n***** TOPIC")
 		 "<!--  dummy  -->\n<!--  dummy  -->\n<h3>dummy</h3>\n<h4>dummy</h4>\n<h5>TOPIC</h5>\n")))
 
+;;; org-s9y-italic
+
+(ert-deftest org-s9y/italic ()
+  (should (equal (org-s9y-export-temp-text "foo /BAR/ baz")
+		 "<p>foo <em>BAR</em> baz</p>\n")))
+
 ;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
