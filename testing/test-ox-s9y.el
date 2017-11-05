@@ -100,6 +100,20 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "[[http://foo/%20bar][baz]]")
 		 "<p><a href=\"http://foo/%20bar\">baz</a></p>\n")))
 
+;;; org-s9y-paragraph
+
+(ert-deftest org-s9y/paragraph/single-paragraph ()
+  (should (equal (org-s9y-export-temp-text "foo")
+		 "<p>foo</p>\n")))
+
+(ert-deftest org-s9y/paragraph/multiline-paragraph ()
+  (should (equal (org-s9y-export-temp-text "foo\nbar")
+		 "<p>foo\nbar</p>\n")))
+
+(ert-deftest org-s9y/paragraph/multiple-paragraphs ()
+  (should (equal (org-s9y-export-temp-text "foo\n\nbar")
+		 "<p>foo</p>\n\n<p>bar</p>\n")))
+
 ;;;;;
 ;;;;; tests for internal methods
 ;;;;;
