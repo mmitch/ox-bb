@@ -122,6 +122,14 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "- foo\n- bar")
 		 "<ul><li>foo</li>\n<li>bar</li></ul>\n")))
 
+;;; DESCRIPTIVE-LIST
+;;; org-s9y-item
+;;; org-s9y-list
+
+(ert-deftest org-s9y/list/plain ()
+  (should (equal (org-s9y-export-temp-text "- foo :: pokey\n- bar :: hokey")
+		 "<dl><dt>foo</dt>\n<dd>pokey</dd>\n<dt>bar</dt>\n<dd>hokey</dd></dl>\n")))
+
 ;;;;;
 ;;;;; tests for internal methods
 ;;;;;
