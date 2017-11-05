@@ -49,6 +49,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo ~BAR~ baz")
 		 "<p>foo <code>BAR</code> baz</p>\n")))
 
+;;; org-s9y-geshi-block
+
+(ert-deftest org-s9y/geshi-block ()
+  (should (equal (org-s9y-export-temp-text "#+BEGIN_SRC java\npackage foo;\n/* dummy dummy */\n#+END_SRC")
+		 "[geshi lang=\"java\"]\npackage foo;\n/* dummy dummy */\n[/geshi]\n")))
+
 ;;; org-s9y-headline
 
 (ert-deftest org-s9y/headline/lv1-as-comment ()
