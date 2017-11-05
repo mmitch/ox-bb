@@ -20,6 +20,10 @@
 
 (require 'ox-s9y)
 
+;;;;;
+;;;;; test helpers
+;;;;;
+
 (defmacro org-s9y-export-temp-text (text)
     "Create a temporary buffer with Org mode as the active mode
 holding TEXT and export it with 'ox-s9y, returning the export
@@ -28,9 +32,12 @@ result as a string."
       (org-mode)
       (insert text)
       (org-export-as 's9y nil nil nil nil)))
-      
-(ert-deftest org-s9y/put-in-tag/plain ()
-  (should (equal (org-s9y--put-in-tag "p" "foo") "<p>foo</p>")))
+
+;;;;;
+;;;;; tests for backend methods
+;;;;;
+
+;;; org-s9y-link
 
 (ert-deftest org-s9y/link/http ()
   (should (equal (org-s9y-export-temp-text "[[http://foo/][bar]]")
@@ -47,3 +54,13 @@ result as a string."
 (ert-deftest org-s9y/link/encode-url-only-once ()
   (should (equal (org-s9y-export-temp-text "[[http://foo/%20bar][baz]]")
 		 "<p><a href=\"http://foo/%20bar\">baz</a></p>\n")))
+
+;;;;;
+;;;;; tests for internal methods
+;;;;;
+
+;;; org-s9y--put-in-tag
+
+(ert-deftest org-s9y/put-in-tag ()
+  (should (equal (org-s9y--put-in-tag "p" "foo") "<p>foo</p>")))
+
