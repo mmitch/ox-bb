@@ -162,10 +162,13 @@ information."
 CONTENTS is the contents of the link, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type link))
-	(path (org-element-property :path link)))
+	(path (org-element-property :path link))
+	(raw  (org-element-property :raw-link link)))
     (cond
-     ((string= type "todo")
-      (org-s9y--put-in-tag "abbr" contents "title=\"Artikel folgt\""))
+     ((string= type "fuzzy")
+      (if (string-prefix-p "todo:" raw)
+	  (org-s9y--put-in-tag "abbr" contents '(("title" "Artikel folgt")))
+	(error "unknown fuzzy LINK type encountered: `%s'" raw)))
      ((member type '("http" "https"))
       (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
 	(org-s9y--put-in-tag "a" contents (list (list "href" target)))))
