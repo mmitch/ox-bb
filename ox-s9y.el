@@ -24,6 +24,8 @@
 
 (require 'ox)
 
+;;; Backend definition
+
 (org-export-define-backend 's9y
   '((bold . org-s9y-bold)
     (center-block . org-s9y-undefined)
@@ -78,6 +80,8 @@
        ((?H "As HTML buffer" org-s9y-export-as-html)
 	(?h "As HTML file" org-s9y-export-to-html))))
 
+;;; Customization
+
 (defgroup org-export-s9y nil
   "Options for exporting Org mode files to Serendipity."
   :tag "Org Export Serendipity"
@@ -87,6 +91,8 @@
   "String to use as <abbr> title for todo: LINKS."
   :group 'org-export-s9y
   :type 'string)
+
+;;; Helper methods
 
 (defun org-s9y--put-in-tag (tag contents &optional attributes)
   "Puts the HTML tag TAG around the CONTENTS string.  Optional
@@ -101,6 +107,8 @@ pairs (both strings)."
 					 "")
 			    "")))
     (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
+
+;;; Backend callbacks
 
 (defun org-s9y-bold (_bold contents _info)
   "Transcode a BOLD element from Org to Serendipity.
@@ -227,6 +235,8 @@ holding export options."
 (defun org-s9y-undefined (element &optional _contents _info)
   (error "element type `%s' not implemented yet" (car element)))
 
+;;; Export methods
+
 ;;;###autoload
 (defun org-s9y-export-as-html
   (&optional async subtreep visible-only body-only ext-plist)
@@ -296,5 +306,7 @@ Return output file's name."
 	 (org-export-coding-system org-html-coding-system))
     (org-export-to-file 's9y file
       async subtreep visible-only body-only ext-plist)))
+
+;;; Register file
 
 (provide 'ox-s9y)
