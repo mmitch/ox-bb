@@ -78,6 +78,16 @@
        ((?H "As HTML buffer" org-s9y-export-as-html)
 	(?h "As HTML file" org-s9y-export-to-html))))
 
+(defgroup org-export-s9y nil
+  "Options for exporting Org mode files to Serendipity."
+  :tag "Org Export Serendipity"
+  :group 'org-export)
+
+(defcustom org-s9y-todo-link-title "Artikel folgt"
+  "String to use as <abbr> title for todo: LINKS."
+  :group 'org-export-s9y
+  :type 'string)
+
 (defun org-s9y--put-in-tag (tag contents &optional attributes)
   "Puts the HTML tag TAG around the CONTENTS string.  Optional
 ATTRIBUTES for the tag can be given as an alist of key/value
@@ -167,7 +177,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
     (cond
      ((string= type "fuzzy")
       (if (string-prefix-p "todo:" raw)
-	  (org-s9y--put-in-tag "abbr" contents '(("title" "Artikel folgt")))
+	  (org-s9y--put-in-tag "abbr" contents (list (list "title" org-s9y-todo-link-title)))
 	(error "unknown fuzzy LINK type encountered: `%s'" raw)))
      ((member type '("http" "https"))
       (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
