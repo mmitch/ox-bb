@@ -211,7 +211,7 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
      (pcase type
        (`descriptive (org-s9y--put-in-tag "dl" (org-trim contents)))
        (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
-					; `descriptive
+       (`ordered (org-s9y--put-in-tag "ol" (org-trim contents)))
        (other (error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 

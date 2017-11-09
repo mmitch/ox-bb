@@ -16,6 +16,7 @@ todo
 - map Org languages to GeSHi languages
 - export directly to X clipboard (export to buffer, select all, copy to
   clipboard, close buffer)
+- support offsets and jumps in ordered lists
 
 done
 ----

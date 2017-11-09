@@ -124,19 +124,27 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo\n\nbar")
 		 "<p>foo</p>\n\n<p>bar</p>\n")))
 
-;;; PLAIN-LIST
+;;; PLAIN-LIST UNORDERED
 ;;; org-s9y-item
 ;;; org-s9y-list
 
-(ert-deftest org-s9y/list/plain ()
+(ert-deftest org-s9y/plain-list/unordered ()
   (should (equal (org-s9y-export-temp-text "- foo\n- bar")
 		 "<ul><li>foo</li>\n<li>bar</li></ul>\n")))
 
-;;; DESCRIPTIVE-LIST
+;;; PLAIN-LIST ORDERED
 ;;; org-s9y-item
 ;;; org-s9y-list
 
-(ert-deftest org-s9y/list/plain ()
+(ert-deftest org-s9y/plain-list/ordered ()
+  (should (equal (org-s9y-export-temp-text "1. foo\n2. bar")
+		 "<ol><li>foo</li>\n<li>bar</li></ol>\n")))
+
+;;; PLAIN-LIST DESCRIPTIVE
+;;; org-s9y-item
+;;; org-s9y-list
+
+(ert-deftest org-s9y/plain-list/descriptive ()
   (should (equal (org-s9y-export-temp-text "- foo :: pokey\n- bar :: hokey")
 		 "<dl><dt>foo</dt>\n<dd>pokey</dd>\n<dt>bar</dt>\n<dd>hokey</dd></dl>\n")))
 
