@@ -108,6 +108,12 @@ pairs (both strings)."
 			    "")))
     (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
 
+(defun org-s9y--put-a-href (contents href)
+  "Puts the CONTENTS inside a simple <a> tag pointing to HREF.
+Automagically escapes the target URL."
+  (let ((target (url-encode-url (org-link-unescape href))))
+    (org-s9y--put-in-tag "a" contents (list (list "href" target)))))
+
 ;;; Backend callbacks
 
 (defun org-s9y-bold (_bold contents _info)
@@ -188,8 +194,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
 	  (org-s9y--put-in-tag "abbr" contents (list (list "title" org-s9y-todo-link-title)))
 	(error "unknown fuzzy LINK type encountered: `%s'" raw)))
      ((member type '("http" "https"))
-      (let ((target (url-encode-url (org-link-unescape (concat type ":" path)))))
-	(org-s9y--put-in-tag "a" contents (list (list "href" target)))))
+      (org-s9y--put-a-href contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
 
 (defun org-s9y-paragraph (paragraph contents _info)

@@ -163,3 +163,12 @@ result as a string."
 (ert-deftest org-s9y/put-in-tag/multiple-attributes ()
   (should (equal (org-s9y--put-in-tag "div" "foo" '(("class" "bar") ("style" "margin: 0;"))) "<div class=\"bar\" style=\"margin: 0;\">foo</div>")))
 
+;;; org-s9y--put-a-href
+
+(ert-deftest org-s9y/put-a-href/plain ()
+  (should (equal (org-s9y--put-a-href "some text" "https://example.com/")
+		 "<a href=\"https://example.com/\">some text</a>")))
+
+(ert-deftest org-s9y/put-a-href/encode-url-only-once ()
+  (should (equal (org-s9y--put-a-href "baz" "http://foo/%20bar")
+		 "<a href=\"http://foo/%20bar\">baz</a>")))
