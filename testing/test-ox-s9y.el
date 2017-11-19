@@ -102,6 +102,10 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "[[todo://this-part-is-ignored/][bar]]")
 		 "<p><abbr title=\"Artikel folgt\">bar</abbr></p>\n")))
 
+(ert-deftest org-s9y/link/about ()
+  (should (equal (org-s9y-export-temp-text "[[about:config][bar]]")
+		 "<p><a href=\"about:config\">bar</a></p>\n")))
+
 (ert-deftest org-s9y/link/encode-url ()
   (should (equal (org-s9y-export-temp-text "[[http://foo/ bar][baz]]")
 		 "<p><a href=\"http://foo/%20bar\">baz</a></p>\n")))
