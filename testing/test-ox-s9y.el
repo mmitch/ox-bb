@@ -128,6 +128,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo\n\nbar")
 		 "<p>foo</p>\n\n<p>bar</p>\n")))
 
+;;; org-s9y-verbatim
+
+(ert-deftest org-s9y/verbatim ()
+  (should (equal (org-s9y-export-temp-text "foo =BAR= baz")
+		 "<p>foo <code>BAR</code> baz</p>\n")))
+
 ;;; PLAIN-LIST UNORDERED
 ;;; org-s9y-item
 ;;; org-s9y-list

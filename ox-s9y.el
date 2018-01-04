@@ -73,7 +73,7 @@
     (template . org-s9y-template)
     (timestamp . org-s9y-undefined)
     (underline . org-s9y-undefined)
-    (verbatim . org-s9y-undefined)
+    (verbatim . org-s9y-verbatim)
     (verse-block . org-s9y-undefined))
   :menu-entry
   '(?S "Export to Serendipity"
@@ -242,6 +242,11 @@ holding export options."
 
 (defun org-s9y-undefined (element &optional _contents _info)
   (error "element type `%s' not implemented yet" (car element)))
+
+(defun org-s9y-verbatim (code _contents _info)
+  "Transcode a VERBATIM element from Org to Serendipity.
+CONTENTS is nil.  INFO is a plist used as a communication channel."
+  (org-s9y--put-in-tag "code" (org-element-property :value code)))
 
 ;;; Export methods
 
