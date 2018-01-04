@@ -18,6 +18,12 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with ox-s9y.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; unit tests for ox-s9y
+
+;;; Code:
+
 (require 'ox-s9y)
 
 ;;;;;
@@ -25,7 +31,8 @@
 ;;;;;
 
 (defmacro org-s9y-export-temp-text (text)
-    "Create a temporary buffer with Org mode as the active mode
+    "Run ox-s9y export for given input.
+Create a temporary buffer with Org mode as the active mode
 holding TEXT and export it with 'ox-s9y, returning the export
 result as a string."
     (with-temp-buffer
@@ -185,3 +192,11 @@ result as a string."
 (ert-deftest org-s9y/put-a-href/encode-url-only-once ()
   (should (equal (org-s9y--put-a-href "baz" "http://foo/%20bar")
 		 "<a href=\"http://foo/%20bar\">baz</a>")))
+
+
+
+;;; Register file
+
+(provide 'test-ox-s9y)
+
+;;; test-ox-s9y.el ends here

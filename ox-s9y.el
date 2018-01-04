@@ -18,9 +18,14 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with ox-s9y.  If not, see <http://www.gnu.org/licenses/>.
 
+;;; Commentary:
+
+;; export Org documents to Serendipity blog
 
 ; internal reminder: for Org format information see
 ; http://orgmode.org/worg/dev/org-element-api.html
+
+;;; Code:
 
 (require 'ox)
 
@@ -323,3 +328,5 @@ Return output file's name."
 ;;; Register file
 
 (provide 'ox-s9y)
+
+;;; ox-s9y.el ends here
