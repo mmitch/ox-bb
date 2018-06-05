@@ -135,6 +135,12 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "foo\n\nbar")
 		 "<p>foo</p>\n\n<p>bar</p>\n")))
 
+;;; org-s9y-underline
+
+(ert-deftest org-s9y/underline ()
+  (should (equal (org-s9y-export-temp-text "foo _BAR_ baz")
+		 "<p>foo <u>BAR</u> baz</p>\n")))
+
 ;;; org-s9y-verbatim
 
 (ert-deftest org-s9y/verbatim ()

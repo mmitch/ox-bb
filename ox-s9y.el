@@ -77,7 +77,7 @@
     (target . org-s9y-undefined)
     (template . org-s9y-template)
     (timestamp . org-s9y-undefined)
-    (underline . org-s9y-undefined)
+    (underline . org-s9y-underline)
     (verbatim . org-s9y-verbatim)
     (verse-block . org-s9y-undefined))
   :menu-entry
@@ -247,6 +247,12 @@ holding export options."
 
 (defun org-s9y-undefined (element &optional _contents _info)
   (error "element type `%s' not implemented yet" (car element)))
+
+(defun org-s9y-underline (_underline contents _info)
+  "Transcode a UNDERLINE element from Org to Serendipity.
+CONTENTS is the underlined text, as a string.  INFO is
+  a plist used as a communication channel."
+  (org-s9y--put-in-tag "u" contents))
 
 (defun org-s9y-verbatim (code _contents _info)
   "Transcode a VERBATIM element from Org to Serendipity.
