@@ -136,8 +136,7 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
-  (format "[geshi lang=\"%s\"]
-%s[/geshi]"
+  (format "[geshi lang=%s]\n%s[/geshi]"
 	  (org-element-property :language code-block)
 	  (org-export-format-code-default code-block info)))
 
