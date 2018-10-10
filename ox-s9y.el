@@ -119,6 +119,10 @@ Automagically escapes the target URL."
   (let ((target (url-encode-url (org-link-unescape href))))
     (org-s9y--put-in-tag "a" contents (list (list "href" target)))))
 
+(defun org-s9y--remove-trailing-newline (text)
+  "Remove the trailing newline from TEXT."
+  (replace-regexp-in-string "\n\\'" "" text))
+
 ;;; Backend callbacks
 
 (defun org-s9y-bold (_bold contents _info)

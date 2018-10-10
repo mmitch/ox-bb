@@ -199,6 +199,24 @@ result as a string."
   (should (equal (org-s9y--put-a-href "baz" "http://foo/%20bar")
 		 "<a href=\"http://foo/%20bar\">baz</a>")))
 
+;;; org-s9y--remove-trailing-newline
+
+(ert-deftest org-s9y/remove-trailing-newline/remove ()
+  (should (equal( org-s9y--remove-trailing-newline "some text\n")
+		"some text")))
+
+(ert-deftest org-s9y/remove-trailing-newline/only-remove-last-newline ()
+  (should (equal( org-s9y--remove-trailing-newline "some text\n\n")
+		"some text\n")))
+
+(ert-deftest org-s9y/remove-trailing-newline/keep-newlines-within ()
+  (should (equal( org-s9y--remove-trailing-newline "line 1\nline 2\n")
+		"line 1\nline 2")))
+
+(ert-deftest org-s9y/remove-trailing-newline/dont-fail-with-no-newline ()
+  (should (equal( org-s9y--remove-trailing-newline "some text")
+		"some text")))
+
 
 
 ;;; Register file
