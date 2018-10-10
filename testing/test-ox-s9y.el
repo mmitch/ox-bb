@@ -60,7 +60,7 @@ result as a string."
 
 (ert-deftest org-s9y/geshi-block ()
   (should (equal (org-s9y-export-temp-text "#+BEGIN_SRC java\npackage foo;\n/* dummy dummy */\n#+END_SRC")
-		 "[geshi lang=java]\npackage foo;\n/* dummy dummy */\n[/geshi]\n")))
+		 "[geshi lang=java]package foo;\n/* dummy dummy */[/geshi]\n")))
 
 ;;; org-s9y-headline
 
