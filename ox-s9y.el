@@ -100,9 +100,9 @@
 ;;; Helper methods
 
 (defun org-s9y--put-in-tag (tag contents &optional attributes)
-  "Puts the HTML tag TAG around the CONTENTS string.  Optional
-ATTRIBUTES for the tag can be given as an alist of key/value
-pairs (both strings)."
+  "Puts the HTML tag TAG around the CONTENTS string.
+Optional ATTRIBUTES for the tag can be given as an alist of
+key/value pairs (both strings)."
   (let ((attribute-string (if attributes
 			      (mapconcat (function (lambda (attribute)
 						     (let ((key (car attribute))
