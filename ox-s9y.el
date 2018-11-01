@@ -259,10 +259,10 @@ CONTENTS is the underlined text, as a string.  INFO is
   a plist used as a communication channel."
   (org-s9y--put-in-tag "u" contents))
 
-(defun org-s9y-verbatim (code _contents _info)
+(defun org-s9y-verbatim (verbatim _contents _info)
   "Transcode a VERBATIM element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-s9y--put-in-tag "code" (org-element-property :value code)))
+  (org-s9y--put-in-tag "code" (org-element-property :value verbatim)))
 
 ;;; Export methods
 
