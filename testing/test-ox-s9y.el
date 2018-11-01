@@ -62,11 +62,16 @@ result as a string."
   (should (equal (org-s9y-export-temp-text "#+BEGIN_SRC java\npackage foo;\n/* dummy dummy */\n#+END_SRC")
 		 "[geshi lang=java]package foo;\n/* dummy dummy */[/geshi]\n")))
 
+(ert-deftest org-s9y/geshi-block-without-language ()
+  (should (equal (org-s9y-export-temp-text "#+BEGIN_SRC\npackage foo;\n/* dummy dummy */\n#+END_SRC")
+		 "[geshi lang=plaintext]package foo;\n/* dummy dummy */[/geshi]\n")))
+
 ;;; org-s9y-headline
 
 (ert-deftest org-s9y/headline/lv1-as-comment ()
   (should (equal (org-s9y-export-temp-text "* TOPIC")
 		 "<!--  TOPIC  -->\n")))
+
 (ert-deftest org-s9y/headline/lv2-as-comment ()
   (should (equal (org-s9y-export-temp-text "* dummy\n** TOPIC")
 		 "<!--  dummy  -->\n<!--  TOPIC  -->\n")))

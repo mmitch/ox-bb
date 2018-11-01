@@ -141,7 +141,7 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
-	  (org-element-property :language code-block)
+	  (or (org-element-property :language code-block) "plaintext")
 	  (org-s9y--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
 
