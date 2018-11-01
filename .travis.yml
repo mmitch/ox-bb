@@ -1,0 +1,7 @@
+language: minimal
+
+before_install:
+  - emacs -Q --batch -l .travis-install-org.el -f install-orgmode
+
+install: EMACSFLAGS="-l .travis-install-org.el -f use-orgmode" make compile
+script: EMACSFLAGS="-l .travis-install-org.el -f use-orgmode" make test
