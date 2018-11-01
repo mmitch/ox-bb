@@ -250,6 +250,7 @@ holding export options."
   contents)
 
 (defun org-s9y-undefined (element &optional _contents _info)
+  "Throw an error when an unsupported ELEMENT is encountered."
   (error "element type `%s' not implemented yet" (car element)))
 
 (defun org-s9y-underline (_underline contents _info)
