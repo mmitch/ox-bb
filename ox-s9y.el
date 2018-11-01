@@ -204,7 +204,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
 	(org-s9y--put-in-tag "abbr" contents (list (list "title" org-s9y-todo-link-title))))
        ((string-prefix-p "about:" raw)
 	(org-s9y--put-a-href contents raw))
-       (t (error "unknown fuzzy LINK type encountered: `%s'" raw))))
+       (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
       (org-s9y--put-a-href contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
@@ -251,7 +251,7 @@ holding export options."
 
 (defun org-s9y-undefined (element &optional _contents _info)
   "Throw an error when an unsupported ELEMENT is encountered."
-  (error "element type `%s' not implemented yet" (car element)))
+  (error "ELEMENT type `%s' not implemented yet" (car element)))
 
 (defun org-s9y-underline (_underline contents _info)
   "Transcode a UNDERLINE element from Org to Serendipity.
