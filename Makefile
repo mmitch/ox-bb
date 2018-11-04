@@ -24,11 +24,13 @@ TESTS=$(basename $(wildcard testing/test-*.el))
 
 TESTDEPS=$(addprefix -l ,ert $(SOURCES))
 
+EMACS=emacs -Q --batch $(EMACSFLAGS) 
+
 %.elc: %.el
-	emacs -Q --batch -f batch-byte-compile $<
+	$(EMACS) -f batch-byte-compile $<
 
 testing/test-%: %.elc testing/test-%.el
-	emacs -Q --batch -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
+	$(EMACS) -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
 
 all:	compile test
 
