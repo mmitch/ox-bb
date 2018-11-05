@@ -36,7 +36,7 @@ https://github.com/mmitch/ox-s9y
 license
 -------
 
-Copyright (C) 2017,2018  Christian Garbs <mitch@cgarbs.de>  
+Copyright (C) 2017, 2018  Christian Garbs <mitch@cgarbs.de>  
 Licensed under GNU GPL v3 or later.
 
 ox-s9y is free software: you can redistribute it and/or modify

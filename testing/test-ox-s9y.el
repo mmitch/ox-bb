@@ -1,6 +1,6 @@
 ;;; test-ox-s9y.el --- unit tests for Serendipity HTML Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017,2018  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017, 2018  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-s9y.

@@ -1,6 +1,6 @@
 # Makefile for ox-s9y
 #
-# Copyright (C) 2017  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2017, 2018  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of ox-s9y.
