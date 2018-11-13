@@ -43,12 +43,13 @@
     (export-block . org-s9y-undefined)
     (export-snippet . org-s9y-undefined)
     (fixed-width . org-s9y-undefined)
-    (footnote-definition . org-s9y-undefined)
-    (footnote-reference . org-s9y-undefined)
+    (footnote-definition . org-s9y-footnote-definition)
+    (footnote-reference . org-s9y-footnote-reference)
     (headline . org-s9y-headline)
     (horizontal-rule . org-s9y-undefined)
     (inline-src-block . org-s9y-undefined)
     (inlinetask . org-s9y-undefined)
+    (inner-template . org-s9y-inner-template)
     (italic . org-s9y-italic)
     (item . org-s9y-item)
     (keyword . org-s9y-undefined)
@@ -151,18 +152,74 @@ contextual information."
 	  (org-s9y--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
 
+(defun org-s9y-footnote-reference (footnote-reference _contents info)
+  "Transcode a FOOTNOTE-REFERENCE element from Org to Serendipity.
+CONTENTS is nil.  INFO is a plist holding contextual information."
+  (if (eq (org-element-property :type footnote-reference) 'inline)
+      (error "Inline footnotes not supported yet")
+    (concat
+     ;; Insert separator between two footnotes in a row.
+     (let ((prev (org-export-get-previous-element footnote-reference info)))
+       (when (eq (org-element-type prev) 'footnote-reference)
+	 "<sup>, </sup>"))
+     (let* ((n (org-export-get-footnote-number footnote-reference info))
+	    (anchor-to (format "#fn-to-%d" n))
+	    (anchor-from (when (org-export-footnote-first-reference-p footnote-reference info)
+			   (format "fn-from-%d" n))))
+       (org-s9y--put-in-tag
+	"sup"
+	(org-s9y--put-a-href n anchor-to "footnote" anchor-from))))))
+
+(defun org-s9y-format-footnote-definition (fn)
+  "Format the footnote definition FN."
+  (let* ((n (car fn))
+	 (def (cdr fn))
+	 (n-format (format "[%d]" n))
+	 (anchor-to (format "fn-to-%d" n))
+	 (anchor-from (format "#fn-from-%d" n))
+	 (definition (concat (org-s9y--put-a-href n-format anchor-from)
+			     ": "
+			     def)))
+    (org-s9y--put-in-tag "div"
+			 definition
+			 (list (list "class" "footnote")
+			       (list "id" anchor-to)))))
+
+(defun org-s9y-footnote-section (info)
+  "Format the footnote section.
+INFO is a plist used as a communication channel."
+  (let* ((fn-alist (org-export-collect-footnote-definitions
+		    info (plist-get info :parse-tree)))
+	 (fn-alist
+	  (cl-loop for (n _label raw) in fn-alist collect
+		   (cons n (org-trim (org-export-data raw info)))))
+	 (text (mapconcat 'org-s9y-format-footnote-definition fn-alist "\n")))
+    (if fn-alist
+	(org-s9y--put-in-tag "div" text '((id footnotes)))
+      "")))
+
 (defun org-s9y-headline (headline contents info)
   "Transcode HEADLINE element from Org to Serendipity.
 CONTENTS is the headline contents.  INFO is a plist used as
 a communication channel."
   (let ((title (org-export-data (org-element-property :title headline) info))
 	(level (org-export-get-relative-level headline info)))
-    (concat
-     (if (<= level 2)
-	 (format "<!--  %s  -->" title)
-       (org-s9y--put-in-tag (format "h%d" level) title))
-     "\n"
-     contents)))
+    (if (org-element-property :footnote-section-p headline)
+	""
+      (concat
+       (if (<= level 2)
+	   (format "<!--  %s  -->" title)
+	 (org-s9y--put-in-tag (format "h%d" level) title))
+       "\n"
+       contents))))
+
+(defun org-s9y-inner-template (contents info)
+  "Return body of document string after Serendipity conversion.
+CONTENTS is the transcoded contents string.  INFO is a plist
+holding export options."
+  (concat
+   contents
+   (org-s9y-footnote-section info)))
 
 (defun org-s9y-italic (_italic contents _info)
   "Transcode a ITALIC element from Org to Serendipity.
