@@ -113,14 +113,16 @@ key/value pairs (both strings)."
 			    "")))
     (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
 
-(defun org-s9y--put-a-href (contents href &optional class)
+(defun org-s9y--put-a-href (contents href &optional class id)
   "Puts the CONTENTS inside a simple <a> tag pointing to HREF.
-Automagically escapes the target URL.  An optional CLASS can be
+Automagically escapes the target URL.  An optional CLASS and ID can be
 set on the <a> tag."
   (let* ((target (url-encode-url (org-link-unescape href)))
 	 (attributes (list (list "href" target))))
     (when class
-      (setq attributes (append attributes (list (list "class" class)))))
+      (setq attributes (append attributes (list (list "class" class))))
+      (when id
+	(setq attributes (append attributes (list (list "id" id))))))
     (org-s9y--put-in-tag "a" contents attributes)))
 
 (defun org-s9y--remove-trailing-newline (text)

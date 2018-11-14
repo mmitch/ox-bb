@@ -58,6 +58,10 @@
   (should (equal (org-s9y--put-a-href "some text" "https://example.com/" "myclass")
 		 "<a href=\"https://example.com/\" class=\"myclass\">some text</a>")))
 
+(ert-deftest org-s9y/put-a-href/with-id ()
+  (should (equal (org-s9y--put-a-href "some text" "https://example.com/" "myclass" "myid")
+		 "<a href=\"https://example.com/\" class=\"myclass\" id=\"myid\">some text</a>")))
+
 ;;; org-s9y--remove-trailing-newline
 
 (ert-deftest org-s9y/remove-trailing-newline/remove ()
