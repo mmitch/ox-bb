@@ -20,25 +20,28 @@
 
 SOURCES=$(wildcard *.el)
 TARGETS=$(addsuffix c,$(SOURCES))
-TESTS=$(basename $(wildcard testing/test-*.el))
-
-TESTDEPS=$(addprefix -l ,ert $(SOURCES))
+UNITTESTS=$(basename $(wildcard testing/unit-test-*.el))
+TESTS=$(basename $(wildcard testing/unit-test-*.el))
 
 EMACS=emacs -Q --batch $(EMACSFLAGS) 
 
 %.elc: %.el
 	$(EMACS) -f batch-byte-compile $<
 
-testing/test-%: %.elc testing/test-%.el
+testing/unit-test-%: %.elc testing/unit-test-%.el
 	$(EMACS) -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
 
 all:	compile test
 
 compile: $(TARGETS)
 
-test: compile $(TESTS)
+test: unit-test integration-test
+
+unit-test: $(UNITTESTS)
+
+integration-test: $(TARGETS)
+	./run-tests.sh $<
 
 clean:
 	rm -f *.elc
 	rm -f *~ testing/*~
-
