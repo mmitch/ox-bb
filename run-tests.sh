@@ -46,7 +46,7 @@ for INPUT in testing/test-*.input; do
     OUTPUT="${TEST}.html"
 
     echo running $TEST...
-    emacs -Q --batch $LIBS "$INPUT" -f org-s9y-export-to-html
+    emacs -Q --batch $EMACSFLAGS $LIBS "$INPUT" -f org-s9y-export-to-html
     if ! diff -b --color=always -Narup "$EXPECTED" "$OUTPUT"; then
 	FAILED=$(( FAILED + 1))
     fi
