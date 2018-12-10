@@ -31,7 +31,7 @@ clean_last_output()
 trap clean_last_output EXIT
 
 # transform modules to load arguments for emacs
-LIBS=
+LIBS="-l .travis-install-org.el -f use-orgmode"
 while [[ $# -gt 0 ]]; do
     LIBS="$LIBS -l $1"
     shift
@@ -45,8 +45,8 @@ for INPUT in testing/test-*.input; do
     EXPECTED="${TEST}.output"
     OUTPUT="${TEST}.html"
 
-    echo running $TEST...
-    emacs -Q --batch $EMACSFLAGS $LIBS "$INPUT" -f org-s9y-export-to-html
+    echo "running $TEST..."
+    emacs -Q --batch $LIBS "$INPUT" -f org-s9y-export-to-html
     if ! diff -b -Narup "$EXPECTED" "$OUTPUT"; then
 	FAILED=$(( FAILED + 1))
     fi
