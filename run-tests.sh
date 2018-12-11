@@ -22,13 +22,38 @@
 
 set -e
 
-clean_last_output()
+TEMPFILE="$(mktemp)"
+
+remove_last_output()
 {
     [ "$OUTPUT" ] && [ -e "$OUTPUT" ] && rm "$OUTPUT" || true
 }
 
+remove_last_output_and_tempfile()
+{
+    remove_last_output
+    rm "$TEMPFILE"
+}
+
 # don't leave stray files, even when we die
-trap clean_last_output EXIT
+trap remove_last_output_and_tempfile EXIT
+
+# set up colors
+if tput sgr0 >/dev/null 2>&1; then
+    RED=$(tput setaf 1)
+    GREEN=$(tput setaf 2)
+    YELLOW=$(tput setaf 3)
+    WHITE=$(tput setaf 7)
+    BOLD=$(tput bold)
+    RESET=$(tput sgr0)
+else
+    RED=
+    GREEN=
+    YELLOW=
+    WHITE=
+    BOLD=
+    RESET=
+fi
 
 # transform modules to load arguments for emacs
 LIBS="-l .travis-install-org.el -f use-orgmode"
@@ -45,20 +70,25 @@ for INPUT in testing/test-*.input; do
     EXPECTED="${TEST}.output"
     OUTPUT="${TEST}.html"
 
-    echo "running $TEST..."
-    emacs -Q --batch $LIBS "$INPUT" -f org-s9y-export-to-html
-    if ! diff -b -Narup "$EXPECTED" "$OUTPUT"; then
+    echo -n "running $TEST "
+    emacs -Q --batch $LIBS "$INPUT" -f org-s9y-export-to-html > "$TEMPFILE" 2>&1
+    if diff -b -Narup "$EXPECTED" "$OUTPUT" >> "$TEMPFILE"; then
+	echo "${GREEN}OK${RESET}"
+    else
+	echo "${RED}${BOLD}FAILED${RESET}${YELLOW}"
+	cat "$TEMPFILE"
+	echo "${RESET}"
 	FAILED=$(( FAILED + 1))
     fi
-    clean_last_output
+    remove_last_output
     TOTAL=$(( TOTAL + 1 ))
 done
 
 # report findings
 if [[ $FAILED -eq 0 ]]; then
-    echo All $TOTAL tests OK.
+    echo "${BOLD}${GREEN}All $TOTAL tests OK.${RESET}"
     exit 0
 else
-    echo $FAILED of $TOTAL tests failed.
+    echo "${BOLD}${RED}$FAILED of $TOTAL tests failed.${RESET}"
     exit 1
 fi
