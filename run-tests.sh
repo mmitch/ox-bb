@@ -35,6 +35,26 @@ remove_last_output_and_tempfile()
     rm "$TEMPFILE"
 }
 
+travis_start_fold()
+{
+    [ "$TRAVIS" = 'true' ] && travis_fold start "$1" || true
+}
+
+travis_end_fold()
+{
+    [ "$TRAVIS" = 'true' ] && travis_fold end "$1" || true
+}
+
+travis_start_timer()
+{
+    [ "$TRAVIS" = 'true' ] && travis_time_start || true
+}
+
+travis_end_timer()
+{
+    [ "$TRAVIS" = 'true' ] && travis_time_finish || true
+}
+
 # don't leave stray files, even when we die
 trap remove_last_output_and_tempfile EXIT
 
@@ -70,18 +90,24 @@ for INPUT in testing/test-*.input; do
     EXPECTED="${TEST}.output"
     OUTPUT="${TEST}.html"
 
+    travis_start_timer
+
     echo -n "running $TEST "
     emacs -Q --batch $LIBS "$INPUT" -f org-s9y-export-to-html > "$TEMPFILE" 2>&1
     if diff -b -Narup "$EXPECTED" "$OUTPUT" >> "$TEMPFILE"; then
 	echo "${GREEN}OK${RESET}"
     else
 	echo "${RED}${BOLD}FAILED${RESET}${YELLOW}"
+	travis_start_fold "$INPUT"
 	cat "$TEMPFILE"
+	travis_end_fold "$INPUT"
 	echo "${RESET}"
 	FAILED=$(( FAILED + 1))
     fi
     remove_last_output
     TOTAL=$(( TOTAL + 1 ))
+
+    travis_end_timer
 done
 
 # report findings
