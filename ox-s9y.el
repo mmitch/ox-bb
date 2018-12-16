@@ -114,11 +114,21 @@ key/value pairs (both strings)."
 			    "")))
     (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
 
+(defun org-s9y--fix-url (url)
+  "Fix URL returned from `url-encode-url'.
+Older versions of Emacs (eg. 24.3 used in the Travis CI minimal
+image) prepend \"/\" to urls consisting only of an \"#anchor\"
+part.  We don't want this, because we need relative anchors.  Fix
+this the hard way."
+  (if (string-prefix-p "/#" url)
+      (substring url 1)
+    url))
+
 (defun org-s9y--put-a-href (contents href &optional class id)
   "Puts the CONTENTS inside a simple <a> tag pointing to HREF.
 Automagically escapes the target URL.  An optional CLASS and ID can be
 set on the <a> tag."
-  (let* ((target (url-encode-url (org-link-unescape href)))
+  (let* ((target (org-s9y--fix-url (url-encode-url (org-link-unescape href))))
 	 (attributes (list (list "href" target))))
     (when class
       (setq attributes (append attributes (list (list "class" class))))

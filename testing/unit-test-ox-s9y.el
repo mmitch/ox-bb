@@ -50,6 +50,10 @@
   (should (equal (org-s9y--put-a-href "some text" "https://example.com/")
 		 "<a href=\"https://example.com/\">some text</a>")))
 
+(ert-deftest org-s9y/put-a-href/anchor ()
+  (should (equal (org-s9y--put-a-href "anchor text" "#anchor")
+		 "<a href=\"#anchor\">anchor text</a>")))
+
 (ert-deftest org-s9y/put-a-href/encode-url-only-once ()
   (should (equal (org-s9y--put-a-href "baz" "http://foo/%20bar")
 		 "<a href=\"http://foo/%20bar\">baz</a>")))
