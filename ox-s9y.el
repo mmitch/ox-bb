@@ -175,10 +175,11 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
      (let* ((n (org-export-get-footnote-number footnote-reference info))
 	    (anchor-to (format "#fn-to-%d" n))
 	    (anchor-from (when (org-export-footnote-first-reference-p footnote-reference info)
-			   (format "fn-from-%d" n))))
+			   (format "fn-from-%d" n)))
+	    (reftext (format "[%d]" n)))
        (org-s9y--put-in-tag
 	"sup"
-	(org-s9y--put-a-href n anchor-to "footnote" anchor-from))))))
+	(org-s9y--put-a-href reftext anchor-to "footnote" anchor-from))))))
 
 (defun org-s9y-format-footnote-definition (fn)
   "Format the footnote definition FN."
