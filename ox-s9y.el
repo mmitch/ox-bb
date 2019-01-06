@@ -38,7 +38,7 @@
     (code . org-s9y-code)
     (drawer . org-s9y-undefined)
     (dynamic-block . org-s9y-undefined)
-    (entity . org-s9y-undefined)
+    (entity . org-s9y-entity)
     (example-block . org-s9y-undefined)
     (export-block . org-s9y-undefined)
     (export-snippet . org-s9y-undefined)
@@ -152,6 +152,12 @@ CONTENTS is the bold text, as a string.  INFO is
   "Transcode a CODE element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
   (org-s9y--put-in-tag "code" (org-element-property :value code)))
+
+(defun org-s9y-entity (entity _contents _info)
+  "Transcode an ENTITY element from Org to Serendipity.
+CONTENTS is the definition itself.  INFO is a plist used as a
+communication channel."
+  (org-element-property :html entity))
 
 (defun org-s9y-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
