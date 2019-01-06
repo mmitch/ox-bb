@@ -15,10 +15,8 @@ todo
 ----
 
 - fix handling of multiple paragraphs inside of list-items (see ox-html)
-- map Org languages to GeSHi languages
 - export directly to X clipboard (export to buffer, select all, copy to
   clipboard, close buffer)
-- support offsets and jumps in ordered lists
 
 done
 ----
@@ -26,6 +24,8 @@ done
 - export code blocks in GeSHi format
 - add export commands to the export menu
 - restrict export to the contents of the `<body>` tag
+- map Org languages to GeSHi languages
+- support offsets and jumps in ordered lists
 
 resources
 ---------
@@ -36,7 +36,7 @@ https://github.com/mmitch/ox-s9y
 license
 -------
 
-Copyright (C) 2017, 2018  Christian Garbs <mitch@cgarbs.de>  
+Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>  
 Licensed under GNU GPL v3 or later.
 
 ox-s9y is free software: you can redistribute it and/or modify
