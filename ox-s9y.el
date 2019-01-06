@@ -1,6 +1,6 @@
 ;;; ox-s9y.el --- Serendipity HTML Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017,2018  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-s9y.
@@ -140,6 +140,13 @@ set on the <a> tag."
   "Remove the trailing newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
 
+(defun org-s9y--map-to-geshi-language (language)
+  "Map LANGUAGE from Org to Geshi."
+  (cond ((string= language "elisp") "lisp")
+	((string= language "") "plaintext")
+	(language)
+	(t "plaintext")))
+
 ;;; Backend callbacks
 
 (defun org-s9y-bold (_bold contents _info)
@@ -164,7 +171,7 @@ communication channel."
 CONTENTS holds the contents of the item.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
-	  (or (org-element-property :language code-block) "plaintext")
+	  (org-s9y--map-to-geshi-language (org-element-property :language code-block))
 	  (org-s9y--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
 

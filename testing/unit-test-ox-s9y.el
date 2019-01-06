@@ -84,6 +84,23 @@
   (should (equal( org-s9y--remove-trailing-newline "some text")
 		"some text")))
 
+;;; org- org-s9y--map-to-geshi-language
+
+(ert-deftest org-s9y/map-to-geshi-language/unchanged ()
+  (should (equal( org-s9y--map-to-geshi-language "java")
+		"java")))
+
+(ert-deftest org-s9y/map-to-geshi-language/changed ()
+  (should (equal( org-s9y--map-to-geshi-language "elisp")
+		"lisp")))
+
+(ert-deftest org-s9y/map-to-geshi-language/nil ()
+  (should (equal( org-s9y--map-to-geshi-language nil)
+		"plaintext")))
+
+(ert-deftest org-s9y/map-to-geshi-language/empty ()
+  (should (equal( org-s9y--map-to-geshi-language "")
+		"plaintext")))
 
 
 ;;; Register file
