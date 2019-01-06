@@ -243,6 +243,10 @@ CONTENTS is the italic text, as a string.  INFO is
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((plain-list (org-export-get-parent item))
+	 (value (let ((counter (org-element-property :counter item)))
+		  (if counter
+		      (list (list "value" counter))
+		    ())))
 	 (term (let ((tag (org-element-property :tag item)))
 		 (and tag (org-export-data tag info))))
 	 (type (org-element-property :type plain-list)))
@@ -255,7 +259,7 @@ CONTENTS is the contents of the item, as a string.  INFO is
 	 (org-s9y--put-in-tag "dd" (org-trim contents))
 	 ))
        (_
-	(org-s9y--put-in-tag "li" (org-trim contents))))
+	(org-s9y--put-in-tag "li" (org-trim contents) value)))
      "\n")))
 
 (defun org-s9y-line-break (_line-break _contents _info)
