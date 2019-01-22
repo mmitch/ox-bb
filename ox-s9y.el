@@ -63,7 +63,7 @@
     (plain-text . org-s9y-plain-text)
     (planning . org-s9y-undefined)
     (property-drawer . org-s9y-undefined)
-    (quote-block . org-s9y-undefined)
+    (quote-block . org-s9y-quote-block)
     (radio-target . org-s9y-undefined)
     (section . org-s9y-section)
     (special-block . org-s9y-undefined)
@@ -327,6 +327,12 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
   "Transcode a TEXT string from Org to Serendipity.
 INFO is a plist used as a communication channel."
   text)
+
+(defun org-s9y-quote-block (_quote-block contents _info)
+  "Transcode a QUOTE-BLOCK element from Org to Serendipity.
+CONTENTS holds the contents of the block.  INFO is a plist used
+as a communication channel."
+  (org-s9y--put-in-tag "blockquote" contents))
 
 (defun org-s9y-section (_section contents _info)
   "Transcode a SECTION element from Org to Serendipity.
