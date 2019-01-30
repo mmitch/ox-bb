@@ -143,6 +143,7 @@ set on the <a> tag."
 (defun org-s9y--map-to-geshi-language (language)
   "Map LANGUAGE from Org to Geshi."
   (cond ((string= language "elisp") "lisp")
+	((string= language "shell") "bash")
 	((string= language "") "plaintext")
 	(language)
 	(t "plaintext")))
