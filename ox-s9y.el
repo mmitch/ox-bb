@@ -144,6 +144,7 @@ set on the <a> tag."
   "Map LANGUAGE from Org to Geshi."
   (cond ((string= language "elisp") "lisp")
 	((string= language "shell") "bash")
+	((string= language "sh")    "bash")
 	((string= language "") "plaintext")
 	(language)
 	(t "plaintext")))
