@@ -94,7 +94,7 @@
   :group 'org-export)
 
 (defcustom org-s9y-todo-link-title "Artikel folgt"
-  "String to use as <abbr> title for todo: LINKS."
+  "Default string to use as <abbr> title for todo: LINKS."
   :group 'org-export-s9y
   :type 'string)
 
@@ -294,7 +294,10 @@ CONTENTS is the contents of the link, as a string.  INFO is
      ((string= type "fuzzy")
       (cond
        ((string-prefix-p "todo:" raw)
-	(org-s9y--put-in-tag "abbr" contents (list (list "title" org-s9y-todo-link-title))))
+	(let* ((todo-suffix (string-remove-prefix "todo:" raw))
+	       (title (if (string= "" todo-suffix) org-s9y-todo-link-title
+			todo-suffix)))
+	  (org-s9y--put-in-tag "abbr" contents (list (list "title" title)))))
        ((string-prefix-p "about:" raw)
 	(org-s9y--put-a-href contents raw))
        (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
