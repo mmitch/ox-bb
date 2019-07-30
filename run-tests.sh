@@ -76,9 +76,9 @@ else
 fi
 
 # transform modules to load arguments for emacs
-LIBS="-l .travis-install-org.el -f use-orgmode"
+LIBS=(-l .travis-install-org.el -f use-orgmode)
 while [[ $# -gt 0 ]]; do
-    LIBS="$LIBS -l $1"
+    LIBS+=(-l "$1")
     shift
 done
 
@@ -93,7 +93,7 @@ for INPUT in testing/test-*.input; do
     travis_start_timer
 
     echo -n "running $TEST "
-    emacs -Q --batch $LIBS "$INPUT" -f org-version -f org-s9y-export-to-html > "$TEMPFILE" 2>&1
+    emacs -Q --batch "${LIBS[@]}" "$INPUT" -f org-version -f org-s9y-export-to-html > "$TEMPFILE" 2>&1
     if diff -b -Narup "$EXPECTED" "$OUTPUT" >> "$TEMPFILE"; then
 	echo "${GREEN}OK${RESET}"
     else
