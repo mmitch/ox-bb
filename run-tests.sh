@@ -32,7 +32,7 @@ remove_last_output()
 remove_last_output_and_tempfile()
 {
     remove_last_output
-    rm "$TEMPFILE"
+    rm -f "$TEMPFILE"
 }
 
 travis_start_fold()
