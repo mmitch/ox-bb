@@ -2,7 +2,7 @@
 #
 # Integration test runner for ox-s9y
 #
-# Copyright (C) 2018  Christian Garbs <mitch@cgarbs.de>
+# Copyright (C) 2018, 2019  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
 # This file is part of ox-s9y.
@@ -26,7 +26,7 @@ TEMPFILE="$(mktemp)"
 
 remove_last_output()
 {
-    [ "$OUTPUT" ] && [ -e "$OUTPUT" ] && rm "$OUTPUT" || true
+    { [ "$OUTPUT" ] && [ -e "$OUTPUT" ] && rm "$OUTPUT" ; } || true
 }
 
 remove_last_output_and_tempfile()
@@ -37,22 +37,22 @@ remove_last_output_and_tempfile()
 
 travis_start_fold()
 {
-    [ "$TRAVIS" = 'true' ] && travis_fold start "$1" || true
+    { [ "$TRAVIS" = 'true' ] && travis_fold start "$1" ; } || true
 }
 
 travis_end_fold()
 {
-    [ "$TRAVIS" = 'true' ] && travis_fold end "$1" || true
+    { [ "$TRAVIS" = 'true' ] && travis_fold end "$1" ; } || true
 }
 
 travis_start_timer()
 {
-    [ "$TRAVIS" = 'true' ] && travis_time_start || true
+    { [ "$TRAVIS" = 'true' ] && travis_time_start ; } || true
 }
 
 travis_end_timer()
 {
-    [ "$TRAVIS" = 'true' ] && travis_time_finish || true
+    { [ "$TRAVIS" = 'true' ] && travis_time_finish ; } || true
 }
 
 # don't leave stray files, even when we die
