@@ -294,7 +294,7 @@ CONTENTS is the contents of the link, as a string.  INFO is
      ((string= type "fuzzy")
       (cond
        ((string-prefix-p "todo:" raw)
-	(let* ((todo-suffix (string-remove-prefix "todo:" raw))
+	(let* ((todo-suffix (substring raw (length "todo:")))
 	       (title (if (string= "" todo-suffix) org-s9y-todo-link-title
 			todo-suffix)))
 	  (org-s9y--put-in-tag "abbr" contents (list (list "title" title)))))
