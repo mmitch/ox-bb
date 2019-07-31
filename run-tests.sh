@@ -26,33 +26,34 @@ TEMPFILE="$(mktemp)"
 
 remove_last_output()
 {
-    { [ "$OUTPUT" ] && [ -e "$OUTPUT" ] && rm "$OUTPUT" ; } || true
+    { [ "$OUTPUT" ] && [ -e "$OUTPUT" ] && rm "$OUTPUT"; } || true
 }
 
 remove_last_output_and_tempfile()
 {
     remove_last_output
-    rm -f "$TEMPFILE"
+    # show tempfile contents if there was an error
+    [ -e "$TEMPFILE" ] && { cat "$TEMPFILE"; rm "$TEMPFILE"; }
 }
 
 travis_start_fold()
 {
-    { [ "$TRAVIS" = 'true' ] && travis_fold start "$1" ; } || true
+    { [ "$TRAVIS" = 'true' ] && travis_fold start "$1"; } || true
 }
 
 travis_end_fold()
 {
-    { [ "$TRAVIS" = 'true' ] && travis_fold end "$1" ; } || true
+    { [ "$TRAVIS" = 'true' ] && travis_fold end "$1"; } || true
 }
 
 travis_start_timer()
 {
-    { [ "$TRAVIS" = 'true' ] && travis_time_start ; } || true
+    { [ "$TRAVIS" = 'true' ] && travis_time_start; } || true
 }
 
 travis_end_timer()
 {
-    { [ "$TRAVIS" = 'true' ] && travis_time_finish ; } || true
+    { [ "$TRAVIS" = 'true' ] && travis_time_finish; } || true
 }
 
 # don't leave stray files, even when we die
@@ -109,6 +110,9 @@ for INPUT in testing/test-*.input; do
 
     travis_end_timer
 done
+
+# don't show anything from tempfile on regular exit
+echo > "$TEMPFILE"
 
 # report findings
 if [[ $FAILED -eq 0 ]]; then
