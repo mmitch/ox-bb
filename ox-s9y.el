@@ -69,7 +69,7 @@
     (special-block . org-s9y-undefined)
     (src-block . org-s9y-geshi-block)
     (statistics-cookie . org-s9y-undefined)
-    (strike-through . org-s9y-undefined)
+    (strike-through . org-s9y-strike-through)
     (subscript . org-s9y-undefined)
     (superscript . org-s9y-undefined)
     (table . org-s9y-undefined)
@@ -344,6 +344,12 @@ as a communication channel."
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
   (org-trim contents))
+
+(defun org-s9y-strike-through (_strike-through contents _info)
+  "Transcode a STRIKE-THROUGH element from Org to Serendipity.
+CONTENTS is the text with strike-through markup, as a string.
+  INFO is a plist used as a communication channel."
+  (org-s9y--put-in-tag "s" contents))
 
 (defun org-s9y-template (contents _info)
   "Return complete document string after Serendipity conversion.
