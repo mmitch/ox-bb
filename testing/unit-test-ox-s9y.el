@@ -66,11 +66,37 @@
   (should (equal (org-s9y--put-a-href "some text" "https://example.com/" "myclass" "myid")
 		 "<a href=\"https://example.com/\" class=\"myclass\" id=\"myid\">some text</a>")))
 
+;;; org-s9y--remove-leading-newline
+
+(ert-deftest org-s9y/remove-leading-newline/remove ()
+  (should (equal( org-s9y--remove-leading-newline "\nsome text")
+		"some text")))
+
+(ert-deftest org-s9y/remove-leading-newline/keep-text-before-first-newline ()
+  (should (equal( org-s9y--remove-leading-newline "no empty line\nsome more text\n")
+		"no empty line\nsome more text\n")))
+
+(ert-deftest org-s9y/remove-leading-newline/only-remove-first-newline ()
+  (should (equal( org-s9y--remove-leading-newline "\n\nsome text")
+		"\nsome text")))
+
+(ert-deftest org-s9y/remove-leading-newline/keep-newlines-within ()
+  (should (equal( org-s9y--remove-leading-newline "\nline 1\nline 2")
+		"line 1\nline 2")))
+
+(ert-deftest org-s9y/remove-leading-newline/dont-fail-with-no-newline ()
+  (should (equal( org-s9y--remove-leading-newline "some text")
+		"some text")))
+
 ;;; org-s9y--remove-trailing-newline
 
 (ert-deftest org-s9y/remove-trailing-newline/remove ()
   (should (equal( org-s9y--remove-trailing-newline "some text\n")
 		"some text")))
+
+(ert-deftest org-s9y/remove-trailing-newline/keep-text-after-last-newline ()
+  (should (equal( org-s9y--remove-trailing-newline "some text\nno empty line")
+		"some text\nno empty line")))
 
 (ert-deftest org-s9y/remove-trailing-newline/only-remove-last-newline ()
   (should (equal( org-s9y--remove-trailing-newline "some text\n\n")

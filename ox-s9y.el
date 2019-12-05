@@ -42,7 +42,7 @@
     (example-block . org-s9y-undefined)
     (export-block . org-s9y-undefined)
     (export-snippet . org-s9y-undefined)
-    (fixed-width . org-s9y-undefined)
+    (fixed-width . org-s9y-fixed-width)
     (footnote-definition . org-s9y-footnote-definition)
     (footnote-reference . org-s9y-footnote-reference)
     (headline . org-s9y-headline)
@@ -136,6 +136,10 @@ set on the <a> tag."
 	(setq attributes (append attributes (list (list "id" id))))))
     (org-s9y--put-in-tag "a" contents attributes)))
 
+(defun org-s9y--remove-leading-newline (text)
+  "Remove a leading empty line from TEXT."
+  (replace-regexp-in-string "\\`\n" "" text))
+
 (defun org-s9y--remove-trailing-newline (text)
   "Remove the trailing newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
@@ -170,12 +174,20 @@ communication channel."
 
 (defun org-s9y-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
-CONTENTS holds the contents of the item.  INFO is a plist holding
+CONTENTS is nil.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
 	  (org-s9y--map-to-geshi-language (org-element-property :language code-block))
 	  (org-s9y--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
+
+(defun org-s9y-fixed-width (fixed-width _contents _info)
+  "Transcode a FIXED-WIDTH element from Org to Serendipity.
+CONTENTS is nil.  INFO is a plist holding contextual information."
+  (format "[geshi lang=plaintext]%s[/geshi]"
+	  (org-s9y--remove-leading-newline
+	   (org-s9y--remove-trailing-newline
+	    (org-element-property :value fixed-width)))))
 
 (defun org-s9y-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to Serendipity.

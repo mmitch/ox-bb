@@ -1,0 +1,6 @@
+<p>paragraph 1</p>
+
+[geshi lang=plaintext]verbatim line
+  indented verbatim line[/geshi]
+
+<p>paragraph 2</p>
