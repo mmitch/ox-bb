@@ -157,7 +157,7 @@ CONTENTS is the bold text, as a string.  INFO is
 (defun org-bb-code (code _contents _info)
   "Transcode a CODE element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-bb--put-in-tag "code" (org-element-property :value code)))
+  (org-bb--put-in-value-tag "font" (org-element-property :value code) "monospace"))
 
 (defun org-bb-entity (entity _contents _info)
   "Transcode an ENTITY element from Org to Serendipity.
