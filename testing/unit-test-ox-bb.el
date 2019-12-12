@@ -30,6 +30,24 @@
 ;;;;; tests for internal methods
 ;;;;;
 
+;;; org-bb--force-leading-newline
+
+(ert-deftest org-bb/force-leading-newline/add-missing-newline ()
+  (should (equal( org-bb--force-leading-newline "some text")
+		"\nsome text")))
+
+(ert-deftest org-bb/force-leading-newline/keep-existing-newline ()
+  (should (equal( org-bb--force-leading-newline "\nonly one newline")
+		"\nonly one newline")))
+
+(ert-deftest org-bb/force-leading-newline/remove-additional-newlines ()
+  (should (equal( org-bb--force-leading-newline "\n\nsome text")
+		"\nsome text")))
+
+(ert-deftest org-bb/force-leading-newline/keep-newlines-within ()
+  (should (equal( org-bb--force-leading-newline "\nline 1\nline 2\n")
+		"\nline 1\nline 2\n")))
+
 ;;; org-bb--put-in-tag
 
 (ert-deftest org-bb/put-in-tag/no-attribute ()

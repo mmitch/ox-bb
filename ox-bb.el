@@ -95,6 +95,10 @@
 
 ;;; Helper methods
 
+(defun org-bb--force-leading-newline (text)
+  "Make TEXT start wit exactly one newline."
+  (replace-regexp-in-string "\\`\n*" "\n" text))
+
 (defun org-bb--put-in-tag (tag contents &optional attributes)
   "Puts the BBcode tag TAG around the CONTENTS string.
 Optional ATTRIBUTES for the tag can be given as an alist of
@@ -313,7 +317,7 @@ INFO is a plist used as a communication channel."
   "Transcode a QUOTE-BLOCK element from Org to Serendipity.
 CONTENTS holds the contents of the block.  INFO is a plist used
 as a communication channel."
-  (org-bb--put-in-tag "blockquote" contents))
+  (org-bb--put-in-tag "quote" (org-bb--force-leading-newline contents)))
 
 (defun org-bb-section (_section contents _info)
   "Transcode a SECTION element from Org to Serendipity.
