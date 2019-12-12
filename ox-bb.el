@@ -93,11 +93,6 @@
   :tag "Org Export BBCode"
   :group 'org-export)
 
-(defcustom org-bb-todo-link-title "Artikel folgt"
-  "Default string to use as <abbr> title for todo: LINKS."
-  :group 'org-export-bb
-  :type 'string)
-
 ;;; Helper methods
 
 (defun org-bb--put-in-tag (tag contents &optional attributes)
@@ -303,11 +298,6 @@ CONTENTS is the contents of the link, as a string.  INFO is
     (cond
      ((string= type "fuzzy")
       (cond
-       ((string-prefix-p "todo:" raw)
-	(let* ((todo-suffix (substring raw (length "todo:")))
-	       (title (if (string= "" todo-suffix) org-bb-todo-link-title
-			todo-suffix)))
-	  (org-bb--put-in-tag "abbr" contents (list (list "title" title)))))
        ((string-prefix-p "about:" raw)
 	(org-bb--put-url contents raw))
        (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
