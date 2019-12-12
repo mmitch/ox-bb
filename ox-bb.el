@@ -187,34 +187,14 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (if (eq (org-element-property :type footnote-reference) 'inline)
       (error "Inline footnotes not supported yet")
-    (concat
-     ;; Insert separator between two footnotes in a row.
-     (let ((prev (org-export-get-previous-element footnote-reference info)))
-       (when (eq (org-element-type prev) 'footnote-reference)
-	 "<sup>, </sup>"))
-     (let* ((n (org-export-get-footnote-number footnote-reference info))
-	    (anchor-to (format "#fn-to-%d" n))
-	    (anchor-from (when (org-export-footnote-first-reference-p footnote-reference info)
-			   (format "fn-from-%d" n)))
-	    (reftext (format "[%d]" n)))
-       (org-bb--put-in-tag
-	"sup"
-	(org-bb--put-url reftext anchor-to "footnote" anchor-from))))))
+    (let ((n (org-export-get-footnote-number footnote-reference info)))
+      (format "^%d " n))))
 
 (defun org-bb-format-footnote-definition (fn)
   "Format the footnote definition FN."
-  (let* ((n (car fn))
-	 (def (cdr fn))
-	 (n-format (format "[%d]" n))
-	 (anchor-to (format "fn-to-%d" n))
-	 (anchor-from (format "#fn-from-%d" n))
-	 (definition (concat (org-bb--put-url n-format anchor-from)
-			     ": "
-			     def)))
-    (org-bb--put-in-tag "div"
-			 definition
-			 (list (list "class" "footnote")
-			       (list "id" anchor-to)))))
+  (let ((n (car fn))
+	(def (cdr fn)))
+    (format "^%d: %s" n def)))
 
 (defun org-bb-footnote-section (info)
   "Format the footnote section.
@@ -226,7 +206,7 @@ INFO is a plist used as a communication channel."
 		   (cons n (org-trim (org-export-data raw info)))))
 	 (text (mapconcat 'org-bb-format-footnote-definition fn-alist "\n")))
     (if fn-alist
-	(org-bb--put-in-tag "div" text '((id footnotes)))
+	(concat "\n[u]Footnotes[/u]\n\n" text)
       "")))
 
 (defun org-bb-headline (headline contents info)
