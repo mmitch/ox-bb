@@ -1,6 +1,0 @@
-# only the first reference of a footnote gets the <a id="…"> backlink.
-foo[fn:1]bar[fn:1]
-* Footnotes
-
-[fn:1] foo
-

@@ -1,6 +1,8 @@
-<p>paragraph 1</p>
+paragraph 1
 
-[geshi lang=plaintext]verbatim line
-  indented verbatim line[/geshi]
+[code]
+verbatim line
+  indented verbatim line
+[/code]
 
-<p>paragraph 2</p>
+paragraph 2

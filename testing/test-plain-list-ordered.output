@@ -1,2 +1,4 @@
-<ol><li>foo</li>
-<li>bar</li></ol>
+[list=1]
+[*]foo
+[*]bar
+[/list]

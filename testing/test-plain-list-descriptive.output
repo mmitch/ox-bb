@@ -1,4 +1,4 @@
-<dl><dt>foo</dt>
-<dd>pokey</dd>
-<dt>bar</dt>
-<dd>hokey</dd></dl>
+[list]
+[*][i]foo:[/i] pokey
+[*][i]bar:[/i] hokey
+[/list]

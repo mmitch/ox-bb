@@ -1,7 +1,0 @@
-# multiple footnotes at the same location are delimited by ", "
-foo[fn:1][fn:2]
-
-* Footnotes
-
-[fn:1] foo
-[fn:2] bar
