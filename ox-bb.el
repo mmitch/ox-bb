@@ -305,15 +305,11 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (org-bb--put-url contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
 
-(defun org-bb-paragraph (paragraph contents _info)
+(defun org-bb-paragraph (_paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
-  (let* ((parent (org-export-get-parent paragraph))
-	 (parent-type (org-element-type parent)))
-    (if (eq parent-type 'section)
-	(org-bb--put-in-tag "p" (org-trim contents))
-      (org-trim contents))))
+  (org-trim contents))
 
 (defun org-bb-plain-list (plain-list contents _info)
   "Transcode a PLAIN-LIST element from Org to Serendipity.
