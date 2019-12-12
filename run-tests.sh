@@ -89,12 +89,12 @@ FAILED=0
 for INPUT in testing/test-*.input; do
     TEST="${INPUT%.input}"
     EXPECTED="${TEST}.output"
-    OUTPUT="${TEST}.html"
+    OUTPUT="${TEST}.bbcode"
 
     travis_start_timer
 
     echo -n "running $TEST "
-    emacs -Q --batch "${LIBS[@]}" "$INPUT" -f org-version -f org-bb-export-to-html > "$TEMPFILE" 2>&1
+    emacs -Q --batch "${LIBS[@]}" "$INPUT" -f org-version -f org-bb-export-to-bbcode > "$TEMPFILE" 2>&1
     if diff -b -Narup "$EXPECTED" "$OUTPUT" >> "$TEMPFILE"; then
 	echo "${GREEN}OK${RESET}"
     else

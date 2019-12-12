@@ -385,7 +385,7 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
 ;;; Export methods
 
 ;;;###autoload
-(defun org-bb-export-as-html
+(defun org-bb-export-as-bbcode
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode buffer.
 
@@ -418,7 +418,7 @@ Export is done in a buffer named \"*Org BBCode Export*\"."
     (lambda () (bbcode-mode))))
 
 ;;;###autoload
-(defun org-bb-export-to-html
+(defun org-bb-export-to-bbcode
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode file.
 
