@@ -240,7 +240,7 @@ holding export options."
   "Transcode a ITALIC element from Org to Serendipity.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-bb--put-in-tag "em" contents))
+  (org-bb--put-in-tag "i" contents))
 
 (defun org-bb-item (item contents info)
   "Transcode a ITEM element from Org to Serendipity.
