@@ -1,24 +1,24 @@
 #!/bin/bash
 #
-# Integration test runner for ox-s9y
+# Integration test runner for ox-bb
 #
 # Copyright (C) 2018, 2019  Christian Garbs <mitch@cgarbs.de>
 # Licensed under GNU GPL v3 or later.
 #
-# This file is part of ox-s9y.
+# This file is part of ox-bb.
 #
-# ox-s9y is free software: you can redistribute it and/or modify
+# ox-bb is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# ox-s9y is distributed in the hope that it will be useful,
+# ox-bb is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with ox-s9y.  If not, see <http://www.gnu.org/licenses/>.
+# along with ox-bb.  If not, see <http://www.gnu.org/licenses/>.
 
 set -e
 
@@ -94,7 +94,7 @@ for INPUT in testing/test-*.input; do
     travis_start_timer
 
     echo -n "running $TEST "
-    emacs -Q --batch "${LIBS[@]}" "$INPUT" -f org-version -f org-s9y-export-to-html > "$TEMPFILE" 2>&1
+    emacs -Q --batch "${LIBS[@]}" "$INPUT" -f org-version -f org-bb-export-to-html > "$TEMPFILE" 2>&1
     if diff -b -Narup "$EXPECTED" "$OUTPUT" >> "$TEMPFILE"; then
 	echo "${GREEN}OK${RESET}"
     else

@@ -1,26 +1,26 @@
-;;; ox-s9y.el --- Serendipity HTML Back-End for Org Export Engine -*- lexical-binding: t; -*-
+;;; ox-bb.el --- BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
-;; This file is part of ox-s9y.
+;; This file is part of ox-bb.
 
-;; ox-s9y is free software: you can redistribute it and/or modify
+;; ox-bb is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
 ;; the Free Software Foundation, either version 3 of the License, or
 ;; (at your option) any later version.
 
-;; ox-s9y is distributed in the hope that it will be useful,
+;; ox-bb is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY; without even the implied warranty of
 ;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 ;; GNU General Public License for more details.
 
 ;; You should have received a copy of the GNU General Public License
-;; along with ox-s9y.  If not, see <http://www.gnu.org/licenses/>.
+;; along with ox-bb.  If not, see <http://www.gnu.org/licenses/>.
 
 ;;; Commentary:
 
-;; export Org documents to Serendipity blog
+;; export Org documents to BBCode
 
 ; internal reminder: for Org format information see
 ; http://orgmode.org/worg/dev/org-element-api.html
@@ -31,76 +31,76 @@
 
 ;;; Backend definition
 
-(org-export-define-backend 's9y
-  '((bold . org-s9y-bold)
-    (center-block . org-s9y-undefined)
-    (clock . org-s9y-undefined)
-    (code . org-s9y-code)
-    (drawer . org-s9y-undefined)
-    (dynamic-block . org-s9y-undefined)
-    (entity . org-s9y-entity)
-    (example-block . org-s9y-undefined)
-    (export-block . org-s9y-undefined)
-    (export-snippet . org-s9y-undefined)
-    (fixed-width . org-s9y-fixed-width)
-    (footnote-definition . org-s9y-footnote-definition)
-    (footnote-reference . org-s9y-footnote-reference)
-    (headline . org-s9y-headline)
-    (horizontal-rule . org-s9y-undefined)
-    (inline-src-block . org-s9y-undefined)
-    (inlinetask . org-s9y-undefined)
-    (inner-template . org-s9y-inner-template)
-    (italic . org-s9y-italic)
-    (item . org-s9y-item)
-    (keyword . org-s9y-undefined)
-    (latex-environment . org-s9y-undefined)
-    (latex-fragment . org-s9y-undefined)
-    (line-break . org-s9y-line-break)
-    (link . org-s9y-link)
-    (node-property . org-s9y-undefined)
-    (paragraph . org-s9y-paragraph)
-    (plain-list . org-s9y-plain-list)
-    (plain-text . org-s9y-plain-text)
-    (planning . org-s9y-undefined)
-    (property-drawer . org-s9y-undefined)
-    (quote-block . org-s9y-quote-block)
-    (radio-target . org-s9y-undefined)
-    (section . org-s9y-section)
-    (special-block . org-s9y-undefined)
-    (src-block . org-s9y-geshi-block)
-    (statistics-cookie . org-s9y-undefined)
-    (strike-through . org-s9y-strike-through)
-    (subscript . org-s9y-undefined)
-    (superscript . org-s9y-undefined)
-    (table . org-s9y-undefined)
-    (table-cell . org-s9y-undefined)
-    (table-row . org-s9y-undefined)
-    (target . org-s9y-undefined)
-    (template . org-s9y-template)
-    (timestamp . org-s9y-undefined)
-    (underline . org-s9y-underline)
-    (verbatim . org-s9y-verbatim)
-    (verse-block . org-s9y-undefined))
+(org-export-define-backend 'bb
+  '((bold . org-bb-bold)
+    (center-block . org-bb-undefined)
+    (clock . org-bb-undefined)
+    (code . org-bb-code)
+    (drawer . org-bb-undefined)
+    (dynamic-block . org-bb-undefined)
+    (entity . org-bb-entity)
+    (example-block . org-bb-undefined)
+    (export-block . org-bb-undefined)
+    (export-snippet . org-bb-undefined)
+    (fixed-width . org-bb-fixed-width)
+    (footnote-definition . org-bb-footnote-definition)
+    (footnote-reference . org-bb-footnote-reference)
+    (headline . org-bb-headline)
+    (horizontal-rule . org-bb-undefined)
+    (inline-src-block . org-bb-undefined)
+    (inlinetask . org-bb-undefined)
+    (inner-template . org-bb-inner-template)
+    (italic . org-bb-italic)
+    (item . org-bb-item)
+    (keyword . org-bb-undefined)
+    (latex-environment . org-bb-undefined)
+    (latex-fragment . org-bb-undefined)
+    (line-break . org-bb-line-break)
+    (link . org-bb-link)
+    (node-property . org-bb-undefined)
+    (paragraph . org-bb-paragraph)
+    (plain-list . org-bb-plain-list)
+    (plain-text . org-bb-plain-text)
+    (planning . org-bb-undefined)
+    (property-drawer . org-bb-undefined)
+    (quote-block . org-bb-quote-block)
+    (radio-target . org-bb-undefined)
+    (section . org-bb-section)
+    (special-block . org-bb-undefined)
+    (src-block . org-bb-geshi-block)
+    (statistics-cookie . org-bb-undefined)
+    (strike-through . org-bb-strike-through)
+    (subscript . org-bb-undefined)
+    (superscript . org-bb-undefined)
+    (table . org-bb-undefined)
+    (table-cell . org-bb-undefined)
+    (table-row . org-bb-undefined)
+    (target . org-bb-undefined)
+    (template . org-bb-template)
+    (timestamp . org-bb-undefined)
+    (underline . org-bb-underline)
+    (verbatim . org-bb-verbatim)
+    (verse-block . org-bb-undefined))
   :menu-entry
-  '(?S "Export to Serendipity"
-       ((?H "As HTML buffer" org-s9y-export-as-html)
-	(?h "As HTML file" org-s9y-export-to-html))))
+  '(?S "Export to BBCode"
+       ((?H "As BBCode buffer" org-bb-export-as-bbcode)
+	(?h "As BBCode file" org-bb-export-to-bbcode))))
 
 ;;; Customization
 
-(defgroup org-export-s9y nil
-  "Options for exporting Org mode files to Serendipity."
-  :tag "Org Export Serendipity"
+(defgroup org-export-bb nil
+  "Options for exporting Org mode files to BBCode."
+  :tag "Org Export BBCode"
   :group 'org-export)
 
-(defcustom org-s9y-todo-link-title "Artikel folgt"
+(defcustom org-bb-todo-link-title "Artikel folgt"
   "Default string to use as <abbr> title for todo: LINKS."
-  :group 'org-export-s9y
+  :group 'org-export-bb
   :type 'string)
 
 ;;; Helper methods
 
-(defun org-s9y--put-in-tag (tag contents &optional attributes)
+(defun org-bb--put-in-tag (tag contents &optional attributes)
   "Puts the HTML tag TAG around the CONTENTS string.
 Optional ATTRIBUTES for the tag can be given as an alist of
 key/value pairs (both strings)."
@@ -114,7 +114,7 @@ key/value pairs (both strings)."
 			    "")))
     (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
 
-(defun org-s9y--fix-url (url)
+(defun org-bb--fix-url (url)
   "Fix URL returned from `url-encode-url'.
 Older versions of Emacs (eg. 24.3 used in the Travis CI minimal
 image) prepend \"/\" to urls consisting only of an \"#anchor\"
@@ -124,27 +124,27 @@ this the hard way."
       (substring url 1)
     url))
 
-(defun org-s9y--put-a-href (contents href &optional class id)
+(defun org-bb--put-a-href (contents href &optional class id)
   "Puts the CONTENTS inside a simple <a> tag pointing to HREF.
 Automagically escapes the target URL.  An optional CLASS and ID can be
 set on the <a> tag."
-  (let* ((target (org-s9y--fix-url (url-encode-url (org-link-unescape href))))
+  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href))))
 	 (attributes (list (list "href" target))))
     (when class
       (setq attributes (append attributes (list (list "class" class))))
       (when id
 	(setq attributes (append attributes (list (list "id" id))))))
-    (org-s9y--put-in-tag "a" contents attributes)))
+    (org-bb--put-in-tag "a" contents attributes)))
 
-(defun org-s9y--remove-leading-newline (text)
+(defun org-bb--remove-leading-newline (text)
   "Remove a leading empty line from TEXT."
   (replace-regexp-in-string "\\`\n" "" text))
 
-(defun org-s9y--remove-trailing-newline (text)
+(defun org-bb--remove-trailing-newline (text)
   "Remove the trailing newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
 
-(defun org-s9y--map-to-geshi-language (language)
+(defun org-bb--map-to-geshi-language (language)
   "Map LANGUAGE from Org to Geshi."
   (cond ((string= language "elisp") "lisp")
 	((string= language "shell") "bash")
@@ -155,41 +155,41 @@ set on the <a> tag."
 
 ;;; Backend callbacks
 
-(defun org-s9y-bold (_bold contents _info)
+(defun org-bb-bold (_bold contents _info)
   "Transcode a BOLD element from Org to Serendipity.
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-s9y--put-in-tag "strong" contents))
+  (org-bb--put-in-tag "strong" contents))
 
-(defun org-s9y-code (code _contents _info)
+(defun org-bb-code (code _contents _info)
   "Transcode a CODE element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-s9y--put-in-tag "code" (org-element-property :value code)))
+  (org-bb--put-in-tag "code" (org-element-property :value code)))
 
-(defun org-s9y-entity (entity _contents _info)
+(defun org-bb-entity (entity _contents _info)
   "Transcode an ENTITY element from Org to Serendipity.
 CONTENTS is the definition itself.  INFO is a plist used as a
 communication channel."
   (org-element-property :html entity))
 
-(defun org-s9y-geshi-block (code-block _contents info)
+(defun org-bb-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
 CONTENTS is nil.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
-	  (org-s9y--map-to-geshi-language (org-element-property :language code-block))
-	  (org-s9y--remove-trailing-newline
+	  (org-bb--map-to-geshi-language (org-element-property :language code-block))
+	  (org-bb--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
 
-(defun org-s9y-fixed-width (fixed-width _contents _info)
+(defun org-bb-fixed-width (fixed-width _contents _info)
   "Transcode a FIXED-WIDTH element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (format "[geshi lang=plaintext]%s[/geshi]"
-	  (org-s9y--remove-leading-newline
-	   (org-s9y--remove-trailing-newline
+	  (org-bb--remove-leading-newline
+	   (org-bb--remove-trailing-newline
 	    (org-element-property :value fixed-width)))))
 
-(defun org-s9y-footnote-reference (footnote-reference _contents info)
+(defun org-bb-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (if (eq (org-element-property :type footnote-reference) 'inline)
@@ -204,26 +204,26 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 	    (anchor-from (when (org-export-footnote-first-reference-p footnote-reference info)
 			   (format "fn-from-%d" n)))
 	    (reftext (format "[%d]" n)))
-       (org-s9y--put-in-tag
+       (org-bb--put-in-tag
 	"sup"
-	(org-s9y--put-a-href reftext anchor-to "footnote" anchor-from))))))
+	(org-bb--put-a-href reftext anchor-to "footnote" anchor-from))))))
 
-(defun org-s9y-format-footnote-definition (fn)
+(defun org-bb-format-footnote-definition (fn)
   "Format the footnote definition FN."
   (let* ((n (car fn))
 	 (def (cdr fn))
 	 (n-format (format "[%d]" n))
 	 (anchor-to (format "fn-to-%d" n))
 	 (anchor-from (format "#fn-from-%d" n))
-	 (definition (concat (org-s9y--put-a-href n-format anchor-from)
+	 (definition (concat (org-bb--put-a-href n-format anchor-from)
 			     ": "
 			     def)))
-    (org-s9y--put-in-tag "div"
+    (org-bb--put-in-tag "div"
 			 definition
 			 (list (list "class" "footnote")
 			       (list "id" anchor-to)))))
 
-(defun org-s9y-footnote-section (info)
+(defun org-bb-footnote-section (info)
   "Format the footnote section.
 INFO is a plist used as a communication channel."
   (let* ((fn-alist (org-export-collect-footnote-definitions
@@ -231,12 +231,12 @@ INFO is a plist used as a communication channel."
 	 (fn-alist
 	  (cl-loop for (n _label raw) in fn-alist collect
 		   (cons n (org-trim (org-export-data raw info)))))
-	 (text (mapconcat 'org-s9y-format-footnote-definition fn-alist "\n")))
+	 (text (mapconcat 'org-bb-format-footnote-definition fn-alist "\n")))
     (if fn-alist
-	(org-s9y--put-in-tag "div" text '((id footnotes)))
+	(org-bb--put-in-tag "div" text '((id footnotes)))
       "")))
 
-(defun org-s9y-headline (headline contents info)
+(defun org-bb-headline (headline contents info)
   "Transcode HEADLINE element from Org to Serendipity.
 CONTENTS is the headline contents.  INFO is a plist used as
 a communication channel."
@@ -247,25 +247,25 @@ a communication channel."
       (concat
        (if (<= level 2)
 	   (format "<!--  %s  -->" title)
-	 (org-s9y--put-in-tag (format "h%d" level) title))
+	 (org-bb--put-in-tag (format "h%d" level) title))
        "\n"
        contents))))
 
-(defun org-s9y-inner-template (contents info)
+(defun org-bb-inner-template (contents info)
   "Return body of document string after Serendipity conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
    contents
-   (org-s9y-footnote-section info)))
+   (org-bb-footnote-section info)))
 
-(defun org-s9y-italic (_italic contents _info)
+(defun org-bb-italic (_italic contents _info)
   "Transcode a ITALIC element from Org to Serendipity.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-s9y--put-in-tag "em" contents))
+  (org-bb--put-in-tag "em" contents))
 
-(defun org-s9y-item (item contents info)
+(defun org-bb-item (item contents info)
   "Transcode a ITEM element from Org to Serendipity.
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
@@ -281,21 +281,21 @@ CONTENTS is the contents of the item, as a string.  INFO is
      (pcase type
        (`descriptive
 	(concat
-	 (org-s9y--put-in-tag "dt" (org-trim term))
+	 (org-bb--put-in-tag "dt" (org-trim term))
 	 "\n"
-	 (org-s9y--put-in-tag "dd" (org-trim contents))
+	 (org-bb--put-in-tag "dd" (org-trim contents))
 	 ))
        (_
-	(org-s9y--put-in-tag "li" (org-trim contents) value)))
+	(org-bb--put-in-tag "li" (org-trim contents) value)))
      "\n")))
 
-(defun org-s9y-line-break (_line-break _contents _info)
+(defun org-bb-line-break (_line-break _contents _info)
   "Transcode a LINE-BREAK object from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   "<br>\n")
 
-(defun org-s9y-link (link contents _info)
+(defun org-bb-link (link contents _info)
   "Transcode a LINK element from Org to Serendipity.
 CONTENTS is the contents of the link, as a string.  INFO is
   a plist used as a communication channel."
@@ -307,89 +307,89 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (cond
        ((string-prefix-p "todo:" raw)
 	(let* ((todo-suffix (substring raw (length "todo:")))
-	       (title (if (string= "" todo-suffix) org-s9y-todo-link-title
+	       (title (if (string= "" todo-suffix) org-bb-todo-link-title
 			todo-suffix)))
-	  (org-s9y--put-in-tag "abbr" contents (list (list "title" title)))))
+	  (org-bb--put-in-tag "abbr" contents (list (list "title" title)))))
        ((string-prefix-p "about:" raw)
-	(org-s9y--put-a-href contents raw))
+	(org-bb--put-a-href contents raw))
        (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
-      (org-s9y--put-a-href contents (concat type ":" path)))
+      (org-bb--put-a-href contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
 
-(defun org-s9y-paragraph (paragraph contents _info)
+(defun org-bb-paragraph (paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to Serendipity.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((parent (org-export-get-parent paragraph))
 	 (parent-type (org-element-type parent)))
     (if (eq parent-type 'section)
-	(org-s9y--put-in-tag "p" (org-trim contents))
+	(org-bb--put-in-tag "p" (org-trim contents))
       (org-trim contents))))
 
-(defun org-s9y-plain-list (plain-list contents _info)
+(defun org-bb-plain-list (plain-list contents _info)
   "Transcode a PLAIN-LIST element from Org to Serendipity.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type plain-list)))
     (concat
      (pcase type
-       (`descriptive (org-s9y--put-in-tag "dl" (org-trim contents)))
-       (`unordered (org-s9y--put-in-tag "ul" (org-trim contents)))
-       (`ordered (org-s9y--put-in-tag "ol" (org-trim contents)))
+       (`descriptive (org-bb--put-in-tag "dl" (org-trim contents)))
+       (`unordered (org-bb--put-in-tag "ul" (org-trim contents)))
+       (`ordered (org-bb--put-in-tag "ol" (org-trim contents)))
        (other (error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 
-(defun org-s9y-plain-text (text _info)
+(defun org-bb-plain-text (text _info)
   "Transcode a TEXT string from Org to Serendipity.
 INFO is a plist used as a communication channel."
   text)
 
-(defun org-s9y-quote-block (_quote-block contents _info)
+(defun org-bb-quote-block (_quote-block contents _info)
   "Transcode a QUOTE-BLOCK element from Org to Serendipity.
 CONTENTS holds the contents of the block.  INFO is a plist used
 as a communication channel."
-  (org-s9y--put-in-tag "blockquote" contents))
+  (org-bb--put-in-tag "blockquote" contents))
 
-(defun org-s9y-section (_section contents _info)
+(defun org-bb-section (_section contents _info)
   "Transcode a SECTION element from Org to Serendipity.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
   (org-trim contents))
 
-(defun org-s9y-strike-through (_strike-through contents _info)
+(defun org-bb-strike-through (_strike-through contents _info)
   "Transcode a STRIKE-THROUGH element from Org to Serendipity.
 CONTENTS is the text with strike-through markup, as a string.
   INFO is a plist used as a communication channel."
-  (org-s9y--put-in-tag "s" contents))
+  (org-bb--put-in-tag "s" contents))
 
-(defun org-s9y-template (contents _info)
+(defun org-bb-template (contents _info)
   "Return complete document string after Serendipity conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   contents)
 
-(defun org-s9y-undefined (element &optional _contents _info)
+(defun org-bb-undefined (element &optional _contents _info)
   "Throw an error when an unsupported ELEMENT is encountered."
   (error "ELEMENT type `%s' not implemented yet" (car element)))
 
-(defun org-s9y-underline (_underline contents _info)
+(defun org-bb-underline (_underline contents _info)
   "Transcode a UNDERLINE element from Org to Serendipity.
 CONTENTS is the underlined text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-s9y--put-in-tag "u" contents))
+  (org-bb--put-in-tag "u" contents))
 
-(defun org-s9y-verbatim (verbatim _contents _info)
+(defun org-bb-verbatim (verbatim _contents _info)
   "Transcode a VERBATIM element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-s9y--put-in-tag "code" (org-element-property :value verbatim)))
+  (org-bb--put-in-tag "code" (org-element-property :value verbatim)))
 
 ;;; Export methods
 
 ;;;###autoload
-(defun org-s9y-export-as-html
+(defun org-bb-export-as-html
   (&optional async subtreep visible-only body-only ext-plist)
-  "Export current buffer to a Serendipity HTML buffer.
+  "Export current buffer to a BBCode buffer.
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -413,16 +413,16 @@ EXT-PLIST, when provided, is a property list with external
 parameters overriding Org default settings, but still inferior to
 file-local settings.
 
-Export is done in a buffer named \"*Org S9Y Export*\"."
+Export is done in a buffer named \"*Org BBCode Export*\"."
   (interactive)
-  (org-export-to-buffer 's9y "*Org S9Y Export*"
+  (org-export-to-buffer 'bb "*Org BBCode Export*"
     async subtreep visible-only body-only ext-plist
-    (lambda () (html-mode))))
+    (lambda () (bbcode-mode))))
 
 ;;;###autoload
-(defun org-s9y-export-to-html
+(defun org-bb-export-to-html
   (&optional async subtreep visible-only body-only ext-plist)
-  "Export current buffer to an Serendipity HTML file.
+  "Export current buffer to a BBCode file.
 
 If narrowing is active in the current buffer, only export its
 narrowed part.
@@ -448,16 +448,14 @@ file-local settings.
 
 Return output file's name."
   (interactive)
-  (let* ((extension (concat "." (or (plist-get ext-plist :html-extension)
-				   org-html-extension
-				   "html")))
+  (let* ((extension ".bbcode")
 	 (file (org-export-output-file-name extension subtreep))
 	 (org-export-coding-system org-html-coding-system))
-    (org-export-to-file 's9y file
+    (org-export-to-file 'bb file
       async subtreep visible-only body-only ext-plist)))
 
 ;;; Register file
 
-(provide 'ox-s9y)
+(provide 'ox-bb)
 
-;;; ox-s9y.el ends here
+;;; ox-bb.el ends here
