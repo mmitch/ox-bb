@@ -34,37 +34,35 @@
 
 (ert-deftest org-bb/put-in-tag/no-attribute ()
   (should (equal (org-bb--put-in-tag "p" "foo")
-		 "<p>foo</p>")))
+		 "[p]foo[/p]")))
 
 (ert-deftest org-bb/put-in-tag/single-attribute ()
-  (should (equal (org-bb--put-in-tag "a" "foo" '(("href" "file.htm")))
-		 "<a href=\"file.htm\">foo</a>")))
+  (should (equal (org-bb--put-in-tag "style" "foo" '(("size" "30px")))
+		 "[style size=\"30px\"]foo[/style]")))
 
 (ert-deftest org-bb/put-in-tag/multiple-attributes ()
-  (should (equal (org-bb--put-in-tag "div" "foo" '(("class" "bar") ("style" "margin: 0;")))
-		 "<div class=\"bar\" style=\"margin: 0;\">foo</div>")))
+  (should (equal (org-bb--put-in-tag "style" "foo" '(("color" "#00FF00") ("size" "30px")))
+		 "[style color=\"#00FF00\" size=\"30px\"]foo[/style]")))
+
+;;; org-bb--put-in-value-tag
+
+(ert-deftest org-bb/put-in-value-tag/plain ()
+  (should (equal (org-bb--put-in-value-tag "url" "foo" "file.htm")
+		 "[url=file.htm]foo[/url]")))
 
 ;;; org-bb--put-a-href
 
 (ert-deftest org-bb/put-a-href/plain ()
-  (should (equal (org-bb--put-a-href "some text" "https://example.com/")
-		 "<a href=\"https://example.com/\">some text</a>")))
+  (should (equal (org-bb--put-url "some text" "https://example.com/")
+		 "[url=https://example.com/]some text[/url]")))
 
 (ert-deftest org-bb/put-a-href/anchor ()
-  (should (equal (org-bb--put-a-href "anchor text" "#anchor")
-		 "<a href=\"#anchor\">anchor text</a>")))
+  (should (equal (org-bb--put-url "anchor text" "#anchor")
+		 "[url=#anchor]anchor text[/url]")))
 
 (ert-deftest org-bb/put-a-href/encode-url-only-once ()
-  (should (equal (org-bb--put-a-href "baz" "http://foo/%20bar")
-		 "<a href=\"http://foo/%20bar\">baz</a>")))
-
-(ert-deftest org-bb/put-a-href/with-class ()
-  (should (equal (org-bb--put-a-href "some text" "https://example.com/" "myclass")
-		 "<a href=\"https://example.com/\" class=\"myclass\">some text</a>")))
-
-(ert-deftest org-bb/put-a-href/with-id ()
-  (should (equal (org-bb--put-a-href "some text" "https://example.com/" "myclass" "myid")
-		 "<a href=\"https://example.com/\" class=\"myclass\" id=\"myid\">some text</a>")))
+  (should (equal (org-bb--put-url "baz" "http://foo/%20bar")
+		 "[url=http://foo/%20bar]baz[/url]")))
 
 ;;; org-bb--remove-leading-newline
 

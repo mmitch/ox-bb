@@ -101,7 +101,7 @@
 ;;; Helper methods
 
 (defun org-bb--put-in-tag (tag contents &optional attributes)
-  "Puts the HTML tag TAG around the CONTENTS string.
+  "Puts the BBcode tag TAG around the CONTENTS string.
 Optional ATTRIBUTES for the tag can be given as an alist of
 key/value pairs (both strings)."
   (let ((attribute-string (if attributes
@@ -112,7 +112,11 @@ key/value pairs (both strings)."
 					 attributes
 					 "")
 			    "")))
-    (format "<%s%s>%s</%s>" tag attribute-string contents tag)))
+    (format "[%s%s]%s[/%s]" tag attribute-string contents tag)))
+
+(defun org-bb--put-in-value-tag (tag contents value)
+  "Puts the BBcode tag TAG given the VALUE around the CONTENTS string."
+  (format "[%s=%s]%s[/%s]" tag value contents tag))
 
 (defun org-bb--fix-url (url)
   "Fix URL returned from `url-encode-url'.
@@ -124,17 +128,11 @@ this the hard way."
       (substring url 1)
     url))
 
-(defun org-bb--put-a-href (contents href &optional class id)
-  "Puts the CONTENTS inside a simple <a> tag pointing to HREF.
-Automagically escapes the target URL.  An optional CLASS and ID can be
-set on the <a> tag."
-  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href))))
-	 (attributes (list (list "href" target))))
-    (when class
-      (setq attributes (append attributes (list (list "class" class))))
-      (when id
-	(setq attributes (append attributes (list (list "id" id))))))
-    (org-bb--put-in-tag "a" contents attributes)))
+(defun org-bb--put-url (contents href)
+  "Puts the CONTENTS inside a [url] tag pointing to HREF.
+Automagically escapes the target URL."
+  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href)))))
+    (org-bb--put-in-value-tag "url" contents target)))
 
 (defun org-bb--remove-leading-newline (text)
   "Remove a leading empty line from TEXT."
@@ -206,7 +204,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 	    (reftext (format "[%d]" n)))
        (org-bb--put-in-tag
 	"sup"
-	(org-bb--put-a-href reftext anchor-to "footnote" anchor-from))))))
+	(org-bb--put-url reftext anchor-to "footnote" anchor-from))))))
 
 (defun org-bb-format-footnote-definition (fn)
   "Format the footnote definition FN."
@@ -215,7 +213,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 	 (n-format (format "[%d]" n))
 	 (anchor-to (format "fn-to-%d" n))
 	 (anchor-from (format "#fn-from-%d" n))
-	 (definition (concat (org-bb--put-a-href n-format anchor-from)
+	 (definition (concat (org-bb--put-url n-format anchor-from)
 			     ": "
 			     def)))
     (org-bb--put-in-tag "div"
@@ -311,10 +309,10 @@ CONTENTS is the contents of the link, as a string.  INFO is
 			todo-suffix)))
 	  (org-bb--put-in-tag "abbr" contents (list (list "title" title)))))
        ((string-prefix-p "about:" raw)
-	(org-bb--put-a-href contents raw))
+	(org-bb--put-url contents raw))
        (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
-      (org-bb--put-a-href contents (concat type ":" path)))
+      (org-bb--put-url contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
 
 (defun org-bb-paragraph (paragraph contents _info)
