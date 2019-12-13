@@ -185,10 +185,8 @@ contextual information."
 (defun org-bb-fixed-width (fixed-width _contents _info)
   "Transcode a FIXED-WIDTH element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual information."
-  (format "[geshi lang=plaintext]%s[/geshi]"
-	  (org-bb--remove-leading-newline
-	   (org-bb--remove-trailing-newline
-	    (org-element-property :value fixed-width)))))
+  (org-bb--put-in-tag "code"
+		      (concat "\n" (org-element-property :value fixed-width))))
 
 (defun org-bb-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to Serendipity.
