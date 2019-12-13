@@ -134,7 +134,9 @@ key/value pairs (both strings)."
     (format "[%s%s]%s[/%s]" tag attribute-string contents tag)))
 
 (defun org-bb--put-in-value-tag (tag contents value)
-  "Puts the BBcode tag TAG given the VALUE around the CONTENTS string."
+  "Puts the BBcode tag TAG around the CONTENTS string.
+The VALUE is assigned directly to the tag instead of a normale
+key/value pair."
   (format "[%s=%s]%s[/%s]" tag value contents tag))
 
 (defun org-bb--fix-url (url)
