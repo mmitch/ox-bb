@@ -106,16 +106,17 @@
 (defun org-bb--format-headline (text level)
   "Format TEXT as a headline of the given LEVEL."
   (let ((indent (cl-case level
-		  (1 "#")
-		  (2 "==")
-		  (3 "+++")
-		  (4 "::::")
-		  (5 "-----")
+		  (0 "")
+		  (1 "# ")
+		  (2 "== ")
+		  (3 "+++ ")
+		  (4 ":::: ")
+		  (5 "----- ")
 		  (t (error "Headline level `%s' is not defined yet" level)))))
     (concat
      (org-bb--put-in-tag
       "b" (org-bb--put-in-tag
-	   "u" (concat indent " " text)))
+	   "u" (concat indent text)))
      "\n\n")))
 
 (defun org-bb--put-in-tag (tag contents &optional attributes)
@@ -227,7 +228,7 @@ INFO is a plist used as a communication channel."
 		   (cons n (org-trim (org-export-data raw info)))))
 	 (text (mapconcat 'org-bb-format-footnote-definition fn-alist "\n")))
     (if fn-alist
-	(concat "\n[u]Footnotes[/u]\n\n" text)
+	(concat "\n" (org-bb--format-headline "Footnotes" 0) text)
       "")))
 
 (defun org-bb-headline (headline contents info)

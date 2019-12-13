@@ -56,6 +56,10 @@
 
 ;;; org-bb--format-headline
 
+(ert-deftest org-bb/format-headline/level-0 ()
+  (should (equal( org-bb--format-headline "some text" 0)
+		"[b][u]some text[/u][/b]\n\n")))
+
 (ert-deftest org-bb/format-headline/level-1 ()
   (should (equal( org-bb--format-headline "some text" 1)
 		"[b][u]# some text[/u][/b]\n\n")))
