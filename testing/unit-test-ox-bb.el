@@ -54,6 +54,28 @@
   (should (equal( org-bb--force-leading-newline "\nline 1\nline 2\n")
 		"\nline 1\nline 2\n")))
 
+;;; org-bb--format-headline
+
+(ert-deftest org-bb/format-headline/level-1 ()
+  (should (equal( org-bb--format-headline "some text" 1)
+		"[b][u]# some text[/u][/b]\n\n")))
+
+(ert-deftest org-bb/format-headline/level-2 ()
+  (should (equal( org-bb--format-headline "some text" 2)
+		"[b][u]== some text[/u][/b]\n\n")))
+
+(ert-deftest org-bb/format-headline/level-3 ()
+  (should (equal( org-bb--format-headline "some text" 3)
+		"[b][u]+++ some text[/u][/b]\n\n")))
+
+(ert-deftest org-bb/format-headline/level-4 ()
+  (should (equal( org-bb--format-headline "some text" 4)
+		"[b][u]:::: some text[/u][/b]\n\n")))
+
+(ert-deftest org-bb/format-headline/level-5 ()
+  (should (equal( org-bb--format-headline "some text" 5)
+		"[b][u]----- some text[/u][/b]\n\n")))
+
 ;;; org-bb--put-in-tag
 
 (ert-deftest org-bb/put-in-tag/no-attribute ()

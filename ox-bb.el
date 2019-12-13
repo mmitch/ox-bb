@@ -103,6 +103,21 @@
   "Make TEXT start wit exactly one newline."
   (replace-regexp-in-string "\\`\n*" "\n" text))
 
+(defun org-bb--format-headline (text level)
+  "Format TEXT as a headline of the given LEVEL."
+  (let ((indent (cl-case level
+		  (1 "#")
+		  (2 "==")
+		  (3 "+++")
+		  (4 "::::")
+		  (5 "-----")
+		  (t (error "Headline level `%s' is not defined yet" level)))))
+    (concat
+     (org-bb--put-in-tag
+      "b" (org-bb--put-in-tag
+	   "u" (concat indent " " text)))
+     "\n\n")))
+
 (defun org-bb--put-in-tag (tag contents &optional attributes)
   "Puts the BBcode tag TAG around the CONTENTS string.
 Optional ATTRIBUTES for the tag can be given as an alist of
@@ -223,19 +238,9 @@ a communication channel."
 	(level (org-export-get-relative-level headline info)))
     (if (org-element-property :footnote-section-p headline)
 	""
-      (let ((indent (cl-case level
-		      (1 "#")
-		      (2 "==")
-		      (3 "+++")
-		      (4 "::::")
-		      (5 "-----")
-		      (t (error "Headline level `%s' is not defined yet" level)))))
-	(concat
-	 (org-bb--put-in-tag
-	  "b" (org-bb--put-in-tag
-	       "u" (concat indent " " title)))
-	 "\n\n"
-	 contents)))))
+      (concat
+       (org-bb--format-headline title level)
+       contents))))
 
 (defun org-bb-inner-template (contents info)
   "Return body of document string after Serendipity conversion.
