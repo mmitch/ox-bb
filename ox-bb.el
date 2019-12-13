@@ -268,7 +268,7 @@ CONTENTS is the contents of the item, as a string.  INFO is
   "Transcode a LINE-BREAK object from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
-  "<br>\n")
+  "[br]_[/br]\n")
 
 (defun org-bb-link (link contents _info)
   "Transcode a LINK element from Org to Serendipity.
