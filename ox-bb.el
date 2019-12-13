@@ -223,12 +223,19 @@ a communication channel."
 	(level (org-export-get-relative-level headline info)))
     (if (org-element-property :footnote-section-p headline)
 	""
-      (concat
-       (if (<= level 2)
-	   (format "<!--  %s  -->" title)
-	 (org-bb--put-in-tag (format "h%d" level) title))
-       "\n"
-       contents))))
+      (let ((indent (cl-case level
+		      (1 "#")
+		      (2 "==")
+		      (3 "+++")
+		      (4 "::::")
+		      (5 "-----")
+		      (t (error "Headline level `%s' is not defined yet" level)))))
+	(concat
+	 (org-bb--put-in-tag
+	  "b" (org-bb--put-in-tag
+	       "u" (concat indent " " title)))
+	 "\n\n"
+	 contents)))))
 
 (defun org-bb-inner-template (contents info)
   "Return body of document string after Serendipity conversion.
