@@ -30,6 +30,12 @@
 ;;;;; tests for internal methods
 ;;;;;
 
+;;; org-bb--as-block
+
+(ert-deftest org-bb/as-block/plain ()
+  (should (equal( org-bb--as-block "some text\nline two")
+		"\nsome text\nline two\n")))
+
 ;;; org-bb--force-leading-newline
 
 (ert-deftest org-bb/force-leading-newline/add-missing-newline ()

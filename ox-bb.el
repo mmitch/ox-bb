@@ -95,6 +95,10 @@
 
 ;;; Helper methods
 
+(defun org-bb--as-block (text)
+  "Format TEXT as a block by with leading and trailing newline."
+  (concat "\n" text "\n"))
+
 (defun org-bb--force-leading-newline (text)
   "Make TEXT start wit exactly one newline."
   (replace-regexp-in-string "\\`\n*" "\n" text))
@@ -247,23 +251,19 @@ CONTENTS is the italic text, as a string.  INFO is
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((plain-list (org-export-get-parent item))
-	 (value (let ((counter (org-element-property :counter item)))
-		  (if counter
-		      (list (list "value" counter))
-		    ())))
-	 (term (let ((tag (org-element-property :tag item)))
-		 (and tag (org-export-data tag info))))
-	 (type (org-element-property :type plain-list)))
+	 (type (org-element-property :type plain-list))
+	 (text (org-trim contents)))
     (concat
+     "[*]"
      (pcase type
        (`descriptive
-	(concat
-	 (org-bb--put-in-tag "dt" (org-trim term))
-	 "\n"
-	 (org-bb--put-in-tag "dd" (org-trim contents))
-	 ))
-       (_
-	(org-bb--put-in-tag "li" (org-trim contents) value)))
+	(let ((term (let ((tag (org-element-property :tag item)))
+		      (and tag (org-export-data tag info)))))
+	  (concat
+	   (org-bb--put-in-tag "i" (concat (org-trim term) ":"))
+	   " "
+	   ))))
+     text
      "\n")))
 
 (defun org-bb-line-break (_line-break _contents _info)
@@ -299,12 +299,13 @@ CONTENTS is the contents of the paragraph, as a string.  INFO is
   "Transcode a PLAIN-LIST element from Org to Serendipity.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
-  (let ((type (org-element-property :type plain-list)))
+  (let ((type (org-element-property :type plain-list))
+	(content-block (org-bb--as-block (org-trim contents))))
     (concat
      (pcase type
-       (`descriptive (org-bb--put-in-tag "dl" (org-trim contents)))
-       (`unordered (org-bb--put-in-tag "ul" (org-trim contents)))
-       (`ordered (org-bb--put-in-tag "ol" (org-trim contents)))
+       (`descriptive (org-bb--put-in-tag "list" content-block))
+       (`unordered (org-bb--put-in-tag "list" content-block))
+       (`ordered (org-bb--put-in-value-tag "list" content-block "1"))
        (other (error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 
