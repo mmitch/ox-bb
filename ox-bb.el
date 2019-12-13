@@ -349,7 +349,7 @@ CONTENTS is the underlined text, as a string.  INFO is
 (defun org-bb-verbatim (verbatim _contents _info)
   "Transcode a VERBATIM element from Org to Serendipity.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-bb--put-in-tag "font" (org-element-property :value verbatim) "monospace"))
+  (org-bb--put-in-value-tag "font" (org-element-property :value verbatim) "monospace"))
 
 ;;; Export methods
 
