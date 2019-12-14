@@ -1,7 +1,7 @@
 ox-bb - BBCode export for Org
 =============================
 
-[![Build Status](https://travis-ci.org/mmitch/ox-bb.svg?branch=master)](https://travis-ci.org/mmitch/ox-bb)
+[![Build Status](https://img.shields.io/circleci/build/gh/mmitch/ox-bb?label=build)](https://circleci.com/gh/mmitch/ox-bb)
 [![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
 
 

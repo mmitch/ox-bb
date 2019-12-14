@@ -1,0 +1,31 @@
+version: 2
+jobs:
+
+  emacs_26: 
+    docker:
+      - image: silex/emacs:26
+    steps:
+      - checkout
+      - run: emacs --version
+      - run: emacs -Q --batch -f org-version
+      - run: emacs -Q --batch -f batch-byte-compile ox-bb.el
+      - run: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
+      - run: ./run-tests.sh ox-bb.el
+
+  emacs_25: 
+    docker:
+      - image: silex/emacs:25
+    steps:
+      - checkout
+      - run: emacs --version
+      - run: emacs -Q --batch -f org-version
+      - run: emacs -Q --batch -f batch-byte-compile ox-bb.el
+      - run: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
+      - run: ./run-tests.sh ox-bb.el
+
+workflows:
+  version: 2
+  emacs_25_and_26:
+    jobs:
+      - emacs_25
+      - emacs_26

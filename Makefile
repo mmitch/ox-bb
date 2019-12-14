@@ -23,7 +23,7 @@ TARGETS=$(addsuffix c,$(SOURCES))
 UNITTESTS=$(basename $(wildcard testing/unit-test-*.el))
 TESTS=$(basename $(wildcard testing/unit-test-*.el))
 
-EMACS=emacs -Q --batch -l .travis-install-org.el -f use-orgmode
+EMACS=emacs -Q --batch
 
 %.elc: %.el
 	$(EMACS) -f batch-byte-compile $<

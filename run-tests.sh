@@ -77,7 +77,7 @@ else
 fi
 
 # transform modules to load arguments for emacs
-LIBS=(-l .travis-install-org.el -f use-orgmode)
+LIBS=()
 while [[ $# -gt 0 ]]; do
     LIBS+=(-l "$1")
     shift
