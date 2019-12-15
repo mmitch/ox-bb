@@ -223,8 +223,12 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 (defun org-bb-footnote-section (info)
   "Format the footnote section.
 INFO is a plist used as a communication channel."
-  (let* ((fn-alist (org-export-collect-footnote-definitions
-		    info (plist-get info :parse-tree)))
+  (let* ((org-major (string-to-number (car (split-string (org-release) "\\."))))
+	 (fn-alist (if (> org-major 8)
+		       (org-export-collect-footnote-definitions
+			info (plist-get info :parse-tree))
+		     (org-export-collect-footnote-definitions
+		      (plist-get info :parse-tree) info)))
 	 (fn-alist
 	  (cl-loop for (n _label raw) in fn-alist collect
 		   (cons n (org-trim (org-export-data raw info)))))
