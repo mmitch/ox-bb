@@ -100,17 +100,17 @@
   (should (equal (org-bb--put-in-value-tag "url" "foo" "file.htm")
 		 "[url=file.htm]foo[/url]")))
 
-;;; org-bb--put-a-href
+;;; org-bb--put-url
 
-(ert-deftest org-bb/put-a-href/plain ()
+(ert-deftest org-bb/put-url/plain ()
   (should (equal (org-bb--put-url "some text" "https://example.com/")
 		 "[url=https://example.com/]some text[/url]")))
 
-(ert-deftest org-bb/put-a-href/anchor ()
+(ert-deftest org-bb/put-url/anchor ()
   (should (equal (org-bb--put-url "anchor text" "#anchor")
 		 "[url=#anchor]anchor text[/url]")))
 
-(ert-deftest org-bb/put-a-href/encode-url-only-once ()
+(ert-deftest org-bb/put-url/encode-url-only-once ()
   (should (equal (org-bb--put-url "baz" "http://foo/%20bar")
 		 "[url=http://foo/%20bar]baz[/url]")))
 
