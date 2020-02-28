@@ -106,6 +106,10 @@
   (should (equal (org-bb--put-url "some text" "https://example.com/")
 		 "[url=https://example.com/]some text[/url]")))
 
+(ert-deftest org-bb/put-url/empty ()
+  (should (equal (org-bb--put-url nil "https://example.com/")
+		 "[url=https://example.com/]https://example.com/[/url]")))
+
 (ert-deftest org-bb/put-url/anchor ()
   (should (equal (org-bb--put-url "anchor text" "#anchor")
 		 "[url=#anchor]anchor text[/url]")))

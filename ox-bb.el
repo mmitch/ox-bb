@@ -152,8 +152,9 @@ this the hard way."
 (defun org-bb--put-url (contents href)
   "Puts the CONTENTS inside a [url] tag pointing to HREF.
 Automagically escapes the target URL."
-  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href)))))
-    (org-bb--put-in-value-tag "url" contents target)))
+  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href))))
+	 (text   (or contents target)))
+    (org-bb--put-in-value-tag "url" text target)))
 
 (defun org-bb--remove-leading-newline (text)
   "Remove a leading empty line from TEXT."
