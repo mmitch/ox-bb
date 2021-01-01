@@ -20,7 +20,7 @@ https://github.com/mmitch/ox-bb
 license
 -------
 
-Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>  
+Copyright (C) 2017-2021  Christian Garbs <mitch@cgarbs.de>  
 Licensed under GNU GPL v3 or later.
 
 ox-bb is free software: you can redistribute it and/or modify
