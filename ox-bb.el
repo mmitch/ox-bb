@@ -1,6 +1,6 @@
 ;;; ox-bb.el --- BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017-2021  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-bb.
@@ -96,11 +96,11 @@
 ;;; Helper methods
 
 (defun org-bb--as-block (text)
-  "Format TEXT as a block by with leading and trailing newline."
+  "Format TEXT as a block with leading and trailing newline."
   (concat "\n" text "\n"))
 
 (defun org-bb--force-leading-newline (text)
-  "Make TEXT start wit exactly one newline."
+  "Make TEXT start with exactly one newline."
   (replace-regexp-in-string "\\`\n*" "\n" text))
 
 (defun org-bb--format-headline (text level)
@@ -135,7 +135,7 @@ key/value pairs (both strings)."
 
 (defun org-bb--put-in-value-tag (tag contents value)
   "Puts the BBcode tag TAG around the CONTENTS string.
-The VALUE is assigned directly to the tag instead of a normale
+The VALUE is assigned directly to the tag instead of a normal
 key/value pair."
   (format "[%s=%s]%s[/%s]" tag value contents tag))
 
