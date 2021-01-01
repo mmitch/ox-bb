@@ -165,7 +165,7 @@ Automagically escapes the target URL."
   (replace-regexp-in-string "\n\\'" "" text))
 
 (defun org-bb--map-to-geshi-language (language)
-  "Map LANGUAGE from Org to Geshi."
+  "Map LANGUAGE from Org to GeSHi."
   (cond ((string= language "elisp") "lisp")
 	((string= language "shell") "bash")
 	((string= language "sh")    "bash")
@@ -176,24 +176,24 @@ Automagically escapes the target URL."
 ;;; Backend callbacks
 
 (defun org-bb-bold (_bold contents _info)
-  "Transcode a BOLD element from Org to Serendipity.
+  "Transcode a BOLD element from Org to BBCode.
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
   (org-bb--put-in-tag "b" contents))
 
 (defun org-bb-code (code _contents _info)
-  "Transcode a CODE element from Org to Serendipity.
+  "Transcode a CODE element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
   (org-bb--put-in-value-tag "font" (org-element-property :value code) "monospace"))
 
 (defun org-bb-entity (entity _contents _info)
-  "Transcode an ENTITY element from Org to Serendipity.
+  "Transcode an ENTITY element from Org to BBCode.
 CONTENTS is the definition itself.  INFO is a plist used as a
 communication channel."
   (org-element-property :html entity))
 
 (defun org-bb-geshi-block (code-block _contents info)
-  "Transcode a CODE-BLOCK element from Org to Serendipity GeSHi plugin.
+  "Transcode a CODE-BLOCK element from Org to BBCode GeSHi plugin.
 CONTENTS is nil.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
@@ -202,13 +202,13 @@ contextual information."
 	   (org-export-format-code-default code-block info))))
 
 (defun org-bb-fixed-width (fixed-width _contents _info)
-  "Transcode a FIXED-WIDTH element from Org to Serendipity.
+  "Transcode a FIXED-WIDTH element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (org-bb--put-in-tag "code"
 		      (concat "\n" (org-element-property :value fixed-width))))
 
 (defun org-bb-footnote-reference (footnote-reference _contents info)
-  "Transcode a FOOTNOTE-REFERENCE element from Org to Serendipity.
+  "Transcode a FOOTNOTE-REFERENCE element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (if (eq (org-element-property :type footnote-reference) 'inline)
       (error "Inline footnotes not supported yet")
@@ -239,7 +239,7 @@ INFO is a plist used as a communication channel."
       "")))
 
 (defun org-bb-headline (headline contents info)
-  "Transcode HEADLINE element from Org to Serendipity.
+  "Transcode HEADLINE element from Org to BBCode.
 CONTENTS is the headline contents.  INFO is a plist used as
 a communication channel."
   (let ((title (org-export-data (org-element-property :title headline) info))
@@ -251,7 +251,7 @@ a communication channel."
        contents))))
 
 (defun org-bb-inner-template (contents info)
-  "Return body of document string after Serendipity conversion.
+  "Return body of document string after BBCode conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
@@ -259,13 +259,13 @@ holding export options."
    (org-bb-footnote-section info)))
 
 (defun org-bb-italic (_italic contents _info)
-  "Transcode a ITALIC element from Org to Serendipity.
+  "Transcode a ITALIC element from Org to BBCode.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
   (org-bb--put-in-tag "i" contents))
 
 (defun org-bb-item (item contents info)
-  "Transcode a ITEM element from Org to Serendipity.
+  "Transcode a ITEM element from Org to BBCode.
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
   (let* ((plain-list (org-export-get-parent item))
@@ -285,13 +285,13 @@ CONTENTS is the contents of the item, as a string.  INFO is
      "\n")))
 
 (defun org-bb-line-break (_line-break _contents _info)
-  "Transcode a LINE-BREAK object from Org to Serendipity.
+  "Transcode a LINE-BREAK object from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   "[br]_[/br]\n")
 
 (defun org-bb-link (link contents _info)
-  "Transcode a LINK element from Org to Serendipity.
+  "Transcode a LINK element from Org to BBCode.
 CONTENTS is the contents of the link, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type link))
@@ -308,13 +308,13 @@ CONTENTS is the contents of the link, as a string.  INFO is
      (t (error "LINK type `%s' not yet supported" type)))))
 
 (defun org-bb-paragraph (_paragraph contents _info)
-  "Transcode a PARAGRAPH element from Org to Serendipity.
+  "Transcode a PARAGRAPH element from Org to BBCode.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
   (org-trim contents))
 
 (defun org-bb-plain-list (plain-list contents _info)
-  "Transcode a PLAIN-LIST element from Org to Serendipity.
+  "Transcode a PLAIN-LIST element from Org to BBCode.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type plain-list))
@@ -328,30 +328,30 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
      "\n")))
 
 (defun org-bb-plain-text (text _info)
-  "Transcode a TEXT string from Org to Serendipity.
+  "Transcode a TEXT string from Org to BBCode.
 INFO is a plist used as a communication channel."
   text)
 
 (defun org-bb-quote-block (_quote-block contents _info)
-  "Transcode a QUOTE-BLOCK element from Org to Serendipity.
+  "Transcode a QUOTE-BLOCK element from Org to BBCode.
 CONTENTS holds the contents of the block.  INFO is a plist used
 as a communication channel."
   (org-bb--put-in-tag "quote" (org-bb--force-leading-newline contents)))
 
 (defun org-bb-section (_section contents _info)
-  "Transcode a SECTION element from Org to Serendipity.
+  "Transcode a SECTION element from Org to BBCode.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
   (org-trim contents))
 
 (defun org-bb-strike-through (_strike-through contents _info)
-  "Transcode a STRIKE-THROUGH element from Org to Serendipity.
+  "Transcode a STRIKE-THROUGH element from Org to BBCode.
 CONTENTS is the text with strike-through markup, as a string.
   INFO is a plist used as a communication channel."
   (org-bb--put-in-tag "s" contents))
 
 (defun org-bb-template (contents _info)
-  "Return complete document string after Serendipity conversion.
+  "Return complete document string after BBCode conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   contents)
@@ -361,13 +361,13 @@ holding export options."
   (error "ELEMENT type `%s' not implemented yet" (car element)))
 
 (defun org-bb-underline (_underline contents _info)
-  "Transcode a UNDERLINE element from Org to Serendipity.
+  "Transcode a UNDERLINE element from Org to BBCode.
 CONTENTS is the underlined text, as a string.  INFO is
   a plist used as a communication channel."
   (org-bb--put-in-tag "u" contents))
 
 (defun org-bb-verbatim (verbatim _contents _info)
-  "Transcode a VERBATIM element from Org to Serendipity.
+  "Transcode a VERBATIM element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
   (org-bb--put-in-value-tag "font" (org-element-property :value verbatim) "monospace"))
 
