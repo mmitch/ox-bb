@@ -1,6 +1,27 @@
 version: 2
 jobs:
 
+  emacs_27:
+    docker:
+      - image: silex/emacs:27
+    steps:
+      - checkout
+      - run:
+          name: Log Emacs Version
+          command: emacs --version
+      - run:
+          name: Log Org Version
+          command: emacs -Q --batch -f org-version
+      - run:
+          name: Byte compilation
+          command: emacs -Q --batch -f batch-byte-compile ox-bb.el
+      - run:
+          name: Unit tests
+          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
+      - run:
+          name: Integration tests
+          command: ./run-tests.sh ox-bb.el
+
   emacs_26:
     docker:
       - image: silex/emacs:26
@@ -49,6 +70,7 @@ workflows:
     jobs:
       - emacs_25
       - emacs_26
+      - emacs_27
   monthly:
     triggers:
       - schedule:
@@ -60,3 +82,4 @@ workflows:
     jobs:
       - emacs_25
       - emacs_26
+      - emacs_27
