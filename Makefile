@@ -34,10 +34,13 @@ all:	compile test
 
 compile: $(TARGETS)
 
-test: show-org-version $(TESTS)
+test: show-emacs-version show-org-version $(TESTS)
 
 show-org-version:
 	$(EMACS) -f org-version
+
+show-emacs-version:
+	$(EMACS) --version
 
 clean:
 	rm -f *.elc
