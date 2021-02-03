@@ -36,16 +36,7 @@ This is a possible regression in Org introduced with 7d9e4da447
 which was released with Org 9.1.14.  See
 https://lists.gnu.org/archive/html/emacs-orgmode/2021-01/msg00338.html
 for details."
-  (let* ((org-version-parts (mapcar 'string-to-number (split-string (org-release) "\\.")))
-	 (org-major (nth 0 org-version-parts))
-	 (org-minor (nth 1 org-version-parts))
-	 (org-patch (nth 2 org-version-parts)))
-    (cond ((< org-major 9) nil)
-	  ((> org-major 9) t)
-	  ((< org-minor 1) nil)
-	  ((> org-minor 1) t)
-	  ((< org-patch 14) nil)
-	  (t t))))
+  (not (version< (org-release) "9.1.14")))
 
 (defun test-org-bb-remove-final-newline (text)
   "Remove the final newline from TEXT."
