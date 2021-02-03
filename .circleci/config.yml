@@ -17,10 +17,7 @@ jobs:
           command: emacs -Q --batch -f batch-byte-compile ox-bb.el
       - run:
           name: Unit tests
-          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
-      - run:
-          name: Integration tests
-          command: ./run-tests.sh ox-bb.el
+          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
 
   emacs_26:
     docker:
@@ -38,10 +35,7 @@ jobs:
           command: emacs -Q --batch -f batch-byte-compile ox-bb.el
       - run:
           name: Unit tests
-          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
-      - run:
-          name: Integration tests
-          command: ./run-tests.sh ox-bb.el
+          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
 
   emacs_25:
     docker:
@@ -59,10 +53,7 @@ jobs:
           command: emacs -Q --batch -f batch-byte-compile ox-bb.el
       - run:
           name: Unit tests
-          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/unit-test-ox-bb.el -f ert-run-tests-batch-and-exit
-      - run:
-          name: Integration tests
-          command: ./run-tests.sh ox-bb.el
+          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
 
 workflows:
   version: 2

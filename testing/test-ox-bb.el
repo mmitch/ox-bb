@@ -1,6 +1,6 @@
-;;; unit-test-ox-bb.el --- unit tests for BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
+;;; test-ox-bb.el --- Tests BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2019  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017-2019, 2021  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-bb.
@@ -20,14 +20,31 @@
 
 ;;; Commentary:
 
-;; unit tests for ox-bb
+;; Tests ox-bb.el.
 
 ;;; Code:
 
 (require 'ox-bb)
 
 ;;;;;
-;;;;; tests for internal methods
+;;;;; helper functions
+;;;;;
+
+(defun test-org-bb-remove-final-newline (text)
+  "Remove the final newline from TEXT."
+  (replace-regexp-in-string "\n\\'" "" text))
+
+(defun test-org-bb-export (input)
+  "Transform INPUT to BBCode and return the result."
+  (with-temp-buffer
+    (org-mode)
+    (insert input)
+    (org-bb-export-as-bbcode)
+    (with-current-buffer "*Org BBCode Export*"
+      (test-org-bb-remove-final-newline (buffer-substring-no-properties (point-min) (point-max))))))
+
+;;;;;
+;;;;; tests of internal methods
 ;;;;;
 
 ;;; org-bb--as-block
@@ -181,8 +198,230 @@
 		"plaintext")))
 
 
-;;; Register file
+;;;;;
+;;;;; whole-file export tests
+;;;;;
+
+(ert-deftest org-bb/export-bold ()
+  (should (equal (test-org-bb-export "foo *BAR* baz")
+		 "foo [b]BAR[/b] baz")))
+
+(ert-deftest org-bb/export-code ()
+  (should (equal (test-org-bb-export "foo ~BAR~ baz")
+		 "foo [font=monospace]BAR[/font] baz")))
+
+(ert-deftest org-bb/export-entity ()
+  (should (equal (test-org-bb-export "This is *bold* and this is in \\ast{}asterisks\\ast{}.")
+		 "This is [b]bold[/b] and this is in &lowast;asterisks&lowast;.")))
+
+(ert-deftest org-bb/export-fixed-width ()
+  (should (equal (test-org-bb-export "paragraph 1
+
+: verbatim line
+:   indented verbatim line
+
+paragraph 2")
+		 "paragraph 1
+
+[code]
+verbatim line
+  indented verbatim line
+[/code]
+
+paragraph 2")))
+
+(ert-deftest org-bb/export-footnote-multiple ()
+  (should (equal (test-org-bb-export "foo[fn:1] bar[fn:2]
+* Footnotes
+
+[fn:1] foo
+[fn:2] bar")
+		 "foo^1  bar^2
+
+[b][u]Footnotes[/u][/b]
+
+^1: foo
+^2: bar")))
+
+(ert-deftest org-bb/export-footnote-plain ()
+  (should (equal (test-org-bb-export "bar[fn:1]
+* Footnotes
+
+[fn:1] foo")
+		 "bar^1
+
+[b][u]Footnotes[/u][/b]
+
+^1: foo")))
+
+(ert-deftest org-bb/export-geshi-block-without-language ()
+  (should (equal (test-org-bb-export "#+BEGIN_SRC
+package foo;
+/* dummy dummy */
+#+END_SRC")
+		 "[geshi lang=plaintext]package foo;
+/* dummy dummy */[/geshi]")))
+
+(ert-deftest org-bb/export-geshi-block ()
+  (should (equal (test-org-bb-export "#+BEGIN_SRC java
+package foo;
+/* dummy dummy */
+#+END_SRC")
+		 "[geshi lang=java]package foo;
+/* dummy dummy */[/geshi]")))
+
+(ert-deftest org-bb/export-headline-lv1 ()
+  (should (equal (test-org-bb-export "* TOPIC")
+		 "[b][u]# TOPIC[/u][/b]")))
+
+(ert-deftest org-bb/export-headline-lv2 ()
+  (should (equal (test-org-bb-export "* dummy
+** TOPIC")
+		 "[b][u]# dummy[/u][/b]
+
+[b][u]== TOPIC[/u][/b]")))
+
+(ert-deftest org-bb/export-headline-lv3 ()
+  (should (equal (test-org-bb-export "* dummy
+** dummy
+*** TOPIC")
+		 "[b][u]# dummy[/u][/b]
+
+[b][u]== dummy[/u][/b]
+
+[b][u]+++ TOPIC[/u][/b]")))
+
+(ert-deftest org-bb/export-headline-lv4 ()
+  (should (equal (test-org-bb-export "* dummy
+** dummy
+*** dummy
+**** TOPIC")
+		 "[b][u]# dummy[/u][/b]
+
+[b][u]== dummy[/u][/b]
+
+[b][u]+++ dummy[/u][/b]
+
+[b][u]:::: TOPIC[/u][/b]")))
+
+(ert-deftest org-bb/export-headline-lv5 ()
+  (should (equal (test-org-bb-export "* dummy
+** dummy
+*** dummy
+**** dummy
+***** TOPIC")
+		 "[b][u]# dummy[/u][/b]
+
+[b][u]== dummy[/u][/b]
+
+[b][u]+++ dummy[/u][/b]
+
+[b][u]:::: dummy[/u][/b]
+
+[b][u]----- TOPIC[/u][/b]")))
+
+(ert-deftest org-bb/export-italic ()
+  (should (equal (test-org-bb-export "foo /BAR/ baz")
+		 "foo [i]BAR[/i] baz")))
+
+(ert-deftest org-bb/export-line-break ()
+  (should (equal (test-org-bb-export "foo\\\\
+bar")
+		 "foo[br]_[/br]
+bar")))
+
+(ert-deftest org-bb/export-link-about ()
+  (should (equal (test-org-bb-export "[[about:config][bar]]")
+		 "[url=about:config]bar[/url]")))
+
+(ert-deftest org-bb/export-link-empty ()
+  (should (equal (test-org-bb-export "http://example.com/")
+		 "[url=http://example.com/]http://example.com/[/url]")))
+
+(ert-deftest org-bb/export-link-encode-url-only-once ()
+  (should (equal (test-org-bb-export "[[http://foo/%20bar][baz]]")
+		 "[url=http://foo/%20bar]baz[/url]")))
+
+(ert-deftest org-bb/export-link-encode-url ()
+  (should (equal (test-org-bb-export "[[http://foo/ bar][baz]]")
+		 "[url=http://foo/%20bar]baz[/url]")))
+
+(ert-deftest org-bb/export-link-http ()
+  (should (equal (test-org-bb-export "[[http://foo/][bar]]")
+		 "[url=http://foo/]bar[/url]")))
+
+(ert-deftest org-bb/export-link-https ()
+  (should (equal (test-org-bb-export "[[https://foo/][bar]]")
+		 "[url=https://foo/]bar[/url]")))
+
+(ert-deftest org-bb/export-multiline-paragraph ()
+  (should (equal (test-org-bb-export "foo
+bar")
+		 "foo
+bar")))
+
+(ert-deftest org-bb/export-multiple-paragraphs ()
+  (should (equal (test-org-bb-export "foo
+
+bar")
+		 "foo
+
+bar")))
+
+(ert-deftest org-bb/export-plain-list-descriptive ()
+  (should (equal (test-org-bb-export "- foo :: pokey
+- bar :: hokey")
+		 "[list]
+[*][i]foo:[/i] pokey
+[*][i]bar:[/i] hokey
+[/list]")))
+
+(ert-deftest org-bb/export-plain-list-ordered ()
+  (should (equal (test-org-bb-export "1. foo
+2. bar")
+		 "[list=1]
+[*]foo
+[*]bar
+[/list]")))
+
+(ert-deftest org-bb/export-plain-list-unordered ()
+  (should (equal (test-org-bb-export "- foo
+- bar")
+		 "[list]
+[*]foo
+[*]bar
+[/list]")))
+
+(ert-deftest org-bb/export-quote-block ()
+  (should (equal (test-org-bb-export "#+BEGIN_QUOTE
+Somebody
+said
+this.
+#+END_QUOTE")
+		 "[quote]
+Somebody
+said
+this.
+[/quote]")))
+
+(ert-deftest org-bb/export-single-paragraph ()
+  (should (equal (test-org-bb-export "foo")
+		 "foo")))
+
+(ert-deftest org-bb/export-strike-through ()
+  (should (equal (test-org-bb-export "foo +BAR+ baz")
+		 "foo [s]BAR[/s] baz")))
+
+(ert-deftest org-bb/export-underline ()
+  (should (equal (test-org-bb-export "foo _BAR_ baz")
+		 "foo [u]BAR[/u] baz")))
+
+(ert-deftest org-bb/export-verbatim ()
+  (should (equal (test-org-bb-export "foo =BAR= baz")
+		 "foo [font=monospace]BAR[/font] baz")))
+
+;;; register file
 
 (provide 'test-ox-bb)
 
-;;; unit-test-ox-bb.el ends here
+;;; test-ox-bb.el ends here
