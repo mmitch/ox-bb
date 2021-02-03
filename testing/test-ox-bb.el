@@ -30,6 +30,23 @@
 ;;;;; helper functions
 ;;;;;
 
+(defun test-org-bb-verbatim-regression ()
+  "Return t if verbatim blocks generate an extra newline.
+This is a possible regression in Org introduced with 7d9e4da447
+which was released with Org 9.1.14.  See
+https://lists.gnu.org/archive/html/emacs-orgmode/2021-01/msg00338.html
+for details."
+  (let* ((org-version-parts (mapcar 'string-to-number (split-string (org-release) "\\.")))
+	 (org-major (nth 0 org-version-parts))
+	 (org-minor (nth 1 org-version-parts))
+	 (org-patch (nth 2 org-version-parts)))
+    (cond ((< org-major 9) nil)
+	  ((> org-major 9) t)
+	  ((< org-minor 1) nil)
+	  ((> org-minor 1) t)
+	  ((< org-patch 14) nil)
+	  (t t))))
+
 (defun test-org-bb-remove-final-newline (text)
   "Remove the final newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
@@ -221,14 +238,23 @@
 :   indented verbatim line
 
 paragraph 2")
-		 "paragraph 1
+		 (if (test-org-bb-verbatim-regression)
+		     "paragraph 1
+
+[code]
+verbatim line
+  indented verbatim line[/code]
+
+
+paragraph 2"
+		   "paragraph 1
 
 [code]
 verbatim line
   indented verbatim line
 [/code]
 
-paragraph 2")))
+paragraph 2"))))
 
 (ert-deftest org-bb/export-footnote-multiple ()
   (should (equal (test-org-bb-export "foo[fn:1] bar[fn:2]
