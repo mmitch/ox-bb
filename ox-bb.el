@@ -404,7 +404,7 @@ Export is done in a buffer named \"*Org BBCode Export*\"."
   (interactive)
   (org-export-to-buffer 'bb "*Org BBCode Export*"
     async subtreep visible-only body-only ext-plist
-    (lambda () (bbcode-mode))))
+    (lambda () (when (featurep 'bbcode-mode) (bbcode-mode)))))
 
 ;;;###autoload
 (defun org-bb-export-to-bbcode
