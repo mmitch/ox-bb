@@ -52,7 +52,7 @@
     (inner-template . org-bb-inner-template)
     (italic . org-bb-italic)
     (item . org-bb-item)
-    (keyword . org-bb-undefined)
+    ;;(keyword . org-bb-undefined)
     (latex-environment . org-bb-undefined)
     (latex-fragment . org-bb-undefined)
     (line-break . org-bb-line-break)
@@ -72,9 +72,9 @@
     (strike-through . org-bb-strike-through)
     (subscript . org-bb-undefined)
     (superscript . org-bb-undefined)
-    (table . org-bb-undefined)
-    (table-cell . org-bb-undefined)
-    (table-row . org-bb-undefined)
+    (table . org-bb-table)
+    (table-cell . org-bb-table-cell)
+    (table-row . org-bb-table-row)
     (target . org-bb-undefined)
     (template . org-bb-template)
     (timestamp . org-bb-undefined)
@@ -349,6 +349,19 @@ CONTENTS is the contents of the section, as a string.  INFO is a
 CONTENTS is the text with strike-through markup, as a string.
   INFO is a plist used as a communication channel."
   (org-bb--put-in-tag "s" contents))
+
+(defun org-bb-table (_table contents _info)
+  "Transcode a TABLE elements from Org to BBCode."
+  (org-bb--put-in-tag "table" contents))
+
+(defun org-bb-table-row (_table-row contents _info)
+  "Transcode a TABLE elements from Org to BBCode."
+  (org-bb--put-in-tag "tr" contents))
+
+(defun org-bb-table-cell (_table-cell contents _info)
+  "Transcode a TABLE elements from Org to BBCode."
+  (org-bb--put-in-tag "td" contents))
+
 
 (defun org-bb-template (contents _info)
   "Return complete document string after BBCode conversion.
