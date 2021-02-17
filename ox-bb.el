@@ -18,18 +18,24 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with ox-bb.  If not, see <http://www.gnu.org/licenses/>.
 
+;; Author: Christian Garbs <mitch@cgarbs.de>
+;; URL: https://github.com/mmitch/ox-bb
+;; Keywords: bbcode, org, export, outlines
+;; Version: 0.0.1
+;; Package-Requires: ((emacs "24.3") (org "8.0"))
+
 ;;; Commentary:
 
 ;; export Org documents to BBCode
-
-; internal reminder: for Org format information see
-; http://orgmode.org/worg/dev/org-element-api.html
 
 ;;; Code:
 
 (require 'ox)
 
 ;;; Backend definition
+
+; internal reminder: for Org format information see
+; http://orgmode.org/worg/dev/org-element-api.html
 
 (org-export-define-backend 'bb
   '((bold . ox-bb-bold)
