@@ -86,13 +86,6 @@
        ((?H "As BBCode buffer" org-bb-export-as-bbcode)
 	(?h "As BBCode file" org-bb-export-to-bbcode))))
 
-;;; Customization
-
-(defgroup org-export-bb nil
-  "Options for exporting Org mode files to BBCode."
-  :tag "Org Export BBCode"
-  :group 'org-export)
-
 ;;; Helper methods
 
 (defun org-bb--as-block (text)
