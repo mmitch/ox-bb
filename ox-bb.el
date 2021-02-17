@@ -83,8 +83,9 @@
     (verse-block . org-bb-undefined))
   :menu-entry
   '(?b "Export to BBCode"
-       ((?b "As BBCode buffer" org-bb-export-as-bbcode)
-	(?f "As BBCode file" org-bb-export-to-bbcode))))
+       ((?B "As BBCode buffer" org-bb-export-as-bbcode)
+	(?f "As BBCode file" org-bb-export-to-bbcode)
+	(?b "As BBCode buffer and to clipboard" org-bb-export-to-kill-ring))))
 
 ;;; Helper methods
 
@@ -433,6 +434,42 @@ Return output file's name."
 	 (org-export-coding-system org-html-coding-system))
     (org-export-to-file 'bb file
       async subtreep visible-only body-only ext-plist)))
+
+;;;###autoload
+(defun org-bb-export-to-kill-ring
+  (&optional async subtreep visible-only body-only ext-plist)
+  "Export current buffer to a BBCode buffer and kill ring.
+
+If narrowing is active in the current buffer, only export its
+narrowed part.
+
+If a region is active, export that region.
+
+A non-nil optional argument ASYNC means the process should happen
+asynchronously.  The resulting buffer should be accessible
+through the `org-export-stack' interface.
+
+When optional argument SUBTREEP is non-nil, export the sub-tree
+at point, extracting information from the headline properties
+first.
+
+When optional argument VISIBLE-ONLY is non-nil, don't export
+contents of hidden elements.
+
+TODO: document BODY-ONLY
+
+EXT-PLIST, when provided, is a property list with external
+parameters overriding Org default settings, but still inferior to
+file-local settings.
+
+Export is done in a buffer named \"*Org BBCode Export*\" which is
+automatically copied to the kill ring (Clipboard)."
+  (interactive)
+  (let ((oldval org-export-copy-to-kill-ring))
+    (progn
+      (setq org-export-copy-to-kill-ring t)
+      (org-bb-export-as-bbcode async subtreep visible-only body-only ext-plist)
+      (setq org-export-copy-to-kill-ring oldval))))
 
 ;;; Register file
 
