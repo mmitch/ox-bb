@@ -30,7 +30,7 @@
 ;;;;; helper functions
 ;;;;;
 
-(defun test-org-bb-verbatim-regression ()
+(defun test-ox-bb-verbatim-regression ()
   "Return t if verbatim blocks generate an extra newline.
 This is a possible regression in Org introduced with 7d9e4da447
 which was released with Org 9.1.14.  See
@@ -38,171 +38,171 @@ https://lists.gnu.org/archive/html/emacs-orgmode/2021-01/msg00338.html
 for details."
   (not (version< (org-release) "9.1.14")))
 
-(defun test-org-bb-remove-final-newline (text)
+(defun test-ox-bb-remove-final-newline (text)
   "Remove the final newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
 
-(defun test-org-bb-export (input)
+(defun test-ox-bb-export (input)
   "Transform INPUT to BBCode and return the result."
   (with-temp-buffer
     (org-mode)
     (insert input)
-    (org-bb-export-as-bbcode)
+    (ox-bb-export-as-bbcode)
     (with-current-buffer "*Org BBCode Export*"
-      (test-org-bb-remove-final-newline (buffer-substring-no-properties (point-min) (point-max))))))
+      (test-ox-bb-remove-final-newline (buffer-substring-no-properties (point-min) (point-max))))))
 
 ;;;;;
 ;;;;; tests of internal methods
 ;;;;;
 
-;;; org-bb--as-block
+;;; ox-bb--as-block
 
 (ert-deftest org-bb/as-block/plain ()
-  (should (equal( org-bb--as-block "some text\nline two")
+  (should (equal( ox-bb--as-block "some text\nline two")
 		"\nsome text\nline two\n")))
 
-;;; org-bb--force-leading-newline
+;;; ox-bb--force-leading-newline
 
 (ert-deftest org-bb/force-leading-newline/add-missing-newline ()
-  (should (equal( org-bb--force-leading-newline "some text")
+  (should (equal( ox-bb--force-leading-newline "some text")
 		"\nsome text")))
 
 (ert-deftest org-bb/force-leading-newline/keep-existing-newline ()
-  (should (equal( org-bb--force-leading-newline "\nonly one newline")
+  (should (equal( ox-bb--force-leading-newline "\nonly one newline")
 		"\nonly one newline")))
 
 (ert-deftest org-bb/force-leading-newline/remove-additional-newlines ()
-  (should (equal( org-bb--force-leading-newline "\n\nsome text")
+  (should (equal( ox-bb--force-leading-newline "\n\nsome text")
 		"\nsome text")))
 
 (ert-deftest org-bb/force-leading-newline/keep-newlines-within ()
-  (should (equal( org-bb--force-leading-newline "\nline 1\nline 2\n")
+  (should (equal( ox-bb--force-leading-newline "\nline 1\nline 2\n")
 		"\nline 1\nline 2\n")))
 
-;;; org-bb--format-headline
+;;; ox-bb--format-headline
 
 (ert-deftest org-bb/format-headline/level-0 ()
-  (should (equal( org-bb--format-headline "some text" 0)
+  (should (equal( ox-bb--format-headline "some text" 0)
 		"[b][u]some text[/u][/b]\n\n")))
 
 (ert-deftest org-bb/format-headline/level-1 ()
-  (should (equal( org-bb--format-headline "some text" 1)
+  (should (equal( ox-bb--format-headline "some text" 1)
 		"[b][u]# some text[/u][/b]\n\n")))
 
 (ert-deftest org-bb/format-headline/level-2 ()
-  (should (equal( org-bb--format-headline "some text" 2)
+  (should (equal( ox-bb--format-headline "some text" 2)
 		"[b][u]== some text[/u][/b]\n\n")))
 
 (ert-deftest org-bb/format-headline/level-3 ()
-  (should (equal( org-bb--format-headline "some text" 3)
+  (should (equal( ox-bb--format-headline "some text" 3)
 		"[b][u]+++ some text[/u][/b]\n\n")))
 
 (ert-deftest org-bb/format-headline/level-4 ()
-  (should (equal( org-bb--format-headline "some text" 4)
+  (should (equal( ox-bb--format-headline "some text" 4)
 		"[b][u]:::: some text[/u][/b]\n\n")))
 
 (ert-deftest org-bb/format-headline/level-5 ()
-  (should (equal( org-bb--format-headline "some text" 5)
+  (should (equal( ox-bb--format-headline "some text" 5)
 		"[b][u]----- some text[/u][/b]\n\n")))
 
-;;; org-bb--put-in-tag
+;;; ox-bb--put-in-tag
 
 (ert-deftest org-bb/put-in-tag/no-attribute ()
-  (should (equal (org-bb--put-in-tag "p" "foo")
+  (should (equal (ox-bb--put-in-tag "p" "foo")
 		 "[p]foo[/p]")))
 
 (ert-deftest org-bb/put-in-tag/single-attribute ()
-  (should (equal (org-bb--put-in-tag "style" "foo" '(("size" "30px")))
+  (should (equal (ox-bb--put-in-tag "style" "foo" '(("size" "30px")))
 		 "[style size=\"30px\"]foo[/style]")))
 
 (ert-deftest org-bb/put-in-tag/multiple-attributes ()
-  (should (equal (org-bb--put-in-tag "style" "foo" '(("color" "#00FF00") ("size" "30px")))
+  (should (equal (ox-bb--put-in-tag "style" "foo" '(("color" "#00FF00") ("size" "30px")))
 		 "[style color=\"#00FF00\" size=\"30px\"]foo[/style]")))
 
-;;; org-bb--put-in-value-tag
+;;; ox-bb--put-in-value-tag
 
 (ert-deftest org-bb/put-in-value-tag/plain ()
-  (should (equal (org-bb--put-in-value-tag "url" "foo" "file.htm")
+  (should (equal (ox-bb--put-in-value-tag "url" "foo" "file.htm")
 		 "[url=file.htm]foo[/url]")))
 
-;;; org-bb--put-url
+;;; ox-bb--put-url
 
 (ert-deftest org-bb/put-url/plain ()
-  (should (equal (org-bb--put-url "some text" "https://example.com/")
+  (should (equal (ox-bb--put-url "some text" "https://example.com/")
 		 "[url=https://example.com/]some text[/url]")))
 
 (ert-deftest org-bb/put-url/empty ()
-  (should (equal (org-bb--put-url nil "https://example.com/")
+  (should (equal (ox-bb--put-url nil "https://example.com/")
 		 "[url=https://example.com/]https://example.com/[/url]")))
 
 (ert-deftest org-bb/put-url/anchor ()
-  (should (equal (org-bb--put-url "anchor text" "#anchor")
+  (should (equal (ox-bb--put-url "anchor text" "#anchor")
 		 "[url=#anchor]anchor text[/url]")))
 
 (ert-deftest org-bb/put-url/encode-url-only-once ()
-  (should (equal (org-bb--put-url "baz" "http://foo/%20bar")
+  (should (equal (ox-bb--put-url "baz" "http://foo/%20bar")
 		 "[url=http://foo/%20bar]baz[/url]")))
 
-;;; org-bb--remove-leading-newline
+;;; ox-bb--remove-leading-newline
 
 (ert-deftest org-bb/remove-leading-newline/remove ()
-  (should (equal( org-bb--remove-leading-newline "\nsome text")
+  (should (equal( ox-bb--remove-leading-newline "\nsome text")
 		"some text")))
 
 (ert-deftest org-bb/remove-leading-newline/keep-text-before-first-newline ()
-  (should (equal( org-bb--remove-leading-newline "no empty line\nsome more text\n")
+  (should (equal( ox-bb--remove-leading-newline "no empty line\nsome more text\n")
 		"no empty line\nsome more text\n")))
 
 (ert-deftest org-bb/remove-leading-newline/only-remove-first-newline ()
-  (should (equal( org-bb--remove-leading-newline "\n\nsome text")
+  (should (equal( ox-bb--remove-leading-newline "\n\nsome text")
 		"\nsome text")))
 
 (ert-deftest org-bb/remove-leading-newline/keep-newlines-within ()
-  (should (equal( org-bb--remove-leading-newline "\nline 1\nline 2")
+  (should (equal( ox-bb--remove-leading-newline "\nline 1\nline 2")
 		"line 1\nline 2")))
 
 (ert-deftest org-bb/remove-leading-newline/dont-fail-with-no-newline ()
-  (should (equal( org-bb--remove-leading-newline "some text")
+  (should (equal( ox-bb--remove-leading-newline "some text")
 		"some text")))
 
-;;; org-bb--remove-trailing-newline
+;;; ox-bb--remove-trailing-newline
 
 (ert-deftest org-bb/remove-trailing-newline/remove ()
-  (should (equal( org-bb--remove-trailing-newline "some text\n")
+  (should (equal( ox-bb--remove-trailing-newline "some text\n")
 		"some text")))
 
 (ert-deftest org-bb/remove-trailing-newline/keep-text-after-last-newline ()
-  (should (equal( org-bb--remove-trailing-newline "some text\nno empty line")
+  (should (equal( ox-bb--remove-trailing-newline "some text\nno empty line")
 		"some text\nno empty line")))
 
 (ert-deftest org-bb/remove-trailing-newline/only-remove-last-newline ()
-  (should (equal( org-bb--remove-trailing-newline "some text\n\n")
+  (should (equal( ox-bb--remove-trailing-newline "some text\n\n")
 		"some text\n")))
 
 (ert-deftest org-bb/remove-trailing-newline/keep-newlines-within ()
-  (should (equal( org-bb--remove-trailing-newline "line 1\nline 2\n")
+  (should (equal( ox-bb--remove-trailing-newline "line 1\nline 2\n")
 		"line 1\nline 2")))
 
 (ert-deftest org-bb/remove-trailing-newline/dont-fail-with-no-newline ()
-  (should (equal( org-bb--remove-trailing-newline "some text")
+  (should (equal( ox-bb--remove-trailing-newline "some text")
 		"some text")))
 
-;;; org- org-bb--map-to-geshi-language
+;;; org- ox-bb--map-to-geshi-language
 
 (ert-deftest org-bb/map-to-geshi-language/unchanged ()
-  (should (equal( org-bb--map-to-geshi-language "java")
+  (should (equal( ox-bb--map-to-geshi-language "java")
 		"java")))
 
 (ert-deftest org-bb/map-to-geshi-language/changed ()
-  (should (equal( org-bb--map-to-geshi-language "elisp")
+  (should (equal( ox-bb--map-to-geshi-language "elisp")
 		"lisp")))
 
 (ert-deftest org-bb/map-to-geshi-language/nil ()
-  (should (equal( org-bb--map-to-geshi-language nil)
+  (should (equal( ox-bb--map-to-geshi-language nil)
 		"plaintext")))
 
 (ert-deftest org-bb/map-to-geshi-language/empty ()
-  (should (equal( org-bb--map-to-geshi-language "")
+  (should (equal( ox-bb--map-to-geshi-language "")
 		"plaintext")))
 
 
@@ -211,25 +211,25 @@ for details."
 ;;;;;
 
 (ert-deftest org-bb/export-bold ()
-  (should (equal (test-org-bb-export "foo *BAR* baz")
+  (should (equal (test-ox-bb-export "foo *BAR* baz")
 		 "foo [b]BAR[/b] baz")))
 
 (ert-deftest org-bb/export-code ()
-  (should (equal (test-org-bb-export "foo ~BAR~ baz")
+  (should (equal (test-ox-bb-export "foo ~BAR~ baz")
 		 "foo [font=monospace]BAR[/font] baz")))
 
 (ert-deftest org-bb/export-entity ()
-  (should (equal (test-org-bb-export "This is *bold* and this is in \\ast{}asterisks\\ast{}.")
+  (should (equal (test-ox-bb-export "This is *bold* and this is in \\ast{}asterisks\\ast{}.")
 		 "This is [b]bold[/b] and this is in &lowast;asterisks&lowast;.")))
 
 (ert-deftest org-bb/export-fixed-width ()
-  (should (equal (test-org-bb-export "paragraph 1
+  (should (equal (test-ox-bb-export "paragraph 1
 
 : verbatim line
 :   indented verbatim line
 
 paragraph 2")
-		 (if (test-org-bb-verbatim-regression)
+		 (if (test-ox-bb-verbatim-regression)
 		     "paragraph 1
 
 [code]
@@ -248,7 +248,7 @@ verbatim line
 paragraph 2"))))
 
 (ert-deftest org-bb/export-footnote-multiple ()
-  (should (equal (test-org-bb-export "foo[fn:1] bar[fn:2]
+  (should (equal (test-ox-bb-export "foo[fn:1] bar[fn:2]
 * Footnotes
 
 [fn:1] foo
@@ -261,7 +261,7 @@ paragraph 2"))))
 ^2: bar")))
 
 (ert-deftest org-bb/export-footnote-plain ()
-  (should (equal (test-org-bb-export "bar[fn:1]
+  (should (equal (test-ox-bb-export "bar[fn:1]
 * Footnotes
 
 [fn:1] foo")
@@ -272,7 +272,7 @@ paragraph 2"))))
 ^1: foo")))
 
 (ert-deftest org-bb/export-geshi-block-without-language ()
-  (should (equal (test-org-bb-export "#+BEGIN_SRC
+  (should (equal (test-ox-bb-export "#+BEGIN_SRC
 package foo;
 /* dummy dummy */
 #+END_SRC")
@@ -280,7 +280,7 @@ package foo;
 /* dummy dummy */[/geshi]")))
 
 (ert-deftest org-bb/export-geshi-block ()
-  (should (equal (test-org-bb-export "#+BEGIN_SRC java
+  (should (equal (test-ox-bb-export "#+BEGIN_SRC java
 package foo;
 /* dummy dummy */
 #+END_SRC")
@@ -288,18 +288,18 @@ package foo;
 /* dummy dummy */[/geshi]")))
 
 (ert-deftest org-bb/export-headline-lv1 ()
-  (should (equal (test-org-bb-export "* TOPIC")
+  (should (equal (test-ox-bb-export "* TOPIC")
 		 "[b][u]# TOPIC[/u][/b]")))
 
 (ert-deftest org-bb/export-headline-lv2 ()
-  (should (equal (test-org-bb-export "* dummy
+  (should (equal (test-ox-bb-export "* dummy
 ** TOPIC")
 		 "[b][u]# dummy[/u][/b]
 
 [b][u]== TOPIC[/u][/b]")))
 
 (ert-deftest org-bb/export-headline-lv3 ()
-  (should (equal (test-org-bb-export "* dummy
+  (should (equal (test-ox-bb-export "* dummy
 ** dummy
 *** TOPIC")
 		 "[b][u]# dummy[/u][/b]
@@ -309,7 +309,7 @@ package foo;
 [b][u]+++ TOPIC[/u][/b]")))
 
 (ert-deftest org-bb/export-headline-lv4 ()
-  (should (equal (test-org-bb-export "* dummy
+  (should (equal (test-ox-bb-export "* dummy
 ** dummy
 *** dummy
 **** TOPIC")
@@ -322,7 +322,7 @@ package foo;
 [b][u]:::: TOPIC[/u][/b]")))
 
 (ert-deftest org-bb/export-headline-lv5 ()
-  (should (equal (test-org-bb-export "* dummy
+  (should (equal (test-ox-bb-export "* dummy
 ** dummy
 *** dummy
 **** dummy
@@ -338,47 +338,47 @@ package foo;
 [b][u]----- TOPIC[/u][/b]")))
 
 (ert-deftest org-bb/export-italic ()
-  (should (equal (test-org-bb-export "foo /BAR/ baz")
+  (should (equal (test-ox-bb-export "foo /BAR/ baz")
 		 "foo [i]BAR[/i] baz")))
 
 (ert-deftest org-bb/export-line-break ()
-  (should (equal (test-org-bb-export "foo\\\\
+  (should (equal (test-ox-bb-export "foo\\\\
 bar")
 		 "foo[br]_[/br]
 bar")))
 
 (ert-deftest org-bb/export-link-about ()
-  (should (equal (test-org-bb-export "[[about:config][bar]]")
+  (should (equal (test-ox-bb-export "[[about:config][bar]]")
 		 "[url=about:config]bar[/url]")))
 
 (ert-deftest org-bb/export-link-empty ()
-  (should (equal (test-org-bb-export "http://example.com/")
+  (should (equal (test-ox-bb-export "http://example.com/")
 		 "[url=http://example.com/]http://example.com/[/url]")))
 
 (ert-deftest org-bb/export-link-encode-url-only-once ()
-  (should (equal (test-org-bb-export "[[http://foo/%20bar][baz]]")
+  (should (equal (test-ox-bb-export "[[http://foo/%20bar][baz]]")
 		 "[url=http://foo/%20bar]baz[/url]")))
 
 (ert-deftest org-bb/export-link-encode-url ()
-  (should (equal (test-org-bb-export "[[http://foo/ bar][baz]]")
+  (should (equal (test-ox-bb-export "[[http://foo/ bar][baz]]")
 		 "[url=http://foo/%20bar]baz[/url]")))
 
 (ert-deftest org-bb/export-link-http ()
-  (should (equal (test-org-bb-export "[[http://foo/][bar]]")
+  (should (equal (test-ox-bb-export "[[http://foo/][bar]]")
 		 "[url=http://foo/]bar[/url]")))
 
 (ert-deftest org-bb/export-link-https ()
-  (should (equal (test-org-bb-export "[[https://foo/][bar]]")
+  (should (equal (test-ox-bb-export "[[https://foo/][bar]]")
 		 "[url=https://foo/]bar[/url]")))
 
 (ert-deftest org-bb/export-multiline-paragraph ()
-  (should (equal (test-org-bb-export "foo
+  (should (equal (test-ox-bb-export "foo
 bar")
 		 "foo
 bar")))
 
 (ert-deftest org-bb/export-multiple-paragraphs ()
-  (should (equal (test-org-bb-export "foo
+  (should (equal (test-ox-bb-export "foo
 
 bar")
 		 "foo
@@ -386,7 +386,7 @@ bar")
 bar")))
 
 (ert-deftest org-bb/export-table-plain ()
-  (should (equal (test-org-bb-export "| A1 | B1 |
+  (should (equal (test-ox-bb-export "| A1 | B1 |
 |----+----|
 | A2 | B2 |
 |----+----|")
@@ -395,14 +395,14 @@ bar")))
 [/table]")))
 
 (ert-deftest org-bb/export-table-markup ()
-  (should (equal (test-org-bb-export "| *A1* | /B1/ |
+  (should (equal (test-ox-bb-export "| *A1* | /B1/ |
 | A2   | [[http://localhost][B2]] x |")
 		 "[table][tr][td][b]A1[/b][/td][td][i]B1[/i][/td][/tr]
 [tr][td]A2[/td][td][url=http://localhost]B2[/url] x[/td][/tr]
 [/table]")))
 
 (ert-deftest org-bb/export-plain-list-descriptive ()
-  (should (equal (test-org-bb-export "- foo :: pokey
+  (should (equal (test-ox-bb-export "- foo :: pokey
 - bar :: hokey")
 		 "[list]
 [*][i]foo:[/i] pokey
@@ -410,7 +410,7 @@ bar")))
 [/list]")))
 
 (ert-deftest org-bb/export-plain-list-ordered ()
-  (should (equal (test-org-bb-export "1. foo
+  (should (equal (test-ox-bb-export "1. foo
 2. bar")
 		 "[list=1]
 [*]foo
@@ -418,7 +418,7 @@ bar")))
 [/list]")))
 
 (ert-deftest org-bb/export-plain-list-unordered ()
-  (should (equal (test-org-bb-export "- foo
+  (should (equal (test-ox-bb-export "- foo
 - bar")
 		 "[list]
 [*]foo
@@ -426,7 +426,7 @@ bar")))
 [/list]")))
 
 (ert-deftest org-bb/export-quote-block ()
-  (should (equal (test-org-bb-export "#+BEGIN_QUOTE
+  (should (equal (test-ox-bb-export "#+BEGIN_QUOTE
 Somebody
 said
 this.
@@ -438,19 +438,19 @@ this.
 [/quote]")))
 
 (ert-deftest org-bb/export-single-paragraph ()
-  (should (equal (test-org-bb-export "foo")
+  (should (equal (test-ox-bb-export "foo")
 		 "foo")))
 
 (ert-deftest org-bb/export-strike-through ()
-  (should (equal (test-org-bb-export "foo +BAR+ baz")
+  (should (equal (test-ox-bb-export "foo +BAR+ baz")
 		 "foo [s]BAR[/s] baz")))
 
 (ert-deftest org-bb/export-underline ()
-  (should (equal (test-org-bb-export "foo _BAR_ baz")
+  (should (equal (test-ox-bb-export "foo _BAR_ baz")
 		 "foo [u]BAR[/u] baz")))
 
 (ert-deftest org-bb/export-verbatim ()
-  (should (equal (test-org-bb-export "foo =BAR= baz")
+  (should (equal (test-ox-bb-export "foo =BAR= baz")
 		 "foo [font=monospace]BAR[/font] baz")))
 
 ;;; register file

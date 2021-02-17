@@ -32,72 +32,72 @@
 ;;; Backend definition
 
 (org-export-define-backend 'bb
-  '((bold . org-bb-bold)
-    (center-block . org-bb-undefined)
-    (clock . org-bb-undefined)
-    (code . org-bb-code)
-    (drawer . org-bb-undefined)
-    (dynamic-block . org-bb-undefined)
-    (entity . org-bb-entity)
-    (example-block . org-bb-undefined)
-    (export-block . org-bb-undefined)
-    (export-snippet . org-bb-undefined)
-    (fixed-width . org-bb-fixed-width)
-    (footnote-definition . org-bb-footnote-definition)
-    (footnote-reference . org-bb-footnote-reference)
-    (headline . org-bb-headline)
-    (horizontal-rule . org-bb-undefined)
-    (inline-src-block . org-bb-undefined)
-    (inlinetask . org-bb-undefined)
-    (inner-template . org-bb-inner-template)
-    (italic . org-bb-italic)
-    (item . org-bb-item)
-    ;; (keyword . org-bb-undefined) ;; don't fail, just skip keywords
-    (latex-environment . org-bb-undefined)
-    (latex-fragment . org-bb-undefined)
-    (line-break . org-bb-line-break)
-    (link . org-bb-link)
-    (node-property . org-bb-undefined)
-    (paragraph . org-bb-paragraph)
-    (plain-list . org-bb-plain-list)
-    (plain-text . org-bb-plain-text)
-    (planning . org-bb-undefined)
-    (property-drawer . org-bb-undefined)
-    (quote-block . org-bb-quote-block)
-    (radio-target . org-bb-undefined)
-    (section . org-bb-section)
-    (special-block . org-bb-undefined)
-    (src-block . org-bb-geshi-block)
-    (statistics-cookie . org-bb-undefined)
-    (strike-through . org-bb-strike-through)
-    (subscript . org-bb-undefined)
-    (superscript . org-bb-undefined)
-    (table . org-bb-table)
-    (table-cell . org-bb-table-cell)
-    (table-row . org-bb-table-row)
-    (target . org-bb-undefined)
-    (template . org-bb-template)
-    (timestamp . org-bb-undefined)
-    (underline . org-bb-underline)
-    (verbatim . org-bb-verbatim)
-    (verse-block . org-bb-undefined))
+  '((bold . ox-bb-bold)
+    (center-block . ox-bb-undefined)
+    (clock . ox-bb-undefined)
+    (code . ox-bb-code)
+    (drawer . ox-bb-undefined)
+    (dynamic-block . ox-bb-undefined)
+    (entity . ox-bb-entity)
+    (example-block . ox-bb-undefined)
+    (export-block . ox-bb-undefined)
+    (export-snippet . ox-bb-undefined)
+    (fixed-width . ox-bb-fixed-width)
+    (footnote-definition . ox-bb-footnote-definition)
+    (footnote-reference . ox-bb-footnote-reference)
+    (headline . ox-bb-headline)
+    (horizontal-rule . ox-bb-undefined)
+    (inline-src-block . ox-bb-undefined)
+    (inlinetask . ox-bb-undefined)
+    (inner-template . ox-bb-inner-template)
+    (italic . ox-bb-italic)
+    (item . ox-bb-item)
+    ;; (keyword . ox-bb-undefined) ;; don't fail, just skip keywords
+    (latex-environment . ox-bb-undefined)
+    (latex-fragment . ox-bb-undefined)
+    (line-break . ox-bb-line-break)
+    (link . ox-bb-link)
+    (node-property . ox-bb-undefined)
+    (paragraph . ox-bb-paragraph)
+    (plain-list . ox-bb-plain-list)
+    (plain-text . ox-bb-plain-text)
+    (planning . ox-bb-undefined)
+    (property-drawer . ox-bb-undefined)
+    (quote-block . ox-bb-quote-block)
+    (radio-target . ox-bb-undefined)
+    (section . ox-bb-section)
+    (special-block . ox-bb-undefined)
+    (src-block . ox-bb-geshi-block)
+    (statistics-cookie . ox-bb-undefined)
+    (strike-through . ox-bb-strike-through)
+    (subscript . ox-bb-undefined)
+    (superscript . ox-bb-undefined)
+    (table . ox-bb-table)
+    (table-cell . ox-bb-table-cell)
+    (table-row . ox-bb-table-row)
+    (target . ox-bb-undefined)
+    (template . ox-bb-template)
+    (timestamp . ox-bb-undefined)
+    (underline . ox-bb-underline)
+    (verbatim . ox-bb-verbatim)
+    (verse-block . ox-bb-undefined))
   :menu-entry
   '(?b "Export to BBCode"
-       ((?B "As BBCode buffer" org-bb-export-as-bbcode)
-	(?f "As BBCode file" org-bb-export-to-bbcode)
-	(?b "As BBCode buffer and to clipboard" org-bb-export-to-kill-ring))))
+       ((?B "As BBCode buffer" ox-bb-export-as-bbcode)
+	(?f "As BBCode file" ox-bb-export-to-bbcode)
+	(?b "As BBCode buffer and to clipboard" ox-bb-export-to-kill-ring))))
 
 ;;; Helper methods
 
-(defun org-bb--as-block (text)
+(defun ox-bb--as-block (text)
   "Format TEXT as a block with leading and trailing newline."
   (concat "\n" text "\n"))
 
-(defun org-bb--force-leading-newline (text)
+(defun ox-bb--force-leading-newline (text)
   "Make TEXT start with exactly one newline."
   (replace-regexp-in-string "\\`\n*" "\n" text))
 
-(defun org-bb--format-headline (text level)
+(defun ox-bb--format-headline (text level)
   "Format TEXT as a headline of the given LEVEL."
   (let ((indent (cl-case level
 		  (0 "")
@@ -108,12 +108,12 @@
 		  (5 "----- ")
 		  (t (error "Headline level `%s' is not defined yet" level)))))
     (concat
-     (org-bb--put-in-tag
-      "b" (org-bb--put-in-tag
+     (ox-bb--put-in-tag
+      "b" (ox-bb--put-in-tag
 	   "u" (concat indent text)))
      "\n\n")))
 
-(defun org-bb--put-in-tag (tag contents &optional attributes)
+(defun ox-bb--put-in-tag (tag contents &optional attributes)
   "Puts the BBcode tag TAG around the CONTENTS string.
 Optional ATTRIBUTES for the tag can be given as an alist of
 key/value pairs (both strings)."
@@ -127,13 +127,13 @@ key/value pairs (both strings)."
 			    "")))
     (format "[%s%s]%s[/%s]" tag attribute-string contents tag)))
 
-(defun org-bb--put-in-value-tag (tag contents value)
+(defun ox-bb--put-in-value-tag (tag contents value)
   "Puts the BBcode tag TAG around the CONTENTS string.
 The VALUE is assigned directly to the tag instead of a normal
 key/value pair."
   (format "[%s=%s]%s[/%s]" tag value contents tag))
 
-(defun org-bb--fix-url (url)
+(defun ox-bb--fix-url (url)
   "Fix URL returned from `url-encode-url'.
 Older versions of Emacs (eg. 24.3 used in the Travis CI minimal
 image) prepend \"/\" to urls consisting only of an \"#anchor\"
@@ -143,22 +143,22 @@ this the hard way."
       (substring url 1)
     url))
 
-(defun org-bb--put-url (contents href)
+(defun ox-bb--put-url (contents href)
   "Puts the CONTENTS inside a [url] tag pointing to HREF.
 Automagically escapes the target URL."
-  (let* ((target (org-bb--fix-url (url-encode-url (org-link-unescape href))))
+  (let* ((target (ox-bb--fix-url (url-encode-url (org-link-unescape href))))
 	 (text   (or contents target)))
-    (org-bb--put-in-value-tag "url" text target)))
+    (ox-bb--put-in-value-tag "url" text target)))
 
-(defun org-bb--remove-leading-newline (text)
+(defun ox-bb--remove-leading-newline (text)
   "Remove a leading empty line from TEXT."
   (replace-regexp-in-string "\\`\n" "" text))
 
-(defun org-bb--remove-trailing-newline (text)
+(defun ox-bb--remove-trailing-newline (text)
   "Remove the trailing newline from TEXT."
   (replace-regexp-in-string "\n\\'" "" text))
 
-(defun org-bb--map-to-geshi-language (language)
+(defun ox-bb--map-to-geshi-language (language)
   "Map LANGUAGE from Org to GeSHi."
   (cond ((string= language "elisp") "lisp")
 	((string= language "shell") "bash")
@@ -169,39 +169,39 @@ Automagically escapes the target URL."
 
 ;;; Backend callbacks
 
-(defun org-bb-bold (_bold contents _info)
+(defun ox-bb-bold (_bold contents _info)
   "Transcode a BOLD element from Org to BBCode.
 CONTENTS is the bold text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-bb--put-in-tag "b" contents))
+  (ox-bb--put-in-tag "b" contents))
 
-(defun org-bb-code (code _contents _info)
+(defun ox-bb-code (code _contents _info)
   "Transcode a CODE element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-bb--put-in-value-tag "font" (org-element-property :value code) "monospace"))
+  (ox-bb--put-in-value-tag "font" (org-element-property :value code) "monospace"))
 
-(defun org-bb-entity (entity _contents _info)
+(defun ox-bb-entity (entity _contents _info)
   "Transcode an ENTITY element from Org to BBCode.
 CONTENTS is the definition itself.  INFO is a plist used as a
 communication channel."
   (org-element-property :html entity))
 
-(defun org-bb-geshi-block (code-block _contents info)
+(defun ox-bb-geshi-block (code-block _contents info)
   "Transcode a CODE-BLOCK element from Org to BBCode GeSHi plugin.
 CONTENTS is nil.  INFO is a plist holding
 contextual information."
   (format "[geshi lang=%s]%s[/geshi]"
-	  (org-bb--map-to-geshi-language (org-element-property :language code-block))
-	  (org-bb--remove-trailing-newline
+	  (ox-bb--map-to-geshi-language (org-element-property :language code-block))
+	  (ox-bb--remove-trailing-newline
 	   (org-export-format-code-default code-block info))))
 
-(defun org-bb-fixed-width (fixed-width _contents _info)
+(defun ox-bb-fixed-width (fixed-width _contents _info)
   "Transcode a FIXED-WIDTH element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
-  (org-bb--put-in-tag "code"
+  (ox-bb--put-in-tag "code"
 		      (concat "\n" (org-element-property :value fixed-width))))
 
-(defun org-bb-footnote-reference (footnote-reference _contents info)
+(defun ox-bb-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (if (eq (org-element-property :type footnote-reference) 'inline)
@@ -209,13 +209,13 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
     (let ((n (org-export-get-footnote-number footnote-reference info)))
       (format "^%d " n))))
 
-(defun org-bb-format-footnote-definition (fn)
+(defun ox-bb-format-footnote-definition (fn)
   "Format the footnote definition FN."
   (let ((n (car fn))
 	(def (cdr fn)))
     (format "^%d: %s" n def)))
 
-(defun org-bb-footnote-section (info)
+(defun ox-bb-footnote-section (info)
   "Format the footnote section.
 INFO is a plist used as a communication channel."
   (let* ((org-major (string-to-number (car (split-string (org-release) "\\."))))
@@ -227,12 +227,12 @@ INFO is a plist used as a communication channel."
 	 (fn-alist
 	  (cl-loop for (n _label raw) in fn-alist collect
 		   (cons n (org-trim (org-export-data raw info)))))
-	 (text (mapconcat 'org-bb-format-footnote-definition fn-alist "\n")))
+	 (text (mapconcat 'ox-bb-format-footnote-definition fn-alist "\n")))
     (if fn-alist
-	(concat "\n" (org-bb--format-headline "Footnotes" 0) text)
+	(concat "\n" (ox-bb--format-headline "Footnotes" 0) text)
       "")))
 
-(defun org-bb-headline (headline contents info)
+(defun ox-bb-headline (headline contents info)
   "Transcode HEADLINE element from Org to BBCode.
 CONTENTS is the headline contents.  INFO is a plist used as
 a communication channel."
@@ -241,24 +241,24 @@ a communication channel."
     (if (org-element-property :footnote-section-p headline)
 	""
       (concat
-       (org-bb--format-headline title level)
+       (ox-bb--format-headline title level)
        contents))))
 
-(defun org-bb-inner-template (contents info)
+(defun ox-bb-inner-template (contents info)
   "Return body of document string after BBCode conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   (concat
    contents
-   (org-bb-footnote-section info)))
+   (ox-bb-footnote-section info)))
 
-(defun org-bb-italic (_italic contents _info)
+(defun ox-bb-italic (_italic contents _info)
   "Transcode a ITALIC element from Org to BBCode.
 CONTENTS is the italic text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-bb--put-in-tag "i" contents))
+  (ox-bb--put-in-tag "i" contents))
 
-(defun org-bb-item (item contents info)
+(defun ox-bb-item (item contents info)
   "Transcode a ITEM element from Org to BBCode.
 CONTENTS is the contents of the item, as a string.  INFO is
   a plist used as a communication channel."
@@ -272,19 +272,19 @@ CONTENTS is the contents of the item, as a string.  INFO is
 	(let ((term (let ((tag (org-element-property :tag item)))
 		      (and tag (org-export-data tag info)))))
 	  (concat
-	   (org-bb--put-in-tag "i" (concat (org-trim term) ":"))
+	   (ox-bb--put-in-tag "i" (concat (org-trim term) ":"))
 	   " "
 	   ))))
      text
      "\n")))
 
-(defun org-bb-line-break (_line-break _contents _info)
+(defun ox-bb-line-break (_line-break _contents _info)
   "Transcode a LINE-BREAK object from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual
 information."
   "[br]_[/br]\n")
 
-(defun org-bb-link (link contents _info)
+(defun ox-bb-link (link contents _info)
   "Transcode a LINK element from Org to BBCode.
 CONTENTS is the contents of the link, as a string.  INFO is
   a plist used as a communication channel."
@@ -295,100 +295,100 @@ CONTENTS is the contents of the link, as a string.  INFO is
      ((string= type "fuzzy")
       (cond
        ((string-prefix-p "about:" raw)
-	(org-bb--put-url contents raw))
+	(ox-bb--put-url contents raw))
        (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
-      (org-bb--put-url contents (concat type ":" path)))
+      (ox-bb--put-url contents (concat type ":" path)))
      (t (error "LINK type `%s' not yet supported" type)))))
 
-(defun org-bb-paragraph (_paragraph contents _info)
+(defun ox-bb-paragraph (_paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to BBCode.
 CONTENTS is the contents of the paragraph, as a string.  INFO is
   a plist used as a communication channel."
   (org-trim contents))
 
-(defun org-bb-plain-list (plain-list contents _info)
+(defun ox-bb-plain-list (plain-list contents _info)
   "Transcode a PLAIN-LIST element from Org to BBCode.
 CONTENTS is the contents of the plain-list, as a string.  INFO is
   a plist used as a communication channel."
   (let ((type (org-element-property :type plain-list))
-	(content-block (org-bb--as-block (org-trim contents))))
+	(content-block (ox-bb--as-block (org-trim contents))))
     (concat
      (pcase type
-       (`descriptive (org-bb--put-in-tag "list" content-block))
-       (`unordered (org-bb--put-in-tag "list" content-block))
-       (`ordered (org-bb--put-in-value-tag "list" content-block "1"))
+       (`descriptive (ox-bb--put-in-tag "list" content-block))
+       (`unordered (ox-bb--put-in-tag "list" content-block))
+       (`ordered (ox-bb--put-in-value-tag "list" content-block "1"))
        (other (error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 
-(defun org-bb-plain-text (text _info)
+(defun ox-bb-plain-text (text _info)
   "Transcode a TEXT string from Org to BBCode.
 INFO is a plist used as a communication channel."
   text)
 
-(defun org-bb-quote-block (_quote-block contents _info)
+(defun ox-bb-quote-block (_quote-block contents _info)
   "Transcode a QUOTE-BLOCK element from Org to BBCode.
 CONTENTS holds the contents of the block.  INFO is a plist used
 as a communication channel."
-  (org-bb--put-in-tag "quote" (org-bb--force-leading-newline contents)))
+  (ox-bb--put-in-tag "quote" (ox-bb--force-leading-newline contents)))
 
-(defun org-bb-section (_section contents _info)
+(defun ox-bb-section (_section contents _info)
   "Transcode a SECTION element from Org to BBCode.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
   (org-trim contents))
 
-(defun org-bb-strike-through (_strike-through contents _info)
+(defun ox-bb-strike-through (_strike-through contents _info)
   "Transcode a STRIKE-THROUGH element from Org to BBCode.
 CONTENTS is the text with strike-through markup, as a string.
   INFO is a plist used as a communication channel."
-  (org-bb--put-in-tag "s" contents))
+  (ox-bb--put-in-tag "s" contents))
 
-(defun org-bb-table (_table contents _info)
+(defun ox-bb-table (_table contents _info)
   "Transcode a TABLE element from Org to BBCode.
 CONTENTS contains the already rendered body of the table.  INFO
 is a plist used as a communication channel."
-  (org-bb--put-in-tag "table" contents))
+  (ox-bb--put-in-tag "table" contents))
 
-(defun org-bb-table-row (_table-row contents _info)
+(defun ox-bb-table-row (_table-row contents _info)
   "Transcode a TABLE-ROW element from Org to BBCode.
 CONTENTS contains the already rendered row content.  INFO is a
 plist used as a communication channel."
   (if contents
-      (org-bb--put-in-tag "tr" contents)
+      (ox-bb--put-in-tag "tr" contents)
     ""))
 
-(defun org-bb-table-cell (_table-cell contents _info)
+(defun ox-bb-table-cell (_table-cell contents _info)
   "Transcode a TABLE-CELL element from Org to BBCode.
 CONTENTS contains the already rendered cell content.  INFO is a
 plist used as a communication channel."
-  (org-bb--put-in-tag "td" contents))
+  (ox-bb--put-in-tag "td" contents))
 
-(defun org-bb-template (contents _info)
+(defun ox-bb-template (contents _info)
   "Return complete document string after BBCode conversion.
 CONTENTS is the transcoded contents string.  INFO is a plist
 holding export options."
   contents)
 
-(defun org-bb-undefined (element &optional _contents _info)
+(defun ox-bb-undefined (element &optional _contents _info)
   "Throw an error when an unsupported ELEMENT is encountered."
   (error "ELEMENT type `%s' not implemented yet" (car element)))
 
-(defun org-bb-underline (_underline contents _info)
+(defun ox-bb-underline (_underline contents _info)
   "Transcode a UNDERLINE element from Org to BBCode.
 CONTENTS is the underlined text, as a string.  INFO is
   a plist used as a communication channel."
-  (org-bb--put-in-tag "u" contents))
+  (ox-bb--put-in-tag "u" contents))
 
-(defun org-bb-verbatim (verbatim _contents _info)
+(defun ox-bb-verbatim (verbatim _contents _info)
   "Transcode a VERBATIM element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist used as a communication channel."
-  (org-bb--put-in-value-tag "font" (org-element-property :value verbatim) "monospace"))
+  (ox-bb--put-in-value-tag "font" (org-element-property :value verbatim) "monospace"))
 
 ;;; Export methods
 
 ;;;###autoload
-(defun org-bb-export-as-bbcode
+(defun ox-bb-export-as-bbcode
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode buffer.
 
@@ -421,7 +421,7 @@ Export is done in a buffer named \"*Org BBCode Export*\"."
     (lambda () (when (featurep 'bbcode-mode) (bbcode-mode)))))
 
 ;;;###autoload
-(defun org-bb-export-to-bbcode
+(defun ox-bb-export-to-bbcode
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode file.
 
@@ -456,7 +456,7 @@ Return output file's name."
       async subtreep visible-only body-only ext-plist)))
 
 ;;;###autoload
-(defun org-bb-export-to-kill-ring
+(defun ox-bb-export-to-kill-ring
   (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode buffer and kill ring.
 
@@ -488,7 +488,7 @@ automatically copied to the kill ring (Clipboard)."
   (let ((oldval org-export-copy-to-kill-ring))
     (progn
       (setq org-export-copy-to-kill-ring t)
-      (org-bb-export-as-bbcode async subtreep visible-only body-only ext-plist)
+      (ox-bb-export-as-bbcode async subtreep visible-only body-only ext-plist)
       (setq org-export-copy-to-kill-ring oldval))))
 
 ;;; Register file
