@@ -396,9 +396,9 @@ bar")))
 
 (ert-deftest org-bb/export-table-markup ()
   (should (equal (test-ox-bb-export "| *A1* | /B1/ |
-| A2   | [[http://localhost][B2]] x |")
+| A2   | [[http://localhost/][B2]] x |")
 		 "[table][tr][td][b]A1[/b][/td][td][i]B1[/i][/td][/tr]
-[tr][td]A2[/td][td][url=http://localhost]B2[/url] x[/td][/tr]
+[tr][td]A2[/td][td][url=http://localhost/]B2[/url] x[/td][/tr]
 [/table]")))
 
 (ert-deftest org-bb/export-plain-list-descriptive ()
