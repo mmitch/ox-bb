@@ -354,7 +354,9 @@ is a plist used as a communication channel."
   "Transcode a TABLE-ROW element from Org to BBCode.
 CONTENTS contains the already rendered row content.  INFO is a
 plist used as a communication channel."
-  (org-bb--put-in-tag "tr" contents))
+  (if contents
+      (org-bb--put-in-tag "tr" contents)
+    ""))
 
 (defun org-bb-table-cell (_table-cell contents _info)
   "Transcode a TABLE-CELL element from Org to BBCode.
