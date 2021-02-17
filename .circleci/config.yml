@@ -55,10 +55,29 @@ jobs:
           name: Unit tests
           command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
 
+  emacs_24:
+    docker:
+      - image: silex/emacs:24
+    steps:
+      - checkout
+      - run:
+          name: Log Emacs version
+          command: emacs --version
+      - run:
+          name: Log Org version
+          command: emacs -Q --batch -f org-version
+      - run:
+          name: Byte compilation
+          command: emacs -Q --batch -f batch-byte-compile ox-bb.el
+      - run:
+          name: Unit tests
+          command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
+
 workflows:
   version: 2
   commit:
     jobs:
+      - emacs_24
       - emacs_25
       - emacs_26
       - emacs_27
@@ -71,6 +90,7 @@ workflows:
               only:
                 - master
     jobs:
+      - emacs_24
       - emacs_25
       - emacs_26
       - emacs_27
