@@ -82,9 +82,9 @@
     (verbatim . org-bb-verbatim)
     (verse-block . org-bb-undefined))
   :menu-entry
-  '(?S "Export to BBCode"
-       ((?H "As BBCode buffer" org-bb-export-as-bbcode)
-	(?h "As BBCode file" org-bb-export-to-bbcode))))
+  '(?b "Export to BBCode"
+       ((?b "As BBCode buffer" org-bb-export-as-bbcode)
+	(?f "As BBCode file" org-bb-export-to-bbcode))))
 
 ;;; Helper methods
 
