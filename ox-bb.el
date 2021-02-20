@@ -22,7 +22,7 @@
 ;; URL: https://github.com/mmitch/ox-bb
 ;; Keywords: bbcode, org, export, outlines
 ;; Version: 0.0.1
-;; Package-Requires: ((emacs "24.3") (org "8.0"))
+;; Package-Requires: ((emacs "24.4") (org "8.0"))
 
 ;;; Commentary:
 
