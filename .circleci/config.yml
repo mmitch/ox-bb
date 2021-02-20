@@ -16,6 +16,20 @@ commands:
       - run:
           name: Unit tests
           command: emacs -Q --batch -l ert -l ox-bb.elc -l testing/test-ox-bb.el -f ert-run-tests-batch-and-exit
+      - run:
+          name: Lint
+          command: |
+            emacs -Q --batch --eval "(progn \
+              (require 'package) \
+              (push '(\"melpa\" . \"https://melpa.org/packages/\") package-archives) \
+              (package-initialize) \
+              (unless package-archive-contents \
+                 (package-refresh-contents)) \
+              (dolist (pkg '(package-lint)) \
+                (unless (package-installed-p pkg) \
+                  (package-install pkg))) \
+              (require 'package-lint))" \
+              -f package-lint-batch-and-exit ox-bb.el
 
 jobs:
   emacs_27:
