@@ -233,7 +233,7 @@ INFO is a plist used as a communication channel."
 	 (fn-alist
 	  (cl-loop for (n _label raw) in fn-alist collect
 		   (cons n (org-trim (org-export-data raw info)))))
-	 (text (mapconcat 'ox-bb-format-footnote-definition fn-alist "\n")))
+	 (text (mapconcat #'ox-bb-format-footnote-definition fn-alist "\n")))
     (if fn-alist
 	(concat "\n" (ox-bb--format-headline "Footnotes" 0) text)
       "")))
