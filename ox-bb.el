@@ -279,8 +279,7 @@ CONTENTS is the contents of the item, as a string.  INFO is
 		      (and tag (org-export-data tag info)))))
 	  (concat
 	   (ox-bb--put-in-tag "i" (concat (org-trim term) ":"))
-	   " "
-	   ))))
+	   " "))))
      text
      "\n")))
 
