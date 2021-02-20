@@ -22,25 +22,30 @@ SOURCES=$(wildcard *.el)
 TARGETS=$(addsuffix c,$(SOURCES))
 TESTS=$(basename $(wildcard testing/test-*.el))
 
-EMACS=emacs -Q --batch
+PLAIN_EMACS=emacs -Q --batch
+CONFY_EMACS=emacs --batch
+
 
 %.elc: %.el
-	$(EMACS) -f batch-byte-compile $<
+	$(PLAIN_EMACS) -f batch-byte-compile $<
 
 testing/test-%: %.elc testing/test-%.el
-	$(EMACS) -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
+	$(PLAIN_EMACS) -l ert -l $< -l $@.el -f ert-run-tests-batch-and-exit
 
-all:	compile test
+all:	compile test lint
 
 compile: $(TARGETS)
 
 test: show-emacs-version show-org-version $(TESTS)
 
 show-org-version:
-	$(EMACS) -f org-version
+	$(PLAIN_EMACS) -f org-version
 
 show-emacs-version:
-	$(EMACS) --version
+	$(PLAIN_EMACS) --version
+
+lint:	compile
+	$(CONFY_EMACS) --eval "(require 'package-lint)" -f package-lint-batch-and-exit $(SOURCES)
 
 clean:
 	rm -f *.elc
