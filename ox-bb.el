@@ -93,6 +93,10 @@
 	(?f "As BBCode file" ox-bb-export-to-bbcode)
 	(?b "As BBCode buffer and to clipboard" ox-bb-export-to-kill-ring))))
 
+;;; Prevent bogus byte-compiler warning
+
+(declare-function bbcode-mode "bbcode-mode" ())
+
 ;;; Helper methods
 
 (defun ox-bb--as-block (text)
