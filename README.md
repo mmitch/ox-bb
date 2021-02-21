@@ -3,7 +3,7 @@ ox-bb - BBCode export for Org
 
 [![Build Status](https://img.shields.io/circleci/build/gh/mmitch/ox-bb?label=build)](https://circleci.com/gh/mmitch/ox-bb)
 [![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
-
+[![MELPA](https://melpa.org/packages/ox-bb-badge.svg)](https://melpa.org/#/ox-bb)
 
 This tries to be an [Org](http://orgmode) export backend to generate
 [BBCode](https://en.wikipedia.org/wiki/BBCode) suitable for some web
