@@ -116,7 +116,7 @@
 		  (3 "+++ ")
 		  (4 ":::: ")
 		  (5 "----- ")
-		  (t (error "Headline level `%s' is not defined yet" level)))))
+		  (t (user-error "Headline level `%s' is not defined yet" level)))))
     (concat
      (ox-bb--put-in-tag
       "b" (ox-bb--put-in-tag
@@ -215,7 +215,7 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
   "Transcode a FOOTNOTE-REFERENCE element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (if (eq (org-element-property :type footnote-reference) 'inline)
-      (error "Inline footnotes not supported yet")
+      (user-error "Inline footnotes not supported yet")
     (let ((n (org-export-get-footnote-number footnote-reference info)))
       (format "^%d " n))))
 
@@ -305,10 +305,10 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (cond
        ((string-prefix-p "about:" raw)
 	(ox-bb--put-url contents raw))
-       (t (error "Unknown fuzzy LINK type encountered: `%s'" raw))))
+       (t (user-error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
       (ox-bb--put-url contents (concat type ":" path)))
-     (t (error "LINK type `%s' not yet supported" type)))))
+     (t (user-error "LINK type `%s' not yet supported" type)))))
 
 (defun ox-bb-paragraph (_paragraph contents _info)
   "Transcode a PARAGRAPH element from Org to BBCode.
@@ -327,7 +327,7 @@ CONTENTS is the contents of the plain-list, as a string.  INFO is
        (`descriptive (ox-bb--put-in-tag "list" content-block))
        (`unordered (ox-bb--put-in-tag "list" content-block))
        (`ordered (ox-bb--put-in-value-tag "list" content-block "1"))
-       (other (error "PLAIN-LIST type `%s' not yet supported" other)))
+       (other (user-error "PLAIN-LIST type `%s' not yet supported" other)))
      "\n")))
 
 (defun ox-bb-plain-text (text _info)
@@ -381,7 +381,7 @@ holding export options."
 
 (defun ox-bb-undefined (element &optional _contents _info)
   "Throw an error when an unsupported ELEMENT is encountered."
-  (error "ELEMENT type `%s' not implemented yet" (car element)))
+  (user-error "ELEMENT type `%s' not implemented yet" (car element)))
 
 (defun ox-bb-underline (_underline contents _info)
   "Transcode a UNDERLINE element from Org to BBCode.
