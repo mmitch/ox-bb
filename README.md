@@ -2,7 +2,7 @@ ox-bb - BBCode export for Org
 =============================
 
 [![Build Status](https://img.shields.io/circleci/build/gh/mmitch/ox-bb?label=build)](https://circleci.com/gh/mmitch/ox-bb)
-[![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](http://www.gnu.org/licenses/gpl-3.0-standalone.html)
+[![GPL 3+](https://img.shields.io/badge/license-GPL%203%2B-blue.svg)](https://www.gnu.org/licenses/gpl-3.0-standalone.html)
 [![MELPA Stable](https://stable.melpa.org/packages/ox-bb-badge.svg)](https://stable.melpa.org/#/ox-bb)
 [![MELPA](https://melpa.org/packages/ox-bb-badge.svg)](https://melpa.org/#/ox-bb)
 
