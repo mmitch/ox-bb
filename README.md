@@ -6,7 +6,7 @@ ox-bb - BBCode export for Org
 [![MELPA Stable](https://stable.melpa.org/packages/ox-bb-badge.svg)](https://stable.melpa.org/#/ox-bb)
 [![MELPA](https://melpa.org/packages/ox-bb-badge.svg)](https://melpa.org/#/ox-bb)
 
-This tries to be an [Org](http://orgmode) export backend to generate
+This tries to be an [Org](https://orgmode.org) export backend to generate
 [BBCode](https://en.wikipedia.org/wiki/BBCode) suitable for some web
 forums and other applications.  Code blocks will be exported for the
 [GeSHI](https://github.com/GeSHi/geshi-1.0) plugin but don't expect this to
