@@ -48,8 +48,8 @@
 
 ;;; Backend definition
 
-; internal reminder: for Org format information see
-; https://orgmode.org/worg/dev/org-element-api.html
+					; internal reminder: for Org format information see
+					; https://orgmode.org/worg/dev/org-element-api.html
 
 (org-export-define-backend 'bb
   '((bold . ox-bb-bold)
@@ -222,7 +222,7 @@ contextual information."
   "Transcode a FIXED-WIDTH element from Org to BBCode.
 CONTENTS is nil.  INFO is a plist holding contextual information."
   (ox-bb--put-in-tag "code"
-		      (concat "\n" (org-element-property :value fixed-width))))
+		     (concat "\n" (org-element-property :value fixed-width))))
 
 (defun ox-bb-footnote-reference (footnote-reference _contents info)
   "Transcode a FOOTNOTE-REFERENCE element from Org to BBCode.
@@ -411,7 +411,7 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
 
 ;;;###autoload
 (defun ox-bb-export-as-bbcode
-  (&optional async subtreep visible-only body-only ext-plist)
+    (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode buffer.
 
 If narrowing is active in the current buffer, only export its
@@ -445,7 +445,7 @@ available, `bbcode-mode' is enabled in the buffer."
 
 ;;;###autoload
 (defun ox-bb-export-to-bbcode
-  (&optional async subtreep visible-only body-only ext-plist)
+    (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode file.
 
 If narrowing is active in the current buffer, only export its
@@ -480,7 +480,7 @@ Return output file's name."
 
 ;;;###autoload
 (defun ox-bb-export-to-kill-ring
-  (&optional async subtreep visible-only body-only ext-plist)
+    (&optional async subtreep visible-only body-only ext-plist)
   "Export current buffer to a BBCode buffer and kill ring.
 
 If narrowing is active in the current buffer, only export its
