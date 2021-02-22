@@ -26,7 +26,21 @@
 
 ;;; Commentary:
 
-;; export Org documents to BBCode
+;; This library implements a BBCode back-end for Org exporter.  Source
+;; code snippets are exported for the GeSHi plugin.
+;;
+;; ox-bb provides three different commands for export:
+;;
+;; - `ox-bb-export-as-bbcode' exports to a buffer named "*Org BBCode
+;;   Export*" and automatically applies `bbcode-mode' if it is
+;;   available.
+;;
+;; - `ox-bb-export-to-kill-ring' does the same and additionally copies
+;;   the exported buffer to the kill ring so that the generated BBCode
+;;   is available in the Clipboard.
+;;
+;; - `ox-bb-export-to-bbcode' exports to a file with extension
+;;   ".bbcode".
 
 ;;; Code:
 
@@ -93,11 +107,10 @@
 	(?f "As BBCode file" ox-bb-export-to-bbcode)
 	(?b "As BBCode buffer and to clipboard" ox-bb-export-to-kill-ring))))
 
-;;; Prevent bogus byte-compiler warning
-
-(declare-function bbcode-mode "bbcode-mode" ())
-
 ;;; Helper methods
+
+;; prevent bogus byte-compiler warning
+(declare-function bbcode-mode "bbcode-mode" ())
 
 (defun ox-bb--as-block (text)
   "Format TEXT as a block with leading and trailing newline."
@@ -423,7 +436,8 @@ EXT-PLIST, when provided, is a property list with external
 parameters overriding Org default settings, but still inferior to
 file-local settings.
 
-Export is done in a buffer named \"*Org BBCode Export*\"."
+Export is done in a buffer named \"*Org BBCode Export*\".  If
+available, `bbcode-mode' is enabled in the buffer."
   (interactive)
   (org-export-to-buffer 'bb "*Org BBCode Export*"
     async subtreep visible-only body-only ext-plist
