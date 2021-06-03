@@ -9,7 +9,7 @@ ox-bb - BBCode export for Org
 This tries to be an [Org](https://orgmode.org) export backend to generate
 [BBCode](https://en.wikipedia.org/wiki/BBCode) suitable for some web
 forums and other applications.  Code blocks will be exported for the
-[GeSHI](https://github.com/GeSHi/geshi-1.0) plugin but don't expect this to
+[GeSHi](https://github.com/GeSHi/geshi-1.0) plugin but don't expect this to
 work on every forum.
 
 resources
