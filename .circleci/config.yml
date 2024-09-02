@@ -32,6 +32,18 @@ commands:
               -f package-lint-batch-and-exit ox-bb.el
 
 jobs:
+  emacs_29:
+    docker:
+      - image: silex/emacs:29
+    steps:
+      - testsuite
+
+  emacs_28:
+    docker:
+      - image: silex/emacs:28
+    steps:
+      - testsuite
+
   emacs_27:
     docker:
       - image: silex/emacs:27
@@ -50,20 +62,15 @@ jobs:
     steps:
       - testsuite
 
-  emacs_24:
-    docker:
-      - image: silex/emacs:24
-    steps:
-      - testsuite
-
 workflows:
   version: 2
   commit:
     jobs:
-      - emacs_24
       - emacs_25
       - emacs_26
       - emacs_27
+      - emacs_28
+      - emacs_29
   monthly:
     triggers:
       - schedule:
@@ -73,7 +80,8 @@ workflows:
               only:
                 - master
     jobs:
-      - emacs_24
       - emacs_25
       - emacs_26
       - emacs_27
+      - emacs_28
+      - emacs_29
