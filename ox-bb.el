@@ -1,6 +1,6 @@
 ;;; ox-bb.el --- BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2021  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017-2024  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-bb.
@@ -358,7 +358,9 @@ as a communication channel."
   "Transcode a SECTION element from Org to BBCode.
 CONTENTS is the contents of the section, as a string.  INFO is a
   plist used as a communication channel."
-  (org-trim contents))
+  (if contents
+      (org-trim contents)
+    ""))
 
 (defun ox-bb-strike-through (_strike-through contents _info)
   "Transcode a STRIKE-THROUGH element from Org to BBCode.

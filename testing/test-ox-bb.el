@@ -1,6 +1,6 @@
 ;;; test-ox-bb.el --- Tests BBCode Back-End for Org Export Engine -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2017-2019, 2021  Christian Garbs <mitch@cgarbs.de>
+;; Copyright (C) 2017-2024  Christian Garbs <mitch@cgarbs.de>
 ;; Licensed under GNU GPL v3 or later.
 
 ;; This file is part of ox-bb.
@@ -336,6 +336,13 @@ package foo;
 [b][u]:::: dummy[/u][/b]
 
 [b][u]----- TOPIC[/u][/b]")))
+
+(ert-deftest test-ox-bb/export-headline-with-properties ()
+  (should (equal (test-ox-bb-export "* A heading
+:PROPERTIES:
+:ID:       25556746-afe1-4559-8481-af68f50dbfde
+:END:")
+		 "[b][u]# A heading[/u][/b]")))
 
 (ert-deftest test-ox-bb/export-italic ()
   (should (equal (test-ox-bb-export "foo /BAR/ baz")
