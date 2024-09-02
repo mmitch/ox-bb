@@ -77,12 +77,12 @@
     (latex-fragment . ox-bb-undefined)
     (line-break . ox-bb-line-break)
     (link . ox-bb-link)
-    (node-property . ox-bb-undefined)
+    ;; (node-property . ox-bb-undefined) ;; don't fail, just skip properties
     (paragraph . ox-bb-paragraph)
     (plain-list . ox-bb-plain-list)
     (plain-text . ox-bb-plain-text)
     (planning . ox-bb-undefined)
-    (property-drawer . ox-bb-undefined)
+    ;; (property-drawer . ox-bb-undefined) ;; don't fail, just skip properties
     (quote-block . ox-bb-quote-block)
     (radio-target . ox-bb-undefined)
     (section . ox-bb-section)
