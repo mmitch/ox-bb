@@ -318,9 +318,13 @@ CONTENTS is the contents of the link, as a string.  INFO is
       (cond
        ((string-prefix-p "about:" raw)
 	(ox-bb--put-url contents raw))
+       ((string-prefix-p "id:" raw)
+	(ox-bb-plain-text contents _info))
        (t (user-error "Unknown fuzzy LINK type encountered: `%s'" raw))))
      ((member type '("http" "https"))
       (ox-bb--put-url contents (concat type ":" path)))
+     ((member type '("id"))
+      (ox-bb-plain-text contents _info))
      (t (user-error "LINK type `%s' not yet supported" type)))))
 
 (defun ox-bb-paragraph (_paragraph contents _info)

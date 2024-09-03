@@ -378,6 +378,10 @@ bar")))
   (should (equal (test-ox-bb-export "[[https://foo/][bar]]")
 		 "[url=https://foo/]bar[/url]")))
 
+(ert-deftest test-ox-bb/export-link-to-id-renders-as-plain-text ()
+  (should (equal (test-ox-bb-export "[[id:some-id][link text]]")
+		 "link text")))
+
 (ert-deftest test-ox-bb/export-multiline-paragraph ()
   (should (equal (test-ox-bb-export "foo
 bar")
